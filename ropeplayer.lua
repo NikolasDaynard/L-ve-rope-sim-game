@@ -12,9 +12,11 @@ player = {
     body1 = nil,
     bodies = {},
     joints = {},
+    fixtures = {},
     numSegments = 10,
     chainLength = 1,
     draggingIndex = -1,
+    name = "player"
 }
 
 -- Initialize method for player object
@@ -28,7 +30,8 @@ function player:init(world)
     local shape1 = love.physics.newCircleShape(self.radius)
 
     -- -- Attach shapes to bodies
-    local fixture1 = love.physics.newFixture(self.body1, shape1)
+    player.fixtures[1] = love.physics.newFixture(self.body1, shape1)
+    player.fixtures[1]:setUserData("player" .. 1)
 
     -- Create additional bodies and rope joints for segments
     self.bodies[1] = self.body1
@@ -40,7 +43,8 @@ function player:init(world)
         self.bodies[i] = love.physics.newBody(self.world, segmentX, segmentY, "dynamic")
 
         local segmentShape = love.physics.newCircleShape(self.radius)
-        local fixture1 = love.physics.newFixture(self.bodies[i], segmentShape)
+        player.fixtures[i] = love.physics.newFixture(self.bodies[i], segmentShape)
+        player.fixtures[i]:setUserData("player" .. i)
 
         self.joints[i - 1] = love.physics.newRopeJoint(
             self.bodies[i], self.bodies[i - 1],

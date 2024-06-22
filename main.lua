@@ -11,12 +11,12 @@ function love.load()
 
     -- Calculate a desired aspect ratio (e.g., 16:9)
     local aspectRatio = 16 / 9
-    local windowWidth = math.min(screenWidth, math.floor(screenHeight * aspectRatio))
-    local windowHeight = math.min(screenHeight, math.floor(screenWidth / aspectRatio))
+    local windowWidth = math.min(screenWidth, math.floor(screenHeight * aspectRatio)) / 2
+    local windowHeight = math.min(screenHeight, math.floor(screenWidth / aspectRatio)) / 2
 
     -- Set fullscreen with borders
     love.window.setMode(windowWidth, windowHeight, {
-        fullscreen = true,
+        fullscreen = false,
         fullscreentype = "desktop",
         resizable = true,
         borderless = false
@@ -24,6 +24,7 @@ function love.load()
     -- Initialize physics world
     world = love.physics.newWorld(0, 100, true)
     createBoundaries()
+    loadlevel()
 
     -- Initialize player with physics
     player:init(world)
@@ -50,6 +51,6 @@ end
 -- Draw function
 function love.draw()
     player:draw()
-    love.graphics.rectangle("fill", 0, 0, 10, 10)
     momentumArrow:render()
+    renderLevel()
 end
