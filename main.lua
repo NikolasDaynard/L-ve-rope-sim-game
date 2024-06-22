@@ -27,7 +27,7 @@ function love.load()
     loadlevel()
 
     -- Initialize player with physics
-    player:init(world)
+    player:init()
 end
 
 -- Update function

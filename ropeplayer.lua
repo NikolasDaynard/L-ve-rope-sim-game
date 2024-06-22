@@ -5,8 +5,8 @@ player = {
     handle1y = 100,
     handle2x = 200,
     handle2y = 200,
-    speed = 200,
     radius = 10,
+    radiusOffset = {},
     hitboxSize = 50,
     world = nil,
     body1 = nil,
@@ -14,17 +14,16 @@ player = {
     joints = {},
     fixtures = {},
     numSegments = 10,
-    chainLength = 1,
+    chainLength = 35,
     draggingIndex = -1,
     name = "player"
 }
 
 -- Initialize method for player object
-function player:init(world)
-    self.world = world
+function player:init()
 
     -- Create bodies for handles
-    self.body1 = love.physics.newBody(self.world, self.handle1x, self.handle1y, "dynamic")
+    self.body1 = love.physics.newBody(world, self.handle1x, self.handle1y, "dynamic")
 
     -- Create shapes for handles (circles)
     local shape1 = love.physics.newCircleShape(self.radius)
@@ -35,12 +34,14 @@ function player:init(world)
 
     -- Create additional bodies and rope joints for segments
     self.bodies[1] = self.body1
+    self.radiusOffset[1] = 0
 
     for i = 2, self.numSegments do
+        self.radiusOffset[i] = 0
         local segmentX = self.handle1x + ((self.handle2x - self.handle1x) / self.numSegments) * i
         local segmentY = self.handle1y + ((self.handle2y - self.handle1y) / self.numSegments) * i
 
-        self.bodies[i] = love.physics.newBody(self.world, segmentX, segmentY, "dynamic")
+        self.bodies[i] = love.physics.newBody(world, segmentX, segmentY, "dynamic")
 
         local segmentShape = love.physics.newCircleShape(self.radius)
         player.fixtures[i] = love.physics.newFixture(self.bodies[i], segmentShape)
@@ -118,8 +119,8 @@ function player:draw()
         local segmentX1, segmentY1 = self.bodies[i]:getPosition()
         local segmentX2, segmentY2 = self.bodies[i - 1]:getPosition()
         love.graphics.line(segmentX1, segmentY1, segmentX2, segmentY2)
-        love.graphics.circle("fill", segmentX1, segmentY1, self.radius)
-        love.graphics.circle("fill", segmentX2, segmentY2, self.radius)
+        love.graphics.circle("fill", segmentX1, segmentY1, self.radius + self.radiusOffset[i])
+        love.graphics.circle("fill", segmentX2, segmentY2, self.radius + self.radiusOffset[i - 1])
     end
 end
 
@@ -141,4 +142,9 @@ function player:grab(mousePos)
     if self.draggingIndex ~= -1 then
         self.bodies[self.draggingIndex]:setPosition(mousePos.x, mousePos.y)
     end
+end
+
+function player:deleteSegment(segment) 
+    number = tonumber(string.match(segment, "%d+")) 
+    self.radiusOffset[number] = self.radiusOffset[number] - 1
 end

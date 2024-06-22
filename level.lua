@@ -1,3 +1,5 @@
+require("levels")
+
 function createBoundaries()
     local windowWidth, windowHeight = love.graphics.getDimensions()
     
@@ -24,45 +26,45 @@ function createBoundaries()
     end
 end
 
--- Spike object definition
-local spike = {
-    x = 500, 
-    y = 200, 
-    width = 50,
-    height = 50,
-    body = nil,
-}
-
 function beginContact(a, b, coll)
 	local textA = a:getUserData()
 	local textB = b:getUserData()
-    if type(textA) == "string" then
-        if string.find(textA, "player") ~= nil then
-            -- player:deleteSegment(textA)
-            print(textA)
-        end
-    elseif type(textB) == "string" then
-        if string.find(textB, "player") ~= nil then
-            -- player:deleteSegment(textB)
-            print(textB)
+    if type(textA) == "string" and type(textB) == "string" then
+        if string.find(textB, "player") ~= nil and string.find(textA, "spike") ~= nil then
+            player:deleteSegment(textB)
         end
     end
 end
 function loadlevel()
-    spike.body = love.physics.newBody(world, spike.x, spike.y, "dynamic")
-    spike.shape = love.physics.newRectangleShape(spike.width, spike.height)
-    spike.fixture = love.physics.newFixture(spike.body, spike.shape)
+    for key, value in pairs(level1) do
+        if value.type == "spike" then
+            value.body = love.physics.newBody(world, value.x, value.y, "dynamic")
+            value.shape = love.physics.newRectangleShape(value.width, value.height)
+            value.fixture = love.physics.newFixture(value.body, value.shape)
+            -- Set fixture user data to spike object
+            value.fixture:setUserData("spike")
 
-    -- Set fixture user data to spike object
-    spike.fixture:setUserData(spike)
-
+            value.fixture:setCategory(1) 
+        elseif value.type == "player" then
+            player.handle1x = value.handle1x
+            player.handle1y = value.handle1y
+            player.handle2x = value.handle2x
+            player.handle2y = value.handle2y
+            player:init()
+        end
+    end
     -- Set collision callback function
     world:setCallbacks(beginContact)
 
-    -- Set collision filter if needed
-    spike.fixture:setCategory(1) -- Example category
 end
 
 function renderLevel() 
-    love.graphics.rectangle("fill", spike.body:getX() - (spike.width / 2), spike.body:getY() - (spike.height / 2), spike.width, spike.height)
+    for key, value in pairs(level1) do
+        if value.render == "rectangle" then
+            love.graphics.rectangle("fill", value.body:getX() - (value.width / 2), value.body:getY() - (value.height / 2), value.width, value.height)
+        end
+    end
+
+
+    
 end
