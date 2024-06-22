@@ -1,4 +1,5 @@
 -- Define player object
+
 player = {
     handle1x = 100,
     handle1y = 100,
@@ -8,8 +9,11 @@ player = {
     radius = 10,
     world = nil,
     body1 = nil,
-    body2 = nil,
-    joint = nil
+    bodies = {},
+    joints = {},
+    numSegments = 10,
+    chainLength = 1,
+    draggingIndex = -1,
 }
 
 -- Initialize method for player object
@@ -18,37 +22,73 @@ function player:init(world)
 
     -- Create bodies for handles
     self.body1 = love.physics.newBody(self.world, self.handle1x, self.handle1y, "dynamic")
-    self.body2 = love.physics.newBody(self.world, self.handle2x, self.handle2y, "dynamic")
 
     -- Create shapes for handles (circles)
     local shape1 = love.physics.newCircleShape(self.radius)
-    local shape2 = love.physics.newCircleShape(self.radius)
 
-    -- Attach shapes to bodies
+    -- -- Attach shapes to bodies
     local fixture1 = love.physics.newFixture(self.body1, shape1)
-    local fixture2 = love.physics.newFixture(self.body2, shape2)
 
-    -- Create rope joint between handles
-    self.joint = love.physics.newRopeJoint(self.body1, self.body2, self.handle1x, self.handle1y, self.handle2x, self.handle2y, 100, true)
-end
+    -- Create additional bodies and rope joints for segments
+    self.bodies[1] = self.body1
+
+    for i = 2, self.numSegments do
+        local segmentX = self.handle1x + ((self.handle2x - self.handle1x) / self.numSegments) * i
+        local segmentY = self.handle1y + ((self.handle2y - self.handle1y) / self.numSegments) * i
+
+        self.bodies[i] = love.physics.newBody(self.world, segmentX, segmentY, "dynamic")
+
+        local segmentShape = love.physics.newCircleShape(self.radius)
+        local fixture1 = love.physics.newFixture(self.bodies[i], segmentShape)
+
+        self.joints[i - 1] = love.physics.newRopeJoint(
+            self.bodies[i], self.bodies[i - 1],
+            segmentX, segmentY,
+            self.handle1x + ((self.handle2x - self.handle1x) / self.numSegments) * (i + 1),
+            self.handle1y + ((self.handle2y - self.handle1y) / self.numSegments) * (i + 1),
+            self.chainLength, true
+        )
+        -- self.joints[i - 1]:setMaxLength(self.chainLength * 2)
+    end
+end  
 
 -- Update method for player object
 function player:update(dt)
     -- Update positions based on physics simulation
     self.handle1x, self.handle1y = self.body1:getPosition()
-    self.handle2x, self.handle2y = self.body2:getPosition()
 end
 
 function player:moveHandle(newPos)
     self.body1:setPosition(newPos.x, newPos.y)
 end
 
+function player:grab(mousePos)
+    if not love.mouse.isDown(1) then
+        self.draggingIndex = -1
+    end
+    for i = 1, self.numSegments do
+        local segmentX1, segmentY1 = self.bodies[i]:getPosition()
+        if mousePos.x >= segmentX1 - 25 and mousePos.y >= segmentY1 - 25 and mousePos.x < segmentX1 + 25 and mousePos.y < segmentY1 + 25 and love.mouse.isDown(1) then
+            self.draggingIndex = i
+            print(i)
+        end
+    end
+    if not self.draggingIndex == -1 then
+        self.bodies[draggingIndex]:setPosition(mousePos.x, mousePos.y)
+    end
+end
+
 -- Draw method for player object
+
 function player:draw()
     -- Draw handles as circles
     love.graphics.circle("fill", self.handle1x, self.handle1y, self.radius)
-    love.graphics.circle("fill", self.handle2x, self.handle2y, self.radius)
 
-    -- Draw rope segment
-    love.graphics.line(self.handle1x, self.handle1y, self.handle2x, self.handle2y)
+    for i = 2, self.numSegments do
+        local segmentX1, segmentY1 = self.bodies[i]:getPosition()
+        local segmentX2, segmentY2 = self.bodies[i - 1]:getPosition()
+        love.graphics.line(segmentX1, segmentY1, segmentX2, segmentY2)
+        love.graphics.circle("fill", segmentX1, segmentY1, self.radius)
+        love.graphics.circle("fill", segmentX2, segmentY2, self.radius)
+    end
 end
