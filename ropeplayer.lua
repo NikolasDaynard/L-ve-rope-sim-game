@@ -69,6 +69,7 @@ function player:momentumGrab(mousePos)
         -- apply momentum
         if self.draggingIndex ~= -1 then
             self.bodies[self.draggingIndex]:applyForce(momentumArrow:getForce().x, momentumArrow:getForce().y)
+            score = score + 1
             momentumArrow:hide()
         end
         self.draggingIndex = -1
@@ -109,6 +110,13 @@ function player:isGrabbingSegment(mousePos)
     return false
 end
 
+function player:removeMomentum() 
+    for i = 1, self.numSegments do
+        self.bodies[i]:setLinearVelocity(0, 0)
+    end
+end
+
+
 -- Draw method for player object
 
 function player:draw()
@@ -147,6 +155,9 @@ end
 function player:deleteSegment(segment) 
     number = tonumber(string.match(segment, "%d+")) 
     self.radiusOffset[number] = self.radiusOffset[number] - 1
+    if self.radiusOffset[number] == -3 then
+        levelLoader:unloadLevel()
+    end
 end
 
 function player:setPosition(x1, y1, x2, y2)

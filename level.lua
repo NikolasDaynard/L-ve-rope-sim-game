@@ -40,6 +40,7 @@ function beginContact(a, b, coll)
     end
 end
 function levelLoader:loadLevel(levelToLoad)
+    score = 0
     loadedLevel = levelToLoad
     if loadedLevel ~= nil then
         for key, value in pairs(loadedLevel) do
@@ -53,6 +54,9 @@ function levelLoader:loadLevel(levelToLoad)
                 value.fixture:setCategory(1) 
             elseif value.type == "player" then
                 player:setPosition(value.handle1x, value.handle1y, value.handle2x, value.handle2y)
+                player:removeMomentum()
+            elseif value.type == "button" then
+                
             end
         end
         -- Set collision callback function

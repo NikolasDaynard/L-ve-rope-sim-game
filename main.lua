@@ -3,7 +3,12 @@ require("ropeplayer")
 require("momentumArrow")
 require("level")
 require("levels")
+require("ui")
 Camera = require 'camera' 
+font = love.graphics.setNewFont("Early GameBoy.ttf", 15, "normal", 1)
+love.graphics.setFont(font)
+
+score = 0
 
 draggingPlayer = false
 
@@ -15,8 +20,16 @@ function love.load()
 
     -- Calculate a desired aspect ratio (e.g., 16:9)
     local aspectRatio = 16 / 9
-    local windowWidth = math.min(screenWidth, math.floor(screenHeight * aspectRatio)) / 2
-    local windowHeight = math.min(screenHeight, math.floor(screenWidth / aspectRatio)) / 2
+    local windowWidth = screenWidth
+    local windowHeight = screenHeight
+    if screenWidth / screenHeight > aspectRatio then
+        windowWidth = screenHeight * aspectRatio
+    else
+        windowHeight = screenWidth / aspectRatio
+    end
+    -- Calculate zoom based on the smaller dimension, so smaller screens see the same amound of level
+    local intendedZoom = math.min(windowWidth / screenWidth, windowHeight / screenHeight)
+    cam:zoomTo(intendedZoom)
     cam:lookAt(screenWidth / 2, screenHeight / 2)
 
     -- Set fullscreen with borders
@@ -72,4 +85,5 @@ function love.draw()
     momentumArrow:render(camera)
     levelLoader:renderLevel(camera)
     cam:detach()
+    love.graphics.print("shots: " .. score .. " . 3", 0, 0, 0, 1, 1)
 end
