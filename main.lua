@@ -1,4 +1,6 @@
+require ("helpers")
 require("ropeplayer")
+require("momentumArrow")
 draggingPlayer = false
 
 -- Load function
@@ -16,16 +18,12 @@ end
 
 -- Update function
 function love.update(dt)
-    -- if love.mouse.getX() >= player.handle1x - 25 and love.mouse.getY() >= player.handle1y - 25 and love.mouse.getX() < player.handle1x + 25 and love.mouse.getY() < player.handle1y + 25 and love.mouse.isDown(1) then
-    --     draggingPlayer = true
-    -- end
-    -- if draggingPlayer then
+    
+    -- slow when grabbing
+    if player:isGrabbingSegment({x = love.mouse.getX(), y = love.mouse.getY()}) then
+        dt = dt / 20
+    end
 
-    --     player:moveHandle({x = love.mouse.getX(), y = love.mouse.getY()})
-    --     if not love.mouse.isDown(1) then
-    --         draggingPlayer = false
-    --     end
-    -- end
     if love.keyboard.isDown("escape") then
         love.window.close()
         love.event.quit()
@@ -33,11 +31,12 @@ function love.update(dt)
     world:update(dt)
 
     player:update(dt)
-    player:grab({x = love.mouse.getX(), y = love.mouse.getY()})
+    player:momentumGrab({x = love.mouse.getX(), y = love.mouse.getY()})
 end
 
 -- Draw function
 function love.draw()
-    -- Draw the player as a simple rectangle
     player:draw()
+    love.graphics.rectangle("fill", 0, 0, 10, 10)
+    momentumArrow:render()
 end

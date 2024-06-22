@@ -58,24 +58,43 @@ function player:update(dt)
     self.handle1x, self.handle1y = self.body1:getPosition()
 end
 
-function player:moveHandle(newPos)
-    self.body1:setPosition(newPos.x, newPos.y)
-end
-
-function player:grab(mousePos)
+function player:momentumGrab(mousePos)
     if not love.mouse.isDown(1) then
+        -- apply momentum
+        if self.draggingIndex ~= -1 then
+            self.bodies[self.draggingIndex]:applyForce(momentumArrow:getForce().x, momentumArrow:getForce().y)
+            momentumArrow:hide()
+        end
         self.draggingIndex = -1
-    end
-    for i = 1, self.numSegments do
-        local segmentX1, segmentY1 = self.bodies[i]:getPosition()
-        if mousePos.x >= segmentX1 - 25 and mousePos.y >= segmentY1 - 25 and mousePos.x < segmentX1 + 25 and mousePos.y < segmentY1 + 25 and love.mouse.isDown(1) then
-            self.draggingIndex = i
-            print(i)
+    elseif self.draggingIndex == -1 then
+        for i = 1, self.numSegments do
+            local segmentX, segmentY = self.bodies[i]:getPosition()
+            if mousePos.x >= segmentX - 25 and mousePos.y >= segmentY - 25 and mousePos.x < segmentX + 25 and mousePos.y < segmentY + 25 then
+                self.draggingIndex = i
+                momentumArrow:setOrigin(mousePos.x, mousePos.y)
+                momentumArrow:show()
+                break -- Exit the loop once a segment is found
+            end
         end
     end
-    if not self.draggingIndex == -1 then
-        self.bodies[draggingIndex]:setPosition(mousePos.x, mousePos.y)
+
+    if self.draggingIndex ~= -1 then
+        momentumArrow:setOrigin(self.bodies[self.draggingIndex]:getX(), self.bodies[self.draggingIndex]:getY())
+        momentumArrow:setPosition(mousePos.x, mousePos.y)
     end
+end
+
+function player:isGrabbingSegment(mousePos)
+    if self.draggingIndex ~= -1 then
+        return true
+    end
+    for i = 1, self.numSegments do
+        local segmentX, segmentY = self.bodies[i]:getPosition()
+        if mousePos.x >= segmentX - 25 and mousePos.y >= segmentY - 25 and mousePos.x < segmentX + 25 and mousePos.y < segmentY + 25 and love.mouse.isDown(1) then
+            return true
+        end
+    end
+    return false
 end
 
 -- Draw method for player object
@@ -90,5 +109,25 @@ function player:draw()
         love.graphics.line(segmentX1, segmentY1, segmentX2, segmentY2)
         love.graphics.circle("fill", segmentX1, segmentY1, self.radius)
         love.graphics.circle("fill", segmentX2, segmentY2, self.radius)
+    end
+end
+
+
+-- legacy grab, no momentum
+function player:grab(mousePos)
+    if not love.mouse.isDown(1) then
+        self.draggingIndex = -1
+    else
+        for i = 1, self.numSegments do
+            local segmentX, segmentY = self.bodies[i]:getPosition()
+            if mousePos.x >= segmentX - 25 and mousePos.y >= segmentY - 25 and mousePos.x < segmentX + 25 and mousePos.y < segmentY + 25 then
+                self.draggingIndex = i
+                break -- Exit the loop once a segment is found
+            end
+        end
+    end
+
+    if self.draggingIndex ~= -1 then
+        self.bodies[self.draggingIndex]:setPosition(mousePos.x, mousePos.y)
     end
 end
