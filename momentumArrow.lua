@@ -21,10 +21,10 @@ end
 function momentumArrow:setPosition(x, y) 
     -- emulate force required to draw back
     dist = math.sqrt(distance(x, y, self.x, self.y))
-    translationX = (x - self.x) * dist
-    translationY = (y - self.y) * dist
-    translationX = translationX / 50
-    translationY = translationY / 50
+    translationX = (x - self.x) / dist
+    translationY = (y - self.y) / dist
+    translationX = translationX * 7
+    translationY = translationY * 7
     self.endXPoint = self.x + translationX
     self.endYPoint = self.y + translationY
 end

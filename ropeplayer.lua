@@ -7,6 +7,7 @@ player = {
     handle2y = 200,
     speed = 200,
     radius = 10,
+    hitboxSize = 50,
     world = nil,
     body1 = nil,
     bodies = {},
@@ -69,11 +70,17 @@ function player:momentumGrab(mousePos)
     elseif self.draggingIndex == -1 then
         for i = 1, self.numSegments do
             local segmentX, segmentY = self.bodies[i]:getPosition()
-            if mousePos.x >= segmentX - 25 and mousePos.y >= segmentY - 25 and mousePos.x < segmentX + 25 and mousePos.y < segmentY + 25 then
-                self.draggingIndex = i
+            if mousePos.x >= segmentX - self.hitboxSize and mousePos.y >= segmentY - self.hitboxSize and mousePos.x < segmentX + self.hitboxSize and mousePos.y < segmentY + self.hitboxSize then
+                -- if there's already one selected, take the one with lowest distance
+                if self.draggingIndex ~= -1 then
+                    if distance(mousePos.x, mousePos.y, segmentX, segmentY) < distance(mousePos.x, mousePos.y, self.bodies[self.draggingIndex]:getX(), self.bodies[self.draggingIndex]:getY()) then
+                        self.draggingIndex = i
+                    end
+                else
+                    self.draggingIndex = i
+                end
                 momentumArrow:setOrigin(mousePos.x, mousePos.y)
                 momentumArrow:show()
-                break -- Exit the loop once a segment is found
             end
         end
     end
@@ -90,7 +97,7 @@ function player:isGrabbingSegment(mousePos)
     end
     for i = 1, self.numSegments do
         local segmentX, segmentY = self.bodies[i]:getPosition()
-        if mousePos.x >= segmentX - 25 and mousePos.y >= segmentY - 25 and mousePos.x < segmentX + 25 and mousePos.y < segmentY + 25 and love.mouse.isDown(1) then
+        if mousePos.x >= segmentX - self.hitboxSize and mousePos.y >= segmentY - self.hitboxSize and mousePos.x < segmentX + self.hitboxSize and mousePos.y < segmentY + self.hitboxSize and love.mouse.isDown(1) then
             return true
         end
     end
@@ -120,7 +127,7 @@ function player:grab(mousePos)
     else
         for i = 1, self.numSegments do
             local segmentX, segmentY = self.bodies[i]:getPosition()
-            if mousePos.x >= segmentX - 25 and mousePos.y >= segmentY - 25 and mousePos.x < segmentX + 25 and mousePos.y < segmentY + 25 then
+            if mousePos.x >= segmentX - self.hitboxSize and mousePos.y >= segmentY - self.hitboxSize and mousePos.x < segmentX + self.hitboxSize and mousePos.y < segmentY + self.hitboxSize then
                 self.draggingIndex = i
                 break -- Exit the loop once a segment is found
             end
