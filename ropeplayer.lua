@@ -14,7 +14,7 @@ player = {
     joints = {},
     fixtures = {},
     numSegments = 10,
-    chainLength = 35,
+    chainLength = 15,
     draggingIndex = -1,
     name = "player"
 }
@@ -147,4 +147,17 @@ end
 function player:deleteSegment(segment) 
     number = tonumber(string.match(segment, "%d+")) 
     self.radiusOffset[number] = self.radiusOffset[number] - 1
+end
+
+function player:setPosition(x1, y1, x2, y2)
+    -- Calculate the step size for each segment
+    local stepX = (x2 - x1) / (self.numSegments - 1)
+    local stepY = (y2 - y1) / (self.numSegments - 1)
+    
+    -- Position each segment
+    for i = 1, self.numSegments do
+        local newX = x1 + stepX * (i - 1)
+        local newY = y1 + stepY * (i - 1)
+        self.bodies[i]:setPosition(newX, newY)
+    end
 end

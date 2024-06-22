@@ -1,5 +1,9 @@
 require("levels")
 
+loadedLevel = nil
+
+levelLoader = {}
+
 function createBoundaries()
     local windowWidth, windowHeight = love.graphics.getDimensions()
     
@@ -35,36 +39,50 @@ function beginContact(a, b, coll)
         end
     end
 end
-function loadlevel()
-    for key, value in pairs(level1) do
-        if value.type == "spike" then
-            value.body = love.physics.newBody(world, value.x, value.y, "dynamic")
-            value.shape = love.physics.newRectangleShape(value.width, value.height)
-            value.fixture = love.physics.newFixture(value.body, value.shape)
-            -- Set fixture user data to spike object
-            value.fixture:setUserData("spike")
+function levelLoader:loadLevel(levelToLoad)
+    loadedLevel = levelToLoad
+    if loadedLevel ~= nil then
+        for key, value in pairs(loadedLevel) do
+            if value.type == "spike" then
+                value.body = love.physics.newBody(world, value.x, value.y, "dynamic")
+                value.shape = love.physics.newRectangleShape(value.width, value.height)
+                value.fixture = love.physics.newFixture(value.body, value.shape)
+                -- Set fixture user data to spike object
+                value.fixture:setUserData("spike")
 
-            value.fixture:setCategory(1) 
-        elseif value.type == "player" then
-            player.handle1x = value.handle1x
-            player.handle1y = value.handle1y
-            player.handle2x = value.handle2x
-            player.handle2y = value.handle2y
-            player:init()
+                value.fixture:setCategory(1) 
+            elseif value.type == "player" then
+                player:setPosition(value.handle1x, value.handle1y, value.handle2x, value.handle2y)
+            end
         end
+        -- Set collision callback function
+        world:setCallbacks(beginContact)
     end
-    -- Set collision callback function
-    world:setCallbacks(beginContact)
+end
+function levelLoader:unloadLevel()
+    if loadedLevel ~= nil then
+        for key, value in pairs(loadedLevel) do
+            if value.fixture ~= nil then
+                value.fixture:destroy()
+            end
+            if value.body ~= nil then
+                value.body:destroy()
+            end
+            if value.shape then
+            end
+        end
 
+        loadedLevel = nil
+    end
 end
 
-function renderLevel() 
-    for key, value in pairs(level1) do
-        if value.render == "rectangle" then
-            love.graphics.rectangle("fill", value.body:getX() - (value.width / 2), value.body:getY() - (value.height / 2), value.width, value.height)
+
+function levelLoader:renderLevel() 
+    if loadedLevel ~= nil then
+        for key, value in pairs(loadedLevel) do
+            if value.render == "rectangle" then
+                love.graphics.rectangle("fill", value.body:getX() - (value.width / 2), value.body:getY() - (value.height / 2), value.width, value.height)
+            end
         end
     end
-
-
-    
 end
