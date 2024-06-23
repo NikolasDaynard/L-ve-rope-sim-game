@@ -125,9 +125,11 @@ function player:isGrabbingSegment(mousePos)
         return true
     end
     for i = 1, self.numSegments do
-        local segmentX, segmentY = self.bodies[i]:getPosition()
-        if mousePos.x >= segmentX - self.hitboxSize and mousePos.y >= segmentY - self.hitboxSize and mousePos.x < segmentX + self.hitboxSize and mousePos.y < segmentY + self.hitboxSize and love.mouse.isDown(1) then
-            return true
+        if self.radiusOffset[i] ~= -10 then
+            local segmentX, segmentY = self.bodies[i]:getPosition()
+            if mousePos.x >= segmentX - self.hitboxSize and mousePos.y >= segmentY - self.hitboxSize and mousePos.x < segmentX + self.hitboxSize and mousePos.y < segmentY + self.hitboxSize and love.mouse.isDown(1) then
+                return true
+            end
         end
     end
     return false

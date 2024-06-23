@@ -21,7 +21,7 @@ titlescreen = {
         x = (screenWidth / 2) - 250,
         y = 400,
         w = 500,
-        h = 20,
+        h = 200,
         text = "Start!",
         callback = function()
             levelLoadCallback(levelselectionscreen)
@@ -128,6 +128,69 @@ level3 = {
     playerinfo = {
         type = "player",
         handle1x = 9,
+        handle1y = 80,
+        handle2x = 30,
+        handle2y = 60
+    },
+    par = {
+        type = "par",
+        value = 3
+    },
+    ground = {
+        render = "rectangle",
+        type = "wall",
+        x = 0,
+        y = 900,
+        width = 3200,
+        height = 25,
+    },
+    wall1 = {
+        render = "rectangle",
+        type = "wall",
+        x = 50,
+        y = 530,
+        width = 100,
+        height = 740,
+    },
+    wall2 = {
+        render = "rectangle",
+        type = "wall",
+        x = 100,
+        y = 530,
+        width = 100,
+        height = 740,
+    },
+    spike = {
+        render = "rectangle",
+        type = "spike",
+        x = 650, 
+        y = 700,
+        width = 1000,
+        height = 400,
+        body = nil,
+    },
+    spike2 = {
+        render = "rectangle",
+        type = "spike",
+        x = 1100, 
+        y = 700, 
+        width = 50,
+        height = 500,
+        body = nil,
+    },
+    finish = {
+        render = "rectangle",
+        type = "finish",
+        x = 1300,
+        y = 900,
+        width = 100,
+        height = 300,
+    },
+}
+level4 = {
+    playerinfo = {
+        type = "player",
+        handle1x = 9,
         handle1y = 890,
         handle2x = 30,
         handle2y = 860
@@ -152,20 +215,11 @@ level3 = {
         width = 100,
         height = 500,
     },
-    spike = {
-        render = "rectangle",
-        type = "spike",
-        x = 300, 
-        y = 200, 
-        width = 50,
-        height = 50,
-        body = nil,
-    },
-    spike2 = {
+    spike1 = {
         render = "rectangle",
         type = "spike",
         x = 200, 
-        y = 400, 
+        y = 525, 
         width = 50,
         height = 50,
         body = nil,
@@ -179,6 +233,74 @@ level3 = {
         height = 300,
     },
 }
+level5 = {
+    playerinfo = {
+        type = "player",
+        handle1x = 9,
+        handle1y = 890,
+        handle2x = 30,
+        handle2y = 860
+    },
+    par = {
+        type = "par",
+        value = 3
+    },
+    ground = {
+        render = "rectangle",
+        type = "wall",
+        x = 0,
+        y = 900,
+        width = 3200,
+        height = 25,
+    },
+    finish = {
+        render = "rectangle",
+        type = "finish",
+        x = 800,
+        y = 900,
+        width = 100,
+        height = 300,
+    },
+}
+
+level7 = {
+    playerinfo = {
+        type = "player",
+        handle1x = 9,
+        handle1y = 890,
+        handle2x = 30,
+        handle2y = 860
+    },
+    par = {
+        type = "par",
+        value = 3
+    },
+    ground = {
+        render = "rectangle",
+        type = "wall",
+        x = 0,
+        y = 900,
+        width = 3200,
+        height = 25,
+    },
+    emp = {
+        render = "circle",
+        type = "emp",
+        x = 500,
+        y = 500,
+        radius = 30,
+        triggerRadius = 50
+    },
+    finish = {
+        render = "rectangle",
+        type = "finish",
+        x = 800,
+        y = 900,
+        width = 100,
+        height = 300,
+    },
+}
+
 
 --[[
 level selection screen will look like this
@@ -198,7 +320,7 @@ levelselectionscreen = {
     level1select = {
         type = "button",
         x = ((screenWidth / 5) * 2) - (screenWidth / 7),
-        y = 400,
+        y = screenHeight / 3,
         w = screenWidth / 7,
         h = 20,
         text = "1 par:" .. level1.par.value,
@@ -209,10 +331,10 @@ levelselectionscreen = {
     level2select = {
         type = "button",
         x = ((screenWidth / 5) * 3) - (screenWidth / 7),
-        y = 400,
+        y = screenHeight / 3,
         w = screenWidth / 7,
         h = 20,
-        text = "2",
+        text = "2 par:" .. level2.par.value,
         callback = function()
             levelLoadCallback(level2)
         end,
@@ -220,13 +342,57 @@ levelselectionscreen = {
     level3select = {
         type = "button",
         x = ((screenWidth / 5) * 4) - (screenWidth / 7),
-        y = 400,
+        y = screenHeight / 3,
         w = screenWidth / 7,
         h = 20,
         text = "3",
         callback = function()
             levelLoadCallback(level3)
         end,
-    }
+    },
+    level4select = {
+        type = "button",
+        x = ((screenWidth / 5) * 2) - (screenWidth / 7),
+        y = screenHeight / 2,
+        w = screenWidth / 7,
+        h = 20,
+        text = "4",
+        callback = function()
+            levelLoadCallback(level4)
+        end,
+    },
+    level5select = {
+        type = "button",
+        x = ((screenWidth / 5) * 3) - (screenWidth / 7),
+        y = screenHeight / 2,
+        w = screenWidth / 7,
+        h = 20,
+        text = "5",
+        callback = function()
+            levelLoadCallback(level5)
+        end,
+    },
+    level6select = {
+        type = "button",
+        x = ((screenWidth / 5) * 4) - (screenWidth / 7),
+        y = screenHeight / 2,
+        w = screenWidth / 7,
+        h = 20,
+        text = "6",
+        callback = function()
+            levelLoadCallback(level6)
+        end,
+    },
+    level7select = {
+        type = "button",
+        x = ((screenWidth / 5) * 2) - (screenWidth / 7),
+        y = screenHeight / 1.5,
+        w = screenWidth / 7,
+        h = 20,
+        text = "7",
+        callback = function()
+            levelLoadCallback(level7)
+        end,
+    },
 
 }

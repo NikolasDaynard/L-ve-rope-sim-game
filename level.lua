@@ -50,7 +50,7 @@ function levelLoader:loader(level)
     if level ~= nil then
         for key, value in pairs(level) do
             if value.type == "spike" then
-                value.body = love.physics.newBody(world, value.x, value.y, "dynamic")
+                value.body = love.physics.newBody(world, value.x, value.y, "static")
                 value.shape = love.physics.newRectangleShape(value.width, value.height)
                 value.fixture = love.physics.newFixture(value.body, value.shape)
                 -- Set fixture user data to spike object
@@ -72,13 +72,17 @@ function levelLoader:loader(level)
 
                 value.fixture:setCategory(1) 
                 value.fixture:setSensor(true) -- no collision
+            elseif value.type == "emp" then
+                value.body = love.physics.newBody(world, value.x, value.y, "static")
+                value.shape = love.physics.newCircleShape(value.radius)
+                value.fixture = love.physics.newFixture(value.body, value.shape)
+
             elseif value.type == "finish" then
                 value.body = love.physics.newBody(world, value.x, value.y, "static")
                 value.shape = love.physics.newRectangleShape(value.width, value.height)
                 value.fixture = love.physics.newFixture(value.body, value.shape)
                 -- Set fixture user data to spike object
                 value.fixture:setUserData("finish")
-
                 value.fixture:setCategory(1) 
             elseif value.type == "button" then
                 ui:addButton(value.x, value.y, value.w, value.h, value.callback, value.text)
@@ -93,7 +97,10 @@ end
 
 function levelLoader:loadLevel(levelToLoad)
     score = 0
-    loadedLevel = levelToLoad
+    -- if it's exists set it, otherwise reload level
+    if levelToLoad ~= nil then
+        loadedLevel = levelToLoad
+    end
     levelLoader:loader(loadedLevel)
 end
 function levelLoader:unloadLevel()
@@ -120,15 +127,20 @@ end
 function levelLoader:renderLevel() 
     if loadedLevel ~= nil then
         for key, value in pairs(loadedLevel) do
+            if value.type == "finish" then
+                love.graphics.setColor(0.2, 1, 0.2)
+            end
+            if value.type == "spike" then
+                love.graphics.setColor(1, 0.2, 0.2)
+            end
+            if value.type == "spring" then
+                love.graphics.setColor(1, 0.7, 0.5)
+            end
             if value.render == "rectangle" then
-                if value.type == "finish" then
-                    love.graphics.setColor(0.2, 1, 0.2)
-                end
-                if value.type == "spike" then
-                    love.graphics.setColor(1, 0.2, 0.2)
-                end
                 love.graphics.rectangle("fill", value.body:getX() - (value.width / 2), value.body:getY() - (value.height / 2), value.width, value.height)
                 love.graphics.setColor(1, 1, 1)
+            elseif value.render == "circle" then
+                love.graphics.circle("fill", value.body:getX() - (value.radius / 2), value.body:getY() - (value.radius / 2), value.radius)
             end
         end
     end

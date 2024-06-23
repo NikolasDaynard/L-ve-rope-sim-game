@@ -89,9 +89,9 @@ function love.draw()
 
     cam:attach()
     -- love.graphics.setColor(1, .7, .7)
-    player:draw()
     momentumArrow:render()
     levelLoader:renderLevel()
+    player:draw()
     cam:detach()
     -- ui is unaffected by scaling 
     ui:render()
