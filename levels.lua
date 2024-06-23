@@ -286,10 +286,18 @@ level7 = {
     emp = {
         render = "circle",
         type = "emp",
-        x = 500,
+        x = 700,
+        y = 700,
+        radius = 30,
+        triggerRadius = 130
+    },
+    emp1 = {
+        render = "circle",
+        type = "emp",
+        x = 300,
         y = 500,
         radius = 30,
-        triggerRadius = 50
+        triggerRadius = 130
     },
     finish = {
         render = "rectangle",

@@ -40,14 +40,33 @@ function beginContact(a, b, coll)
             -- skips the setting of the level because it's jsut ui so it's handled by ui
             levelLoader:loader(levelfinishUi)
         elseif string.find(textB, "player") ~= nil and string.find(textA, "spring") ~= nil then
-            print(textB)
+            
             player:applyForceToSegment(textB, 0, -10000)
+        elseif string.find(textB, "emp") ~= nil and string.find(textA, "player") ~= nil then
+            player:applyForceToSegment(textA, 0, -10000)
+            index = tonumber(string.match(textB, "%d+")) 
+            local tableAtIndex = levelLoader:findTableAtIndex(index, "emp")
+            tableAtIndex.empTimer = tableAtIndex.empTimer - .001
         end
     end
 end
 
+function levelLoader:findTableAtIndex(indexToFind, type)
+    local currentNum = 1
+    for key, value in pairs(loadedLevel) do
+        if value.type == type then
+            if currentNum == indexToFind then
+                return value
+            end
+            currentNum = currentNum + 1
+        end
+    end
+    return nil
+end
+
 function levelLoader:loader(level)
     if level ~= nil then
+        local empIndex = 1
         for key, value in pairs(level) do
             if value.type == "spike" then
                 value.body = love.physics.newBody(world, value.x, value.y, "static")
@@ -76,6 +95,15 @@ function levelLoader:loader(level)
                 value.body = love.physics.newBody(world, value.x, value.y, "static")
                 value.shape = love.physics.newCircleShape(value.radius)
                 value.fixture = love.physics.newFixture(value.body, value.shape)
+
+                value.triggerBody = love.physics.newBody(world, value.x, value.y, "static")
+                value.triggerShape = love.physics.newCircleShape(value.triggerRadius)
+                value.triggerFixture = love.physics.newFixture(value.triggerBody, value.triggerShape)
+                value.triggerFixture:setUserData("emp" .. empIndex)
+                value.triggerFixture:setCategory(1)
+                value.triggerFixture:setSensor(true)
+                value.empTimer = 3
+                empIndex = empIndex + 1
 
             elseif value.type == "finish" then
                 value.body = love.physics.newBody(world, value.x, value.y, "static")
@@ -116,6 +144,15 @@ function levelLoader:unloadLevel()
             if value.shape ~= nil then
                 value.shape = nil
             end
+            if value.triggerFixture ~= nil then
+                value.triggerFixture:destroy()
+            end
+            if value.triggerBody ~= nil then
+                value.triggerBody:destroy()
+            end
+            if value.triggerShape ~= nil then
+                value.triggerShape = nil
+            end
             value = nil
         end
 
@@ -123,24 +160,47 @@ function levelLoader:unloadLevel()
     end
 end
 
+function levelLoader:updateLevel(dt) 
+    for key, value in pairs(loadedLevel) do
+        if value.type == "finish" then
+        elseif value.type == "spike" then
+        elseif value.type == "spring" then
+        elseif value.type == "emp" then
+            if value.empTimer < 3 then
+                value.empTimer = value.empTimer - (1.8 * dt)
+            end
+        end
+    end
+end
 
 function levelLoader:renderLevel() 
     if loadedLevel ~= nil then
         for key, value in pairs(loadedLevel) do
             if value.type == "finish" then
                 love.graphics.setColor(0.2, 1, 0.2)
-            end
-            if value.type == "spike" then
+            elseif value.type == "spike" then
                 love.graphics.setColor(1, 0.2, 0.2)
-            end
-            if value.type == "spring" then
+            elseif value.type == "spring" then
                 love.graphics.setColor(1, 0.7, 0.5)
+            elseif value.type == "emp" then
+                if value.empTimer < 3 and value.empTimer > 2.5 then
+                    love.graphics.setColor(0.7, 0.7 * (value.empTimer / 5), 0.3)
+                elseif value.empTimer < 2 and value.empTimer > 1.5 then
+                    love.graphics.setColor(0.7, 0.7 * (value.empTimer / 5), 0.3) 
+                elseif value.empTimer < 1 and value.empTimer > .5 then
+                    love.graphics.setColor(0.7, 0.7 * (value.empTimer / 5), 0.3) 
+                elseif value.empTimer < 0 then
+                    love.graphics.setColor(0, 0, 0) 
+                end
+                
+                love.graphics.circle("line", value.body:getX(), value.body:getY(), value.triggerRadius)
             end
             if value.render == "rectangle" then
                 love.graphics.rectangle("fill", value.body:getX() - (value.width / 2), value.body:getY() - (value.height / 2), value.width, value.height)
                 love.graphics.setColor(1, 1, 1)
             elseif value.render == "circle" then
-                love.graphics.circle("fill", value.body:getX() - (value.radius / 2), value.body:getY() - (value.radius / 2), value.radius)
+                love.graphics.circle("fill", value.body:getX(), value.body:getY(), value.radius)
+                love.graphics.setColor(1, 1, 1)
             end
         end
     end

@@ -9,6 +9,8 @@ momentumArrow = {
 
 function momentumArrow:renderTriangle()
     local arrowverts  = {0, 0, 100, 0, 100, 100, 150, 75, 50, 200, -50, 75, 0, 100} -- Arrow shape vertices
+    assert(table.insert, "table.insert is nil")
+
 
     -- arrow is 90 off
     local angle = math.atan2(self.endYPoint - self.y, self.endXPoint - self.x) - math.rad(90)
@@ -22,8 +24,10 @@ function momentumArrow:renderTriangle()
     local scaledVerts = {}
 
     for i = 1, #arrowverts, 2 do
-        table.insert(scaledVerts, arrowverts[i] * scaleX)
-        table.insert(scaledVerts, arrowverts[i + 1] * scaleY)
+        if arrowverts[i] ~= nil then
+            table.insert(scaledVerts, arrowverts[i] * scaleX)
+            table.insert(scaledVerts, arrowverts[i + 1] * scaleY)
+        end
     end
 
     -- rotate around 0,0

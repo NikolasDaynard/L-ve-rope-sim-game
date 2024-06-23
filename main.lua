@@ -79,6 +79,8 @@ function love.update(dt)
 
     player:update(dt)
     player:momentumGrab({x = cam:mousePosition().x, y = cam:mousePosition().y})
+
+    levelLoader:updateLevel(dt)
     -- ui is unnafected by camera transforms
     ui:update({x = love.mouse.getX(), y = love.mouse.getY()})
 end
