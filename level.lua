@@ -55,6 +55,18 @@ function levelLoader:loadLevel(levelToLoad)
             elseif value.type == "player" then
                 player:setPosition(value.handle1x, value.handle1y, value.handle2x, value.handle2y)
                 player:removeMomentum()
+            elseif value.type == "wall" then
+                value.body = love.physics.newBody(world, value.x, value.y, "static")
+                value.shape = love.physics.newRectangleShape(value.width, value.height)
+                value.fixture = love.physics.newFixture(value.body, value.shape)
+            elseif value.type == "finish" then
+                value.body = love.physics.newBody(world, value.x, value.y, "static")
+                value.shape = love.physics.newRectangleShape(value.width, value.height)
+                value.fixture = love.physics.newFixture(value.body, value.shape)
+                -- Set fixture user data to spike object
+                value.fixture:setUserData("finish")
+
+                value.fixture:setCategory(1) 
             elseif value.type == "button" then
                 ui:addButton(value.x, value.y, value.w, value.h, value.callback, value.text)
             end

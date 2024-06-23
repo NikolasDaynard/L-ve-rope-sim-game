@@ -110,9 +110,13 @@ function player:isGrabbingSegment(mousePos)
     return false
 end
 
+
+
 function player:removeMomentum() 
+    print("reset")
     for i = 1, self.numSegments do
         self.bodies[i]:setLinearVelocity(0, 0)
+        self.bodies[i]:setAngularVelocity(0, 0)
     end
 end
 

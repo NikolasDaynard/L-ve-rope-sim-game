@@ -52,7 +52,7 @@ function love.update(dt)
     
     -- slow when grabbing
     if player:isGrabbingSegment({x = cam:mousePosition().x, y = cam:mousePosition().y}) then
-        dt = dt / 15
+        dt = dt / 10
     end
     
     if love.keyboard.isDown("escape") then
@@ -83,6 +83,7 @@ function love.draw()
     -- cam:move(0, 0)
 
     cam:attach()
+    -- love.graphics.setColor(1, .7, .7)
     player:draw()
     momentumArrow:render()
     levelLoader:renderLevel()

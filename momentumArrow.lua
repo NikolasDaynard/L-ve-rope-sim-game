@@ -7,10 +7,42 @@ momentumArrow = {
     visible = false,
 }
 
+function momentumArrow:rotateTriangle()
+    local arrowverts  = {0, 0, 100, 0, 100, 100, 150, 75, 50, 200, -50, 75, 0, 100} -- Arrow shape vertices
+
+    -- 200 is the tip so take the dist between end and start and multiply by scale
+
+    -- local scale = 
+
+    -- arrow is 90 off
+    local angle = math.atan2(self.endYPoint - self.y, self.endXPoint - self.x) - math.rad(90)
+    
+    -- rotate around 0,0
+    local function rotate(x, y, angle)
+        local cosTheta = math.cos(angle)
+        local sinTheta = math.sin(angle)
+        return x * cosTheta - y * sinTheta, x * sinTheta + y * cosTheta
+    end
+    
+    local rotatedVerts = {}
+    for i = 1, #arrowverts, 2 do
+        -- the -50 centers the arrow
+        local x, y = rotate(arrowverts[i] - 50, arrowverts[i + 1], angle)
+        table.insert(rotatedVerts, x + self.x)
+        table.insert(rotatedVerts, y + self.y)
+    end
+
+    local triangles = love.math.triangulate(rotatedVerts)
+    for i, triangle in ipairs(triangles) do
+        love.graphics.polygon("fill", triangle)
+    end
+end
+
 function momentumArrow:render() 
     if visible then
         love.graphics.rectangle("fill", self.x, self.y, 10, 10)
         love.graphics.rectangle("fill", self.endXPoint, self.endYPoint, 10, 10)
+        momentumArrow:rotateTriangle(self.x, self.y, self.endXPoint, self.endYPoint)
     end
 end
 
