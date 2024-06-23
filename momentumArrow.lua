@@ -3,7 +3,7 @@ momentumArrow = {
     y = 0,
     endXPoint = 0,
     endYPoint = 0,
-    draggingForce = 300,
+    draggingForce = 700,
     visible = false,
 }
 
@@ -70,8 +70,12 @@ function momentumArrow:setPosition(x, y)
     self.endYPoint = self.y + translationY
     -- normalize to a max dist of 12.5
     dist = math.sqrt(distance(self.x, self.y, self.endXPoint, self.endYPoint))
-    if dist > 12.5 then
-        -- TODO: finish
+    if dist > 10 then
+        local scale = 10 / dist
+        translationX = translationX * scale
+        translationY = translationY * scale
+        self.endXPoint = self.x + translationX
+        self.endYPoint = self.y + translationY
     end
 end
 

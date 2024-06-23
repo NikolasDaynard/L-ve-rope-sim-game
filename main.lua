@@ -9,6 +9,7 @@ font = love.graphics.setNewFont("Early GameBoy.ttf", 15, "normal", 1)
 love.graphics.setFont(font)
 
 score = 0
+par = 0
 
 draggingPlayer = false
 
@@ -40,7 +41,7 @@ function love.load()
         borderless = false
     })
     -- Initialize physics world
-    world = love.physics.newWorld(0, 100, true)
+    world = love.physics.newWorld(0, 300, true)
     createBoundaries()
     -- Initialize player with physics has to be before level
     player:init()
@@ -71,7 +72,10 @@ function love.update(dt)
         levelLoader:unloadLevel()
         levelLoader:loadLevel(level2)
     end
-    world:update(dt)
+
+    local velocityIterations = 10
+    local positionIterations = 1
+    world:update(dt, velocityIterations, positionIterations)
 
     player:update(dt)
     player:momentumGrab({x = cam:mousePosition().x, y = cam:mousePosition().y})
@@ -91,5 +95,5 @@ function love.draw()
     cam:detach()
     -- ui is unaffected by scaling 
     ui:render()
-    love.graphics.print("shots: " .. score .. " . 3", 0, 0, 0, 1, 1)
+    love.graphics.print("shots: " .. score .. " . " .. par, 0, 0, 0, 1, 1)
 end

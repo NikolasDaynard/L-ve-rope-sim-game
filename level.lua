@@ -36,14 +36,16 @@ function beginContact(a, b, coll)
     if type(textA) == "string" and type(textB) == "string" then
         if string.find(textB, "player") ~= nil and string.find(textA, "spike") ~= nil then
             player:deleteSegment(textB)
+        elseif string.find(textB, "player") ~= nil and string.find(textA, "finish") ~= nil then
+            -- skips the setting of the level because it's jsut ui so it's handled by ui
+            levelLoader:loader(levelfinishUi)
         end
     end
 end
-function levelLoader:loadLevel(levelToLoad)
-    score = 0
-    loadedLevel = levelToLoad
-    if loadedLevel ~= nil then
-        for key, value in pairs(loadedLevel) do
+
+function levelLoader:loader(level)
+    if level ~= nil then
+        for key, value in pairs(level) do
             if value.type == "spike" then
                 value.body = love.physics.newBody(world, value.x, value.y, "dynamic")
                 value.shape = love.physics.newRectangleShape(value.width, value.height)
@@ -69,11 +71,19 @@ function levelLoader:loadLevel(levelToLoad)
                 value.fixture:setCategory(1) 
             elseif value.type == "button" then
                 ui:addButton(value.x, value.y, value.w, value.h, value.callback, value.text)
+            elseif value.type == "par" then
+                par = value.value
             end
         end
         -- Set collision callback function
         world:setCallbacks(beginContact)
     end
+end
+
+function levelLoader:loadLevel(levelToLoad)
+    score = 0
+    loadedLevel = levelToLoad
+    levelLoader:loader(loadedLevel)
 end
 function levelLoader:unloadLevel()
     if loadedLevel ~= nil then
