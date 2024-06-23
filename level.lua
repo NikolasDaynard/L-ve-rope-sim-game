@@ -56,7 +56,7 @@ function levelLoader:loadLevel(levelToLoad)
                 player:setPosition(value.handle1x, value.handle1y, value.handle2x, value.handle2y)
                 player:removeMomentum()
             elseif value.type == "button" then
-                ui:addButton(value.x, value.y, value.w, value.h, value.callback)
+                ui:addButton(value.x, value.y, value.w, value.h, value.callback, value.text)
             end
         end
         -- Set collision callback function

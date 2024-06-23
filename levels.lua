@@ -1,27 +1,81 @@
 require("level")
 
+local screenWidth, screenHeight = love.window.getDesktopDimensions()
+
 -- Spike object definition
-local function startbutton()
+local function levelLoadCallback(level)
     levelLoader:unloadLevel()
-    levelLoader:loadLevel(level1)
-    print("leaded 1")
+    levelLoader:loadLevel(level)
 end
+--[[
+level selection screen will look like this
+[1] [2] [3]
+[4] [5] [6]
+ect.
+]]--
+levelselectionscreen = {
+    -- hide player (jank? In my game?)
+    playerinfo = {
+        type = "player",
+        handle1x = -100,
+        handle1y = -100,
+        handle2x = -100,
+        handle2y = -100
+    },
+    level1select = {
+        type = "button",
+        x = ((screenWidth / 5) * 2) - (screenWidth / 7),
+        y = 400,
+        w = screenWidth / 7,
+        h = 20,
+        text = "1",
+        callback = function()
+            levelLoadCallback(level1)
+        end,
+    },
+    level2select = {
+        type = "button",
+        x = ((screenWidth / 5) * 3) - (screenWidth / 7),
+        y = 400,
+        w = screenWidth / 7,
+        h = 20,
+        text = "2",
+        callback = function()
+            levelLoadCallback(level2)
+        end,
+    },
+    level3select = {
+        type = "button",
+        x = ((screenWidth / 5) * 4) - (screenWidth / 7),
+        y = 400,
+        w = screenWidth / 7,
+        h = 20,
+        text = "3",
+        callback = function()
+            -- levelLoadCallback(level3)
+        end,
+    }
+
+}
 
 titlescreen = {
     playerinfo = {
         type = "player",
-        handle1x = 90,
-        handle1y = 90,
-        handle2x = 300,
-        handle2y = 300
+        handle1x = -100,
+        handle1y = -100,
+        handle2x = -100,
+        handle2y = -100
     },
-    button = {
+    start = {
         type = "button",
-        x = 400,
+        x = (screenWidth / 2) - 250,
         y = 400,
         w = 500,
         h = 20,
-        callback = startbutton,
+        text = "Start!",
+        callback = function()
+            levelLoadCallback(levelselectionscreen)
+        end,
     }
 }
 
