@@ -7,6 +7,13 @@ end
 -- Replaces ${foo} with the value of the global foo
 function interpolate(str)
     return (str:gsub("%${(.-)}", function(key)
-        return tostring(_G[key] or "${" .. key .. "}")
+        local chunk, err = load("return " .. key)
+        if chunk then
+            local success, result = pcall(chunk)
+            if success then
+                return tostring(result)
+            end
+        end
+        return "${" .. key .. "}"
     end))
 end

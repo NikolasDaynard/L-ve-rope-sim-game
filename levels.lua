@@ -69,6 +69,10 @@ levelRestartUi = {
 }
 
 level1 = {
+    id = {
+        type = "id",
+        value = 1
+    },
     playerinfo = {
         type = "player",
         handle1x = 90,
@@ -106,6 +110,10 @@ level1 = {
     },
 }
 level2 = {
+    id = {
+        type = "id",
+        value = 2
+    },
     playerinfo = {
         type = "player",
         handle1x = 90,
@@ -151,6 +159,10 @@ level2 = {
     },
 }
 level3 = {
+    id = {
+        type = "id",
+        value = 3
+    },
     playerinfo = {
         type = "player",
         handle1x = 9,
@@ -214,6 +226,10 @@ level3 = {
     },
 }
 level4 = {
+    id = {
+        type = "id",
+        value = 4
+    },
     playerinfo = {
         type = "player",
         handle1x = 9,
@@ -260,6 +276,10 @@ level4 = {
     },
 }
 level5 = {
+    id = {
+        type = "id",
+        value = 5
+    },
     playerinfo = {
         type = "player",
         handle1x = 9,
@@ -306,21 +326,25 @@ level5 = {
     },
 }
 --[[
+    0     |
     |     |
-    |  0  |
-    |+   +|
+    |+ = +|
 ]]--
 level6 = {
+    id = {
+        type = "id",
+        value = 6
+    },
     playerinfo = {
         type = "player",
-        handle1x = 400,
-        handle1y = 400,
-        handle2x = 400,
-        handle2y = 860
+        handle1x = 0,
+        handle1y = 0,
+        handle2x = 9,
+        handle2y = 9,
     },
     par = {
         type = "par",
-        value = 3
+        value = 4
     },
     ground = {
         render = "rectangle",
@@ -333,14 +357,26 @@ level6 = {
     wall1 = {
         render = "rectangle",
         type = "wall",
-        x = 300,
-        y = 900,
-        width = 3200,
-        height = 25,
+        x = 0,
+        y = 500,
+        width = 300,
+        height = 800,
+    },
+    finish = {
+        render = "rectangle",
+        type = "finish",
+        x = 1200,
+        y = 500,
+        width = 300,
+        height = 800,
     },
 }
 
 level7 = {
+    id = {
+        type = "id",
+        value = 7
+    },
     playerinfo = {
         type = "player",
         handle1x = 9,
@@ -392,6 +428,80 @@ level7 = {
 0 - -
 ]]--
 level8 = {
+    id = {
+        type = "id",
+        value = 8
+    },
+    playerinfo = {
+        type = "player",
+        handle1x = 9,
+        handle1y = 890,
+        handle2x = 30,
+        handle2y = 860
+    },
+    par = {
+        type = "par",
+        value = 3
+    },
+    ground = {
+        render = "rectangle",
+        type = "wall",
+        x = 0,
+        y = 900,
+        width = 3200,
+        height = 25,
+    },
+    spike1 = {
+        render = "rectangle",
+        type = "spike",
+        x = 500,
+        y = 400,
+        width = 100,
+        height = 600,
+    },
+    top1 = {
+        render = "rectangle",
+        type = "wall",
+        x = 0,
+        y = 100,
+        width = 1100,
+        height = 60,
+    },
+    top2 = {
+        render = "rectangle",
+        type = "wall",
+        x = 1100,
+        y = 500,
+        width = 700,
+        height = 800,
+    },
+    emp = {
+        render = "circle",
+        type = "emp",
+        x = 600,
+        y = 100,
+        radius = 30,
+        triggerRadius = 400
+    },
+    finish = {
+        render = "rectangle",
+        type = "finish",
+        x = 1200,
+        y = 75,
+        width = 100,
+        height = 100,
+    },
+}
+
+--[[
+
+]]--
+
+level9 = {
+    id = {
+        type = "id",
+        value = 9
+    },
     playerinfo = {
         type = "player",
         handle1x = 9,
@@ -473,8 +583,8 @@ levelselectionscreen = {
         x = ((screenWidth / 5) * 2) - (screenWidth / 7),
         y = screenHeight / 3,
         w = screenWidth / 7,
-        h = 20,
-        text = "1 par:" .. level1.par.value,
+        h = 60,
+        text = "1 par:" .. level1.par.value .. "\n best: ${levelScores[1]}",
         callback = function()
             levelLoadCallback(level1)
         end,
@@ -554,6 +664,17 @@ levelselectionscreen = {
         text = "8",
         callback = function()
             levelLoadCallback(level8)
+        end,
+    },
+    level9select = {
+        type = "button",
+        x = ((screenWidth / 5) * 4) - (screenWidth / 7),
+        y = screenHeight / 1.5,
+        w = screenWidth / 7,
+        h = 20,
+        text = "9",
+        callback = function()
+            levelLoadCallback(level9)
         end,
     },
 

@@ -4,18 +4,33 @@ require("momentumArrow")
 require("level")
 require("levels")
 require("ui")
+lunajson = require("libs.lunajson")
 Camera = require 'camera' 
 font = love.graphics.setNewFont("Early GameBoy.ttf", 15, "normal", 1)
 love.graphics.setFont(font)
 
 score = 0
 par = 0
+levelScores = {}
+currentLevelId = nil
 
 draggingPlayer = false
 
 -- Load function
 function love.load()
-    love.window.setTitle("Rope Game")
+    if love.filesystem.getInfo("highscore.json") ~= nil then
+        local fileData = love.filesystem.read("highscore.json")
+        levelScores = lunajson.decode(fileData)
+    end
+    for i = 1, 10 do
+        if levelScores[i] == nil then
+            print("i = nil at : " .. i)
+            levelScores[i] = 999
+        end
+    end
+    -- for i, score in ipairs(levelScores) do
+    --     print("Score " .. i .. ": " .. score)
+    -- end
     cam = Camera()
     local screenWidth, screenHeight = love.window.getDesktopDimensions()
 

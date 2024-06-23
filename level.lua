@@ -40,6 +40,19 @@ function beginContact(a, b, coll)
             if player:isSegmentValid(textB) then
                 levelLoader:loader(levelfinishUi)
             end
+            if levelScores[currentLevelId] ~= nil then
+                if levelScores[currentLevelId] > score then
+                    levelScores[currentLevelId] = score
+                end
+                if levelScores[currentLevelId] == nil then
+                    levelScores[currentLevelId] = score
+                end
+            else
+                levelScores[currentLevelId] = score
+            end
+            local jsonString = lunajson.encode(levelScores)
+            love.filesystem.write("highscore.json", jsonString)
+
         elseif string.find(textB, "player") ~= nil and string.find(textA, "spring") ~= nil then
             index = tonumber(string.match(textA, "%d+")) 
             local tableAtIndex = levelLoader:findTableAtIndex(index, "spring")
@@ -124,6 +137,8 @@ function levelLoader:loader(level)
                 ui:addButton(value.x, value.y, value.w, value.h, value.callback, value.text)
             elseif value.type == "par" then
                 par = value.value
+            elseif value.type == "id" then
+                currentLevelId = value.value
             end
         end
         -- Set collision callback function
@@ -141,6 +156,7 @@ function levelLoader:loadLevel(levelToLoad)
     levelLoader:loader(loadedLevel)
 end
 function levelLoader:unloadLevel()
+    currentLevelId = nil
     if loadedLevel ~= nil then
         previousLevel = loadedLevel
         ui:clear()
