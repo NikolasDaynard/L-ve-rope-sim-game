@@ -29,7 +29,7 @@ function love.load()
     end
     -- Calculate zoom based on the smaller dimension, so smaller screens see the same amound of level
     local intendedZoom = math.min(windowWidth / screenWidth, windowHeight / screenHeight)
-    -- cam:zoomTo(intendedZoom)
+    cam:zoomTo(intendedZoom * 1.105)
     cam:lookAt(screenWidth / 2, screenHeight / 2)
 
     -- Set fullscreen with borders
@@ -74,7 +74,8 @@ function love.update(dt)
     world:update(dt)
 
     player:update(dt)
-    player:momentumGrab({x = love.mouse.getX(), y = love.mouse.getY()})
+    player:momentumGrab({x = cam:mousePosition().x, y = cam:mousePosition().y})
+    -- ui is unnafected by camera transforms
     ui:update({x = love.mouse.getX(), y = love.mouse.getY()})
 end
 

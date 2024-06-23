@@ -54,7 +54,7 @@ function levelLoader:loadLevel(levelToLoad)
                 value.fixture:setCategory(1) 
             elseif value.type == "player" then
                 player:setPosition(value.handle1x, value.handle1y, value.handle2x, value.handle2y)
-                player:removeMomentum()
+                player:reset()
             elseif value.type == "wall" then
                 value.body = love.physics.newBody(world, value.x, value.y, "static")
                 value.shape = love.physics.newRectangleShape(value.width, value.height)
@@ -100,7 +100,14 @@ function levelLoader:renderLevel()
     if loadedLevel ~= nil then
         for key, value in pairs(loadedLevel) do
             if value.render == "rectangle" then
+                if value.type == "finish" then
+                    love.graphics.setColor(0.2, 1, 0.2)
+                end
+                if value.type == "spike" then
+                    love.graphics.setColor(1, 0.2, 0.2)
+                end
                 love.graphics.rectangle("fill", value.body:getX() - (value.width / 2), value.body:getY() - (value.height / 2), value.width, value.height)
+                love.graphics.setColor(1, 1, 1)
             end
         end
     end

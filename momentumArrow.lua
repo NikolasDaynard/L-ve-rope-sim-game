@@ -7,16 +7,25 @@ momentumArrow = {
     visible = false,
 }
 
-function momentumArrow:rotateTriangle()
+function momentumArrow:renderTriangle()
     local arrowverts  = {0, 0, 100, 0, 100, 100, 150, 75, 50, 200, -50, 75, 0, 100} -- Arrow shape vertices
-
-    -- 200 is the tip so take the dist between end and start and multiply by scale
-
-    -- local scale = 
 
     -- arrow is 90 off
     local angle = math.atan2(self.endYPoint - self.y, self.endXPoint - self.x) - math.rad(90)
-    
+
+    -- 200 is the tip so take the dist between end and start and multiply by scale
+
+    dist = math.sqrt(distance(self.x, self.y, self.endXPoint, self.endYPoint))
+    local scaleY = dist / 20
+    local scaleX = (scaleY / 4)
+
+    local scaledVerts = {}
+
+    for i = 1, #arrowverts, 2 do
+        table.insert(scaledVerts, arrowverts[i] * scaleX)
+        table.insert(scaledVerts, arrowverts[i + 1] * scaleY)
+    end
+
     -- rotate around 0,0
     local function rotate(x, y, angle)
         local cosTheta = math.cos(angle)
@@ -25,9 +34,9 @@ function momentumArrow:rotateTriangle()
     end
     
     local rotatedVerts = {}
-    for i = 1, #arrowverts, 2 do
+    for i = 1, #scaledVerts, 2 do
         -- the -50 centers the arrow
-        local x, y = rotate(arrowverts[i] - 50, arrowverts[i + 1], angle)
+        local x, y = rotate(scaledVerts[i] - 50 * scaleX, scaledVerts[i + 1], angle)
         table.insert(rotatedVerts, x + self.x)
         table.insert(rotatedVerts, y + self.y)
     end
@@ -40,9 +49,9 @@ end
 
 function momentumArrow:render() 
     if visible then
-        love.graphics.rectangle("fill", self.x, self.y, 10, 10)
-        love.graphics.rectangle("fill", self.endXPoint, self.endYPoint, 10, 10)
-        momentumArrow:rotateTriangle(self.x, self.y, self.endXPoint, self.endYPoint)
+        -- love.graphics.rectangle("fill", self.x, self.y, 10, 10)
+        -- love.graphics.rectangle("fill", self.endXPoint, self.endYPoint, 10, 10)
+        momentumArrow:renderTriangle(self.x, self.y, self.endXPoint, self.endYPoint)
     end
 end
 
@@ -59,6 +68,11 @@ function momentumArrow:setPosition(x, y)
     translationY = translationY * 7
     self.endXPoint = self.x + translationX
     self.endYPoint = self.y + translationY
+    -- normalize to a max dist of 12.5
+    dist = math.sqrt(distance(self.x, self.y, self.endXPoint, self.endYPoint))
+    if dist > 12.5 then
+        -- TODO: finish
+    end
 end
 
 function momentumArrow:getForce() 

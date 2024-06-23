@@ -16,7 +16,8 @@ player = {
     numSegments = 10,
     chainLength = 15,
     draggingIndex = -1,
-    name = "player"
+    name = "player",
+    deleting = false
 }
 
 -- Initialize method for player object
@@ -62,6 +63,26 @@ end
 function player:update(dt)
     -- Update positions based on physics simulation
     self.handle1x, self.handle1y = self.body1:getPosition()
+    if deleting then
+        for i = 1, self.numSegments do
+            if self.radiusOffset[i] == -10 then
+                if self.radiusOffset[i + 1] ~= nil then
+                    if self.radiusOffset[i + 1] > 15 then -- arbitrary
+                        self.radiusOffset[i + 1] = -10
+                    elseif self.radiusOffset[i + 1] ~= -10 then
+                        self.radiusOffset[i + 1] = self.radiusOffset[i + 1] + 2
+                    end
+                end
+                if self.radiusOffset[i - 1] ~= nil then
+                    if self.radiusOffset[i - 1] > 15 then -- arbitrary
+                        self.radiusOffset[i - 1] = -10
+                    elseif self.radiusOffset[i - 1] ~= -10 then
+                        self.radiusOffset[i - 1] = self.radiusOffset[i - 1] + 2
+                    end
+                end
+            end
+        end
+    end
 end
 
 function player:momentumGrab(mousePos)
@@ -110,22 +131,26 @@ function player:isGrabbingSegment(mousePos)
     return false
 end
 
-
+function player:reset()
+    for i = 1, self.numSegments do
+        self.radiusOffset[i] = 0
+    end
+    player:removeMomentum() 
+    deleting = false
+end
 
 function player:removeMomentum() 
-    print("reset")
     for i = 1, self.numSegments do
         self.bodies[i]:setLinearVelocity(0, 0)
         self.bodies[i]:setAngularVelocity(0, 0)
     end
 end
 
-
 -- Draw method for player object
 
 function player:draw()
     -- Draw handles as circles
-    love.graphics.circle("fill", self.handle1x, self.handle1y, self.radius)
+    love.graphics.circle("fill", self.handle1x, self.handle1y, self.radius + self.radiusOffset[1])
 
     for i = 2, self.numSegments do
         local segmentX1, segmentY1 = self.bodies[i]:getPosition()
@@ -158,9 +183,10 @@ end
 
 function player:deleteSegment(segment) 
     number = tonumber(string.match(segment, "%d+")) 
-    self.radiusOffset[number] = self.radiusOffset[number] - 1
-    if self.radiusOffset[number] == -3 then
+    self.radiusOffset[number] = self.radiusOffset[number] - 10
+    if self.radiusOffset[number] == -10 then
         levelLoader:unloadLevel()
+        deleting = true
     end
 end
 
