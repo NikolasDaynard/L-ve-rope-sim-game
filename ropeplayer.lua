@@ -65,18 +65,18 @@ function player:update(dt)
     self.handle1x, self.handle1y = self.body1:getPosition()
     if deleting then
         for i = 1, self.numSegments do
-            if self.radiusOffset[i] == -10 then
+            if self.radiusOffset[i] <= -10 then
                 if self.radiusOffset[i + 1] ~= nil then
                     if self.radiusOffset[i + 1] > 15 then -- arbitrary
                         self.radiusOffset[i + 1] = -10
-                    elseif self.radiusOffset[i + 1] ~= -10 then
+                    elseif self.radiusOffset[i + 1] > -10 then
                         self.radiusOffset[i + 1] = self.radiusOffset[i + 1] + 2
                     end
                 end
                 if self.radiusOffset[i - 1] ~= nil then
                     if self.radiusOffset[i - 1] > 15 then -- arbitrary
                         self.radiusOffset[i - 1] = -10
-                    elseif self.radiusOffset[i - 1] ~= -10 then
+                    elseif self.radiusOffset[i - 1] > -10 then
                         self.radiusOffset[i - 1] = self.radiusOffset[i - 1] + 2
                     end
                 end
@@ -96,7 +96,7 @@ function player:momentumGrab(mousePos)
         self.draggingIndex = -1
     elseif self.draggingIndex == -1 then
         for i = 1, self.numSegments do
-            if self.radiusOffset[i] ~= -10 then -- skip deleted segs
+            if self.radiusOffset[i] > -10 then -- skip deleted segs
                 local segmentX, segmentY = self.bodies[i]:getPosition()
                 if mousePos.x >= segmentX - self.hitboxSize and mousePos.y >= segmentY - self.hitboxSize and mousePos.x < segmentX + self.hitboxSize and mousePos.y < segmentY + self.hitboxSize then
                     -- if there's already one selected, take the one with lowest distance
@@ -125,7 +125,7 @@ function player:isGrabbingSegment(mousePos)
         return true
     end
     for i = 1, self.numSegments do
-        if self.radiusOffset[i] ~= -10 then
+        if self.radiusOffset[i] > -10 then
             local segmentX, segmentY = self.bodies[i]:getPosition()
             if mousePos.x >= segmentX - self.hitboxSize and mousePos.y >= segmentY - self.hitboxSize and mousePos.x < segmentX + self.hitboxSize and mousePos.y < segmentY + self.hitboxSize and love.mouse.isDown(1) then
                 return true
@@ -137,7 +137,7 @@ end
 
 function player:isSegmentValid(segment)
     number = tonumber(string.match(segment, "%d+"))
-    return self.radiusOffset[number] ~= -10
+    return self.radiusOffset[number] > -10
 end
 
 function player:reset()
@@ -172,10 +172,11 @@ end
 
 function player:deleteSegment(segment) 
     number = tonumber(string.match(segment, "%d+")) 
-    self.radiusOffset[number] = self.radiusOffset[number] - 10
-    if self.radiusOffset[number] == -10 then
+    self.radiusOffset[number] = -10
+    if self.radiusOffset[number] <= -10 then
         levelLoader:unloadLevel()
         deleting = true
+        levelLoader:loader(levelRestartUi)
     end
 end
 function player:applyForceToSegment(segment, x, y)

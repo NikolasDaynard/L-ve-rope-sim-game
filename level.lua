@@ -1,6 +1,5 @@
--- require("levels")
-
 loadedLevel = nil
+previousLevel = nil
 
 levelLoader = {}
 
@@ -37,13 +36,15 @@ function beginContact(a, b, coll)
         if string.find(textB, "player") ~= nil and string.find(textA, "spike") ~= nil then
             player:deleteSegment(textB)
         elseif string.find(textB, "player") ~= nil and string.find(textA, "finish") ~= nil then
-            -- skips the setting of the level because it's jsut ui so it's handled by ui
+            -- skips the setting of the level because it's just ui so it's handled by ui
             if player:isSegmentValid(textB) then
                 levelLoader:loader(levelfinishUi)
             end
         elseif string.find(textB, "player") ~= nil and string.find(textA, "spring") ~= nil then
-            
-            player:applyForceToSegment(textB, 0, -10000)
+            index = tonumber(string.match(textA, "%d+")) 
+            local tableAtIndex = levelLoader:findTableAtIndex(index, "spring")
+            player:applyForceToSegment(textB, 0, -10000 * tableAtIndex.force)
+
         elseif string.find(textB, "emp") ~= nil and string.find(textA, "player") ~= nil then
             index = tonumber(string.match(textB, "%d+")) 
             local tableAtIndex = levelLoader:findTableAtIndex(index, "emp")
@@ -68,6 +69,7 @@ end
 function levelLoader:loader(level)
     if level ~= nil then
         local empIndex = 1
+        local springIndex = 1
         for key, value in pairs(level) do
             if value.type == "spike" then
                 value.body = love.physics.newBody(world, value.x, value.y, "static")
@@ -88,10 +90,15 @@ function levelLoader:loader(level)
                 value.body = love.physics.newBody(world, value.x, value.y, "static")
                 value.shape = love.physics.newRectangleShape(value.width, value.height)
                 value.fixture = love.physics.newFixture(value.body, value.shape)
-                value.fixture:setUserData("spring")
+                value.fixture:setUserData("spring" .. springIndex)
+
+                if value.force == nil then
+                    value.force = 1
+                end
 
                 value.fixture:setCategory(1) 
                 value.fixture:setSensor(true) -- no collision
+                springIndex = springIndex + 1
             elseif value.type == "emp" then
                 value.body = love.physics.newBody(world, value.x, value.y, "static")
                 value.shape = love.physics.newCircleShape(value.radius)
@@ -128,12 +135,14 @@ function levelLoader:loadLevel(levelToLoad)
     score = 0
     -- if it's exists set it, otherwise reload level
     if levelToLoad ~= nil then
+        previousLevel = loadedLevel
         loadedLevel = levelToLoad
     end
     levelLoader:loader(loadedLevel)
 end
 function levelLoader:unloadLevel()
     if loadedLevel ~= nil then
+        previousLevel = loadedLevel
         ui:clear()
         for key, value in pairs(loadedLevel) do
             if value.fixture ~= nil then

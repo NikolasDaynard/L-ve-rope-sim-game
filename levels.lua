@@ -35,9 +35,35 @@ levelfinishUi = {
         y = screenHeight / 3,
         w = (screenWidth / 3.5),
         h = screenHeight / 4,
-        text = "level donesies \n ${score} of ${par}",
+        text = "level donesies \n ${score} to par ${par}",
         callback = function()
             levelLoadCallback(levelselectionscreen)
+        end,
+    }
+}
+levelRestartUi = {
+    infoButton = {
+        type = "button",
+        x = (screenWidth / 2) - (screenWidth / 7),
+        y = screenHeight / 3,
+        w = (screenWidth / 3.5),
+        h = screenHeight / 4,
+        text = "Level lost",
+        callback = function()
+            ui:clear()
+            levelLoadCallback(previousLevel)
+        end,
+    },
+    restartButton = {
+        type = "button",
+        x = (screenWidth / 2) - (screenWidth / 7),
+        y = screenHeight / 2,
+        w = (screenWidth / 3.5),
+        h = screenHeight / 4,
+        text = "Restart?",
+        callback = function()
+            ui:clear()
+            levelLoadCallback(previousLevel) -- reloads
         end,
     }
 }
@@ -134,7 +160,7 @@ level3 = {
     },
     par = {
         type = "par",
-        value = 3
+        value = 2
     },
     ground = {
         render = "rectangle",
@@ -253,6 +279,23 @@ level5 = {
         width = 3200,
         height = 25,
     },
+    spring1 = {
+        render = "rectangle",
+        type = "spring",
+        force = 10,
+        x = 300,
+        y = 880,
+        width = 100,
+        height = 40,
+    },
+    spike1 = {
+        render = "rectangle",
+        type = "spike",
+        x = 300,
+        y = 580,
+        width = 1000,
+        height = 40,
+    },
     finish = {
         render = "rectangle",
         type = "finish",
@@ -260,6 +303,40 @@ level5 = {
         y = 900,
         width = 100,
         height = 300,
+    },
+}
+--[[
+    |     |
+    |  0  |
+    |+   +|
+]]--
+level6 = {
+    playerinfo = {
+        type = "player",
+        handle1x = 400,
+        handle1y = 400,
+        handle2x = 400,
+        handle2y = 860
+    },
+    par = {
+        type = "par",
+        value = 3
+    },
+    ground = {
+        render = "rectangle",
+        type = "wall",
+        x = 0,
+        y = 900,
+        width = 3200,
+        height = 25,
+    },
+    wall1 = {
+        render = "rectangle",
+        type = "wall",
+        x = 300,
+        y = 900,
+        width = 3200,
+        height = 25,
     },
 }
 
