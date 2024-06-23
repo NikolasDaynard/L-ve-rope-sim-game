@@ -29,7 +29,7 @@ function love.load()
     end
     -- Calculate zoom based on the smaller dimension, so smaller screens see the same amound of level
     local intendedZoom = math.min(windowWidth / screenWidth, windowHeight / screenHeight)
-    cam:zoomTo(intendedZoom)
+    -- cam:zoomTo(intendedZoom)
     cam:lookAt(screenWidth / 2, screenHeight / 2)
 
     -- Set fullscreen with borders
@@ -44,7 +44,7 @@ function love.load()
     createBoundaries()
     -- Initialize player with physics has to be before level
     player:init()
-    levelLoader:loadLevel(level1)
+    levelLoader:loadLevel(titlescreen)
 end
 
 -- Update function
@@ -61,6 +61,7 @@ function love.update(dt)
     end
     if love.keyboard.isDown("0") then
         levelLoader:unloadLevel()
+        levelLoader:loadLevel(titlescreen)
     end
     if love.keyboard.isDown("1") then
         levelLoader:unloadLevel()
@@ -74,6 +75,7 @@ function love.update(dt)
 
     player:update(dt)
     player:momentumGrab({x = love.mouse.getX(), y = love.mouse.getY()})
+    ui:update({x = love.mouse.getX(), y = love.mouse.getY()})
 end
 
 -- Draw function
@@ -81,9 +83,11 @@ function love.draw()
     -- cam:move(0, 0)
 
     cam:attach()
-    player:draw(camera)
-    momentumArrow:render(camera)
-    levelLoader:renderLevel(camera)
+    player:draw()
+    momentumArrow:render()
+    levelLoader:renderLevel()
     cam:detach()
+    -- ui is unaffected by scaling 
+    ui:render()
     love.graphics.print("shots: " .. score .. " . 3", 0, 0, 0, 1, 1)
 end

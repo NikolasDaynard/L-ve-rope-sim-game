@@ -1,11 +1,27 @@
+require("level")
+
 -- Spike object definition
-menu = {
+local function startbutton()
+    levelLoader:unloadLevel()
+    levelLoader:loadLevel(level1)
+    print("leaded 1")
+end
+
+titlescreen = {
+    playerinfo = {
+        type = "player",
+        handle1x = 90,
+        handle1y = 90,
+        handle2x = 300,
+        handle2y = 300
+    },
     button = {
         type = "button",
         x = 400,
         y = 400,
-        w = 50,
+        w = 500,
         h = 20,
+        callback = startbutton,
     }
 }
 

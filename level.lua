@@ -1,4 +1,4 @@
-require("levels")
+-- require("levels")
 
 loadedLevel = nil
 
@@ -56,7 +56,7 @@ function levelLoader:loadLevel(levelToLoad)
                 player:setPosition(value.handle1x, value.handle1y, value.handle2x, value.handle2y)
                 player:removeMomentum()
             elseif value.type == "button" then
-                
+                ui:addButton(value.x, value.y, value.w, value.h, value.callback)
             end
         end
         -- Set collision callback function
@@ -65,6 +65,7 @@ function levelLoader:loadLevel(levelToLoad)
 end
 function levelLoader:unloadLevel()
     if loadedLevel ~= nil then
+        ui:clear()
         for key, value in pairs(loadedLevel) do
             if value.fixture ~= nil then
                 value.fixture:destroy()
@@ -72,8 +73,10 @@ function levelLoader:unloadLevel()
             if value.body ~= nil then
                 value.body:destroy()
             end
-            if value.shape then
+            if value.shape ~= nil then
+                value.shape = nil
             end
+            value = nil
         end
 
         loadedLevel = nil
