@@ -39,6 +39,9 @@ function beginContact(a, b, coll)
         elseif string.find(textB, "player") ~= nil and string.find(textA, "finish") ~= nil then
             -- skips the setting of the level because it's jsut ui so it's handled by ui
             levelLoader:loader(levelfinishUi)
+        elseif string.find(textB, "player") ~= nil and string.find(textA, "spring") ~= nil then
+            print(textB)
+            player:applyForceToSegment(textB, 0, -10000)
         end
     end
 end
@@ -61,6 +64,14 @@ function levelLoader:loader(level)
                 value.body = love.physics.newBody(world, value.x, value.y, "static")
                 value.shape = love.physics.newRectangleShape(value.width, value.height)
                 value.fixture = love.physics.newFixture(value.body, value.shape)
+            elseif value.type == "spring" then
+                value.body = love.physics.newBody(world, value.x, value.y, "static")
+                value.shape = love.physics.newRectangleShape(value.width, value.height)
+                value.fixture = love.physics.newFixture(value.body, value.shape)
+                value.fixture:setUserData("spring")
+
+                value.fixture:setCategory(1) 
+                value.fixture:setSensor(true) -- no collision
             elseif value.type == "finish" then
                 value.body = love.physics.newBody(world, value.x, value.y, "static")
                 value.shape = love.physics.newRectangleShape(value.width, value.height)

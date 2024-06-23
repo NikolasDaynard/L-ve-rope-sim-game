@@ -31,6 +31,8 @@ function ui:render()
         love.graphics.rectangle("fill", self.buttons[i].x, self.buttons[i].y, self.buttons[i].w, self.buttons[i].h)
         
         if self.buttons[i].text ~= nil then
+            -- add variables to the string
+            self.buttons[i].text = interpolate(self.buttons[i].text)
             love.graphics.setColor(0, 0, 0)
 
             local textWidth = love.graphics.getFont():getWidth(self.buttons[i].text)

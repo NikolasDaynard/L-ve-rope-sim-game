@@ -28,6 +28,19 @@ titlescreen = {
         end,
     }
 }
+levelfinishUi = {
+    finishButton = {
+        type = "button",
+        x = (screenWidth / 2) - (screenWidth / 7),
+        y = screenHeight / 3,
+        w = (screenWidth / 3.5),
+        h = screenHeight / 4,
+        text = "level donesies \n ${score} of ${par}",
+        callback = function()
+            levelLoadCallback(levelselectionscreen)
+        end,
+    }
+}
 
 level1 = {
     playerinfo = {
@@ -39,9 +52,9 @@ level1 = {
     },
     par = {
         type = "par",
-        value = 4
+        value = 3
     },
-    wall1 = {
+    ground = {
         render = "rectangle",
         type = "wall",
         x = 0,
@@ -49,7 +62,7 @@ level1 = {
         width = 3200,
         height = 25,
     },
-    wall2 = {
+    wall1 = {
         render = "rectangle",
         type = "wall",
         x = 600,
@@ -60,32 +73,23 @@ level1 = {
     finish = {
         render = "rectangle",
         type = "finish",
-        x = 700,
+        x = 800,
         y = 900,
-        width = 300,
+        width = 100,
         height = 300,
     },
-}
-levelfinishUi = {
-    finishButton = {
-        type = "button",
-        x = (screenWidth / 2) - (screenWidth / 7),
-        y = screenHeight / 2,
-        w = (screenWidth / 3.5),
-        h = screenHeight / 4,
-        text = "level donesies",
-        callback = function()
-            levelLoadCallback(levelselectionscreen)
-        end,
-    }
 }
 level2 = {
     playerinfo = {
         type = "player",
         handle1x = 90,
-        handle1y = 90,
-        handle2x = 300,
-        handle2y = 300
+        handle1y = 850,
+        handle2x = 90,
+        handle2y = 880
+    },
+    par = {
+        type = "par",
+        value = 4
     },
     ground = {
         render = "rectangle",
@@ -94,6 +98,59 @@ level2 = {
         y = 900,
         width = 3200,
         height = 25,
+    },
+    wall1 = {
+        render = "rectangle",
+        type = "wall",
+        x = 600,
+        y = 500,
+        width = 300,
+        height = 730,
+    },
+    spring = {
+        render = "rectangle",
+        type = "spring",
+        x = 850,
+        y = 900,
+        width = 100,
+        height = 100,
+    },
+    finish = {
+        render = "rectangle",
+        type = "finish",
+        x = 800,
+        y = 700,
+        width = 100,
+        height = 200,
+    },
+}
+level3 = {
+    playerinfo = {
+        type = "player",
+        handle1x = 9,
+        handle1y = 890,
+        handle2x = 30,
+        handle2y = 860
+    },
+    par = {
+        type = "par",
+        value = 3
+    },
+    ground = {
+        render = "rectangle",
+        type = "wall",
+        x = 0,
+        y = 900,
+        width = 3200,
+        height = 25,
+    },
+    wall1 = {
+        render = "rectangle",
+        type = "wall",
+        x = 200,
+        y = 800,
+        width = 100,
+        height = 500,
     },
     spike = {
         render = "rectangle",
@@ -112,6 +169,14 @@ level2 = {
         width = 50,
         height = 50,
         body = nil,
+    },
+    finish = {
+        render = "rectangle",
+        type = "finish",
+        x = 800,
+        y = 900,
+        width = 100,
+        height = 300,
     },
 }
 
@@ -160,7 +225,7 @@ levelselectionscreen = {
         h = 20,
         text = "3",
         callback = function()
-            -- levelLoadCallback(level3)
+            levelLoadCallback(level3)
         end,
     }
 

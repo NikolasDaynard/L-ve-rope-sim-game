@@ -96,18 +96,20 @@ function player:momentumGrab(mousePos)
         self.draggingIndex = -1
     elseif self.draggingIndex == -1 then
         for i = 1, self.numSegments do
-            local segmentX, segmentY = self.bodies[i]:getPosition()
-            if mousePos.x >= segmentX - self.hitboxSize and mousePos.y >= segmentY - self.hitboxSize and mousePos.x < segmentX + self.hitboxSize and mousePos.y < segmentY + self.hitboxSize then
-                -- if there's already one selected, take the one with lowest distance
-                if self.draggingIndex ~= -1 then
-                    if distance(mousePos.x, mousePos.y, segmentX, segmentY) < distance(mousePos.x, mousePos.y, self.bodies[self.draggingIndex]:getX(), self.bodies[self.draggingIndex]:getY()) then
+            if self.radiusOffset[i] ~= -10 then -- skip deleted segs
+                local segmentX, segmentY = self.bodies[i]:getPosition()
+                if mousePos.x >= segmentX - self.hitboxSize and mousePos.y >= segmentY - self.hitboxSize and mousePos.x < segmentX + self.hitboxSize and mousePos.y < segmentY + self.hitboxSize then
+                    -- if there's already one selected, take the one with lowest distance
+                    if self.draggingIndex ~= -1 then
+                        if distance(mousePos.x, mousePos.y, segmentX, segmentY) < distance(mousePos.x, mousePos.y, self.bodies[self.draggingIndex]:getX(), self.bodies[self.draggingIndex]:getY()) then
+                            self.draggingIndex = i
+                        end
+                    else
                         self.draggingIndex = i
                     end
-                else
-                    self.draggingIndex = i
+                    momentumArrow:setOrigin(mousePos.x, mousePos.y)
+                    momentumArrow:show()
                 end
-                momentumArrow:setOrigin(mousePos.x, mousePos.y)
-                momentumArrow:show()
             end
         end
     end
@@ -161,26 +163,6 @@ function player:draw()
     end
 end
 
-
--- legacy grab, no momentum
-function player:grab(mousePos)
-    if not love.mouse.isDown(1) then
-        self.draggingIndex = -1
-    else
-        for i = 1, self.numSegments do
-            local segmentX, segmentY = self.bodies[i]:getPosition()
-            if mousePos.x >= segmentX - self.hitboxSize and mousePos.y >= segmentY - self.hitboxSize and mousePos.x < segmentX + self.hitboxSize and mousePos.y < segmentY + self.hitboxSize then
-                self.draggingIndex = i
-                break -- Exit the loop once a segment is found
-            end
-        end
-    end
-
-    if self.draggingIndex ~= -1 then
-        self.bodies[self.draggingIndex]:setPosition(mousePos.x, mousePos.y)
-    end
-end
-
 function player:deleteSegment(segment) 
     number = tonumber(string.match(segment, "%d+")) 
     self.radiusOffset[number] = self.radiusOffset[number] - 10
@@ -188,6 +170,10 @@ function player:deleteSegment(segment)
         levelLoader:unloadLevel()
         deleting = true
     end
+end
+function player:applyForceToSegment(segment, x, y)
+    number = tonumber(string.match(segment, "%d+")) 
+    self.bodies[number]:applyForce(x, y)
 end
 
 function player:setPosition(x1, y1, x2, y2)
