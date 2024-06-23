@@ -52,6 +52,7 @@ function beginContact(a, b, coll)
             end
             local jsonString = lunajson.encode(levelScores)
             love.filesystem.write("highscore.json", jsonString)
+            player:won()
 
         elseif string.find(textB, "player") ~= nil and string.find(textA, "spring") ~= nil then
             index = tonumber(string.match(textA, "%d+")) 
@@ -124,6 +125,9 @@ function levelLoader:loader(level)
                 value.triggerFixture:setCategory(1)
                 value.triggerFixture:setSensor(true)
                 value.empTimer = 3
+                if value.speed == nil then
+                    value.speed = 1
+                end
                 empIndex = empIndex + 1
 
             elseif value.type == "finish" then
@@ -156,6 +160,7 @@ function levelLoader:loadLevel(levelToLoad)
     levelLoader:loader(loadedLevel)
 end
 function levelLoader:unloadLevel()
+    levelStarted = false
     currentLevelId = nil
     if loadedLevel ~= nil then
         previousLevel = loadedLevel
@@ -195,7 +200,7 @@ function levelLoader:updateLevel(dt)
             elseif value.type == "spring" then
             elseif value.type == "emp" then
                 if value.empTimer < 3 then
-                    value.empTimer = value.empTimer - (2.2 * dt)
+                    value.empTimer = value.empTimer - (2.2 * dt * value.speed)
                     if value.empTimer < 0 then
                         if value.triggerFixture ~= nil then
                             -- kinda jank but this means it's the first time so explosion code goes here

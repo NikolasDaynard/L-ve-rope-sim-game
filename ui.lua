@@ -25,6 +25,7 @@ function ui:update(mousePos)
         self.clicking = false
     end
 end
+
 function ui:render()
     for i = 1, self.buttonNum - 1 do
         love.graphics.setColor(1, 1, 1) 
@@ -35,12 +36,16 @@ function ui:render()
             self.buttons[i].text = interpolate(self.buttons[i].text)
             love.graphics.setColor(0, 0, 0)
 
-            local textWidth = love.graphics.getFont():getWidth(self.buttons[i].text)
-            local textHeight = love.graphics.getFont():getHeight(self.buttons[i].text)
-            local textX = self.buttons[i].x + (self.buttons[i].w / 2) - (textWidth / 2)
-            local textY = self.buttons[i].y + (self.buttons[i].h / 2) - (textHeight / 2)
-            
-            love.graphics.print(self.buttons[i].text, textX, textY)
+            local textLines = splitString(self.buttons[i].text, "\n")
+
+            for j, line in ipairs(textLines) do
+                local textWidth = love.graphics.getFont():getWidth(self.buttons[i].text)
+                local textHeight = love.graphics.getFont():getHeight(self.buttons[i].text)
+                local textX = self.buttons[i].x + (self.buttons[i].w / 2) - (textWidth / 2)
+                local textY = self.buttons[i].y + (self.buttons[i].h / (#textLines + 1)) - (textHeight / (#textLines + 1))
+                
+                love.graphics.print(self.buttons[i].text, textX, textY)
+            end
             
             love.graphics.setColor(1, 1, 1)
         end

@@ -13,6 +13,7 @@ score = 0
 par = 0
 levelScores = {}
 currentLevelId = nil
+levelStarted = false
 
 draggingPlayer = false
 
@@ -22,15 +23,7 @@ function love.load()
         local fileData = love.filesystem.read("highscore.json")
         levelScores = lunajson.decode(fileData)
     end
-    for i = 1, 10 do
-        if levelScores[i] == nil then
-            print("i = nil at : " .. i)
-            levelScores[i] = 999
-        end
-    end
-    -- for i, score in ipairs(levelScores) do
-    --     print("Score " .. i .. ": " .. score)
-    -- end
+
     cam = Camera()
     local screenWidth, screenHeight = love.window.getDesktopDimensions()
 
@@ -65,6 +58,9 @@ end
 
 -- Update function
 function love.update(dt)
+    if not levelStarted then
+        dt = dt / 100 -- still want player to unfurl
+    end
     
     -- slow when grabbing
     if player:isGrabbingSegment({x = cam:mousePosition().x, y = cam:mousePosition().y}) then

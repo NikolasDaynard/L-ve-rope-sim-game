@@ -17,7 +17,8 @@ player = {
     chainLength = 15,
     draggingIndex = -1,
     name = "player",
-    deleting = false
+    deleting = false,
+    invincible = false,
 }
 
 -- Initialize method for player object
@@ -63,7 +64,7 @@ end
 function player:update(dt)
     -- Update positions based on physics simulation
     self.handle1x, self.handle1y = self.body1:getPosition()
-    if deleting then
+    if self.deleting then
         for i = 1, self.numSegments do
             if self.radiusOffset[i] <= -10 then
                 if self.radiusOffset[i + 1] ~= nil then
@@ -89,6 +90,7 @@ function player:momentumGrab(mousePos)
     if not love.mouse.isDown(1) then
         -- apply momentum
         if self.draggingIndex ~= -1 then
+            levelStarted = true -- doesn't matter if set multiple times
             self.bodies[self.draggingIndex]:applyForce(momentumArrow:getForce().x, momentumArrow:getForce().y)
             score = score + 1
             momentumArrow:hide()
@@ -140,12 +142,17 @@ function player:isSegmentValid(segment)
     return self.radiusOffset[number] > -10
 end
 
+function player:won()
+    self.invincible = true
+end
+
 function player:reset()
     for i = 1, self.numSegments do
         self.radiusOffset[i] = 0
     end
     player:removeMomentum() 
-    deleting = false
+    self.deleting = false
+    self.invincible = false
 end
 
 function player:removeMomentum() 
@@ -171,12 +178,14 @@ function player:draw()
 end
 
 function player:deleteSegment(segment) 
-    number = tonumber(string.match(segment, "%d+")) 
-    self.radiusOffset[number] = -10
-    if self.radiusOffset[number] <= -10 then
-        levelLoader:unloadLevel()
-        deleting = true
-        levelLoader:loader(levelRestartUi)
+    if not self.invincible then
+        number = tonumber(string.match(segment, "%d+")) 
+        self.radiusOffset[number] = -10
+        if self.radiusOffset[number] <= -10 then
+            levelLoader:unloadLevel()
+            self.deleting = true
+            levelLoader:loader(levelRestartUi)
+        end
     end
 end
 function player:applyForceToSegment(segment, x, y)

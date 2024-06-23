@@ -116,7 +116,7 @@ level2 = {
     },
     playerinfo = {
         type = "player",
-        handle1x = 90,
+        handle1x = 60,
         handle1y = 850,
         handle2x = 90,
         handle2y = 880
@@ -337,8 +337,8 @@ level6 = {
     },
     playerinfo = {
         type = "player",
-        handle1x = 0,
-        handle1y = 0,
+        handle1x = -2,
+        handle1y = -2,
         handle2x = 9,
         handle2y = 9,
     },
@@ -494,6 +494,10 @@ level8 = {
 }
 
 --[[
+0-0-0-|-0-0-0-0
+
+
+
 
 ]]--
 
@@ -504,14 +508,14 @@ level9 = {
     },
     playerinfo = {
         type = "player",
-        handle1x = 9,
-        handle1y = 890,
-        handle2x = 30,
-        handle2y = 860
+        handle1x = 130,
+        handle1y = 880,
+        handle2x = 600,
+        handle2y = 880
     },
     par = {
         type = "par",
-        value = 3
+        value = 13
     },
     ground = {
         render = "rectangle",
@@ -521,45 +525,22 @@ level9 = {
         width = 3200,
         height = 25,
     },
-    spike1 = {
-        render = "rectangle",
-        type = "spike",
-        x = 500,
-        y = 400,
-        width = 100,
-        height = 600,
-    },
-    top1 = {
+    wall1 = {
         render = "rectangle",
         type = "wall",
-        x = 0,
-        y = 100,
-        width = 1100,
-        height = 60,
-    },
-    top2 = {
-        render = "rectangle",
-        type = "wall",
-        x = 1100,
+        x = 600,
         y = 500,
-        width = 700,
-        height = 800,
+        width = 10,
+        height = 1000,
     },
     emp = {
         render = "circle",
         type = "emp",
-        x = 600,
-        y = 100,
-        radius = 30,
-        triggerRadius = 400
-    },
-    finish = {
-        render = "rectangle",
-        type = "finish",
-        x = 1200,
-        y = 75,
-        width = 100,
-        height = 100,
+        x = 620,
+        y = 870,
+        radius = 10,
+        triggerRadius = 130,
+        speed = 10000
     },
 }
 
@@ -594,8 +575,8 @@ levelselectionscreen = {
         x = ((screenWidth / 5) * 3) - (screenWidth / 7),
         y = screenHeight / 3,
         w = screenWidth / 7,
-        h = 20,
-        text = "2 par:" .. level2.par.value,
+        h = 60,
+        text = "2 par:" .. level2.par.value .. "\n best: ${levelScores[2]}",
         callback = function()
             levelLoadCallback(level2)
         end,
@@ -605,8 +586,8 @@ levelselectionscreen = {
         x = ((screenWidth / 5) * 4) - (screenWidth / 7),
         y = screenHeight / 3,
         w = screenWidth / 7,
-        h = 20,
-        text = "3",
+        h = 60,
+        text = "3 par:" .. level3.par.value .. "\n best: ${levelScores[3]}",
         callback = function()
             levelLoadCallback(level3)
         end,
@@ -616,8 +597,8 @@ levelselectionscreen = {
         x = ((screenWidth / 5) * 2) - (screenWidth / 7),
         y = screenHeight / 2,
         w = screenWidth / 7,
-        h = 20,
-        text = "4",
+        h = 60,
+        text = "4 par:" .. level4.par.value .. "\n best: ${levelScores[4]}",
         callback = function()
             levelLoadCallback(level4)
         end,
@@ -627,8 +608,8 @@ levelselectionscreen = {
         x = ((screenWidth / 5) * 3) - (screenWidth / 7),
         y = screenHeight / 2,
         w = screenWidth / 7,
-        h = 20,
-        text = "5",
+        h = 60,
+        text = "5 par:" .. level5.par.value .. "\n best: ${levelScores[5]}",
         callback = function()
             levelLoadCallback(level5)
         end,
@@ -638,8 +619,8 @@ levelselectionscreen = {
         x = ((screenWidth / 5) * 4) - (screenWidth / 7),
         y = screenHeight / 2,
         w = screenWidth / 7,
-        h = 20,
-        text = "6",
+        h = 60,
+        text = "6 par:" .. level6.par.value .. "\n best: ${levelScores[6]}",
         callback = function()
             levelLoadCallback(level6)
         end,
@@ -649,8 +630,8 @@ levelselectionscreen = {
         x = ((screenWidth / 5) * 2) - (screenWidth / 7),
         y = screenHeight / 1.5,
         w = screenWidth / 7,
-        h = 20,
-        text = "7",
+        h = 60,
+        text = "7 par:" .. level7.par.value .. "\n best: ${levelScores[7]}",
         callback = function()
             levelLoadCallback(level7)
         end,
@@ -660,8 +641,8 @@ levelselectionscreen = {
         x = ((screenWidth / 5) * 3) - (screenWidth / 7),
         y = screenHeight / 1.5,
         w = screenWidth / 7,
-        h = 20,
-        text = "8",
+        h = 60,
+        text = "8 par:" .. level8.par.value .. "\n best: ${levelScores[8]}",
         callback = function()
             levelLoadCallback(level8)
         end,
@@ -671,8 +652,8 @@ levelselectionscreen = {
         x = ((screenWidth / 5) * 4) - (screenWidth / 7),
         y = screenHeight / 1.5,
         w = screenWidth / 7,
-        h = 20,
-        text = "9",
+        h = 60,
+        text = "9 par:" .. level9.par.value .. "\n best: ${levelScores[9]}",
         callback = function()
             levelLoadCallback(level9)
         end,
