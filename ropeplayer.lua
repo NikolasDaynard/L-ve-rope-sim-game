@@ -135,6 +135,11 @@ function player:isGrabbingSegment(mousePos)
     return false
 end
 
+function player:isSegmentValid(segment)
+    number = tonumber(string.match(segment, "%d+"))
+    return self.radiusOffset[number] ~= -10
+end
+
 function player:reset()
     for i = 1, self.numSegments do
         self.radiusOffset[i] = 0

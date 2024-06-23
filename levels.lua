@@ -289,7 +289,7 @@ level7 = {
         x = 700,
         y = 700,
         radius = 30,
-        triggerRadius = 130
+        triggerRadius = 400
     },
     emp1 = {
         render = "circle",
@@ -308,7 +308,73 @@ level7 = {
         height = 300,
     },
 }
-
+--[[
+  --- --
+    ||
+    ||
+0 - -
+]]--
+level8 = {
+    playerinfo = {
+        type = "player",
+        handle1x = 9,
+        handle1y = 890,
+        handle2x = 30,
+        handle2y = 860
+    },
+    par = {
+        type = "par",
+        value = 3
+    },
+    ground = {
+        render = "rectangle",
+        type = "wall",
+        x = 0,
+        y = 900,
+        width = 3200,
+        height = 25,
+    },
+    spike1 = {
+        render = "rectangle",
+        type = "spike",
+        x = 500,
+        y = 400,
+        width = 100,
+        height = 600,
+    },
+    top1 = {
+        render = "rectangle",
+        type = "wall",
+        x = 0,
+        y = 100,
+        width = 1100,
+        height = 60,
+    },
+    top2 = {
+        render = "rectangle",
+        type = "wall",
+        x = 1100,
+        y = 500,
+        width = 700,
+        height = 800,
+    },
+    emp = {
+        render = "circle",
+        type = "emp",
+        x = 600,
+        y = 100,
+        radius = 30,
+        triggerRadius = 400
+    },
+    finish = {
+        render = "rectangle",
+        type = "finish",
+        x = 1200,
+        y = 75,
+        width = 100,
+        height = 100,
+    },
+}
 
 --[[
 level selection screen will look like this
@@ -400,6 +466,17 @@ levelselectionscreen = {
         text = "7",
         callback = function()
             levelLoadCallback(level7)
+        end,
+    },
+    level8select = {
+        type = "button",
+        x = ((screenWidth / 5) * 3) - (screenWidth / 7),
+        y = screenHeight / 1.5,
+        w = screenWidth / 7,
+        h = 20,
+        text = "8",
+        callback = function()
+            levelLoadCallback(level8)
         end,
     },
 

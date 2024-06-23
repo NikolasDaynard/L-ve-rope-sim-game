@@ -18,7 +18,7 @@ function momentumArrow:renderTriangle()
     -- 200 is the tip so take the dist between end and start and multiply by scale
 
     dist = math.sqrt(distance(self.x, self.y, self.endXPoint, self.endYPoint))
-    local scaleY = dist / 20
+    local scaleY = (dist / 15) ^ 2
     local scaleX = (scaleY / 4)
 
     local scaledVerts = {}

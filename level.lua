@@ -38,12 +38,13 @@ function beginContact(a, b, coll)
             player:deleteSegment(textB)
         elseif string.find(textB, "player") ~= nil and string.find(textA, "finish") ~= nil then
             -- skips the setting of the level because it's jsut ui so it's handled by ui
-            levelLoader:loader(levelfinishUi)
+            if player:isSegmentValid(textB) then
+                levelLoader:loader(levelfinishUi)
+            end
         elseif string.find(textB, "player") ~= nil and string.find(textA, "spring") ~= nil then
             
             player:applyForceToSegment(textB, 0, -10000)
         elseif string.find(textB, "emp") ~= nil and string.find(textA, "player") ~= nil then
-            player:applyForceToSegment(textA, 0, -10000)
             index = tonumber(string.match(textB, "%d+")) 
             local tableAtIndex = levelLoader:findTableAtIndex(index, "emp")
             tableAtIndex.empTimer = tableAtIndex.empTimer - .001
@@ -144,6 +145,7 @@ function levelLoader:unloadLevel()
             if value.shape ~= nil then
                 value.shape = nil
             end
+
             if value.triggerFixture ~= nil then
                 value.triggerFixture:destroy()
             end
@@ -161,13 +163,39 @@ function levelLoader:unloadLevel()
 end
 
 function levelLoader:updateLevel(dt) 
-    for key, value in pairs(loadedLevel) do
-        if value.type == "finish" then
-        elseif value.type == "spike" then
-        elseif value.type == "spring" then
-        elseif value.type == "emp" then
-            if value.empTimer < 3 then
-                value.empTimer = value.empTimer - (1.8 * dt)
+    if loadedLevel ~= nil then
+        for key, value in pairs(loadedLevel) do
+            if value.type == "finish" then
+            elseif value.type == "spike" then
+            elseif value.type == "spring" then
+            elseif value.type == "emp" then
+                if value.empTimer < 3 then
+                    value.empTimer = value.empTimer - (2.2 * dt)
+                    if value.empTimer < 0 then
+                        if value.triggerFixture ~= nil then
+                            -- kinda jank but this means it's the first time so explosion code goes here
+                            for i = 1, player.numSegments do
+                                local segmentX, segmentY = player.bodies[i]:getPosition()
+                                if distance(segmentX, segmentY, value.body:getX(), value.body:getY()) < value.triggerRadius then
+                                    player.radiusOffset[i] = -10
+                                end
+                            end
+                            
+                            value.triggerFixture:destroy()
+                            value.fixture:destroy()
+                            value.triggerFixture = nil
+                            value.fixture = nil
+                        end
+                        if value.triggerBody ~= nil then
+                            value.triggerBody:destroy()
+                            value.triggerBody = nil
+                        end
+                        if value.triggerShape ~= nil then
+                            value.triggerShape = nil
+                            value.shape = nil
+                        end
+                    end
+                end
             end
         end
     end
@@ -192,8 +220,9 @@ function levelLoader:renderLevel()
                 elseif value.empTimer < 0 then
                     love.graphics.setColor(0, 0, 0) 
                 end
-                
-                love.graphics.circle("line", value.body:getX(), value.body:getY(), value.triggerRadius)
+                if value.empTimer > 0 then
+                    love.graphics.circle("line", value.body:getX(), value.body:getY(), value.triggerRadius)
+                end
             end
             if value.render == "rectangle" then
                 love.graphics.rectangle("fill", value.body:getX() - (value.width / 2), value.body:getY() - (value.height / 2), value.width, value.height)
