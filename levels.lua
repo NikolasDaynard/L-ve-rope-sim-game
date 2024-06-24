@@ -111,15 +111,17 @@ settingsUi = {
         type = "slider",
         -- render = "slice",
         -- image = "uiOutline.png",
-        x = (screenWidth / 2) - (screenWidth / 7),
+        x = (screenWidth / 2) - (screenWidth / 10),
         y = screenHeight / 3.5,
-        w = (screenWidth / 3.5),
-        h = screenHeight / 1.2,
+        w = (screenWidth / 5),
+        h = screenHeight / 20,
         text = "Slider",
         maxValue = 1,
         minValue = 0,
+        value = 1,
         callback = function(value)
-            print(value)
+            settings.volume = value
+            saveSettings()
         end,
     },
     openLevels = {

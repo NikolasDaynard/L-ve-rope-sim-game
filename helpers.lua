@@ -6,7 +6,7 @@ function lerp(a,b,t)
 end
 -- Replaces ${foo} with the value of the global foo
 function interpolate(str)
-    if str == nil then
+    if str == nil or type(str) ~= "string" then
         return str
     end
 
@@ -73,4 +73,9 @@ end
 function exitGame() 
     love.window.close()
     love.event.quit()
+end
+
+function saveSettings()
+    local jsonString = lunajson.encode(settings)
+    love.filesystem.write("settings.json", jsonString)
 end

@@ -1,7 +1,10 @@
 ui = {
     buttons = {},
     buttonNum = 1,
-    clicking = false
+    sliders = {},
+    sliderNum = 1,
+    clicking = false,
+    sliderHeldId = nil
 }
 
 function ui:doesButtonExist(text) 
@@ -31,16 +34,44 @@ function ui:addButton(x, y, w, h, callback, text, image, type, sliceSize)
     self.buttonNum = self.buttonNum + 1
 end
 
+function ui:addSlider(x, y, w, h, callback, text, minValue, maxValue, value)
+    value = interpolate(value)
+    self.sliders[self.sliderNum] = {x = x, y = y, w = w, h = h, text = text, callback = callback, minValue = minValue, maxValue = maxValue, sliderPos = value}
+
+    self.sliderNum = self.sliderNum + 1
+end
+
 function ui:update(mousePos)
     local mouseDown = love.mouse.isDown(1)
+    local hitSlider = false
 
-    for i = 1, self.buttonNum - 1 do
-        -- I don't want to but
-        if self.buttons[i] ~= nil then
-            if mousePos.x >= self.buttons[i].x and mousePos.x <= self.buttons[i].x + self.buttons[i].w and mousePos.y >= self.buttons[i].y and mousePos.y <= self.buttons[i].y + self.buttons[i].h then
-                if mouseDown and not self.clicking then
-                    self.buttons[i].callback()
-                    self.clicking = true
+    if mouseDown and self.clicking and self.sliderHeldId ~= nil then
+        self.sliders[self.sliderHeldId].sliderPos = (math.min(math.max(-((1 - ((mousePos.x + self.sliders[self.sliderHeldId].w) - (self.sliders[self.sliderHeldId].x + self.sliders[self.sliderHeldId].w)) / self.sliders[self.sliderHeldId].w) - 1), 0), 1))
+    else
+        self.sliderHeldId = nil
+        for i = 1, self.sliderNum - 1 do
+            if self.sliders[i] ~= nil then
+                if mousePos.x >= self.sliders[i].x and mousePos.x <= self.sliders[i].x + self.sliders[i].w and mousePos.y >= self.sliders[i].y and mousePos.y <= self.sliders[i].y + self.sliders[i].h then
+                    if mouseDown and not self.clicking then
+                        self.sliders[i].callback(self.sliders[i].sliderPos)
+                        self.clicking = true
+                        hitSlider = true
+                        self.sliderHeldId = i
+                    end
+                end
+            end
+        end
+    end
+
+    if not hitSlider then
+        for i = 1, self.buttonNum - 1 do
+            -- I don't want to but
+            if self.buttons[i] ~= nil then
+                if mousePos.x >= self.buttons[i].x and mousePos.x <= self.buttons[i].x + self.buttons[i].w and mousePos.y >= self.buttons[i].y and mousePos.y <= self.buttons[i].y + self.buttons[i].h then
+                    if mouseDown and not self.clicking then
+                        self.buttons[i].callback()
+                        self.clicking = true
+                    end
                 end
             end
         end
@@ -79,8 +110,14 @@ function ui:render()
             love.graphics.setColor(1, 1, 1)
         end
     end
-end
+    for i = 1, self.sliderNum - 1 do
+        love.graphics.setColor(1, .1, 1)
+        love.graphics.rectangle("fill", self.sliders[i].x, self.sliders[i].y, self.sliders[i].w, self.sliders[i].h)
 
+        love.graphics.rectangle("fill", self.sliders[i].x + (self.sliders[i].w * self.sliders[i].sliderPos) - ((self.sliders[i].h * 1.2) / 2), self.sliders[i].y - ((self.sliders[i].h * .2) / 2), self.sliders[i].h * 1.2, self.sliders[i].h * 1.2)
+        love.graphics.setColor(1, 1, 1)
+    end
+end
 
 function ui:clear()
     for i = 1, self.buttonNum - 1 do

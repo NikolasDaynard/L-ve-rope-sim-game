@@ -18,7 +18,8 @@ levelImages = {}
 currentLevelId = nil
 levelStarted = false
 pressingesc = false
-settings = {}
+-- defaults
+settings = {volume = 1}
 
 draggingPlayer = false
 
@@ -27,6 +28,11 @@ function love.load()
     if love.filesystem.getInfo("highscore.json") ~= nil then
         local fileData = love.filesystem.read("highscore.json")
         levelScores = lunajson.decode(fileData)
+    end
+    if love.filesystem.getInfo("settings.json") ~= nil then
+        local fileData = love.filesystem.read("settings.json")
+        settings = lunajson.decode(fileData)
+        print(settings.volume)
     end
 
     loadLevelScoreImages()
