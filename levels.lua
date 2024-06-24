@@ -80,6 +80,20 @@ levelRestartUi = {
     },
 }
 settingsUi = {
+    closeButton = {
+        type = "button",
+        render = "slice",
+        image = "uiOutline.png",
+        x = ((screenWidth / 2) - (screenWidth / 7)) - (screenWidth / 16),
+        y = screenHeight / 4,
+        w = (screenWidth / 16),
+        h = screenHeight / 16,
+        text = "X",
+        callback = function()
+            ui:remove(settingsUi)
+        end,
+
+    },
     textButton = {
         type = "button",
         render = "slice",
@@ -90,20 +104,36 @@ settingsUi = {
         h = screenHeight / 2,
         text = "Level ${currentLevelId}\n\n\n\n\n\n",
         callback = function()
-            ui:remove(settingsUi)
+            -- ui:remove(settingsUi)
+        end,
+    },
+    musicSlider = {
+        type = "slider",
+        -- render = "slice",
+        -- image = "uiOutline.png",
+        x = (screenWidth / 2) - (screenWidth / 7),
+        y = screenHeight / 3.5,
+        w = (screenWidth / 3.5),
+        h = screenHeight / 1.2,
+        text = "Slider",
+        maxValue = 1,
+        minValue = 0,
+        callback = function(value)
+            print(value)
         end,
     },
     openLevels = {
         type = "button",
+        render = "slice",
+        image = "uiOutline.png",
         x = (screenWidth / 2) - (screenWidth / 8),
         y = screenHeight / 1.25,
         w = (screenWidth / 4),
         h = screenHeight / 8,
-        text = "Back",
+        text = "Level Select",
         callback = function()
             levelLoadCallback(levelselectionscreen)
         end,
-
     }
 
 }

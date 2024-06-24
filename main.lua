@@ -17,6 +17,7 @@ levelScores = {}
 levelImages = {}
 currentLevelId = nil
 levelStarted = false
+pressingesc = false
 settings = {}
 
 draggingPlayer = false
@@ -79,8 +80,16 @@ function love.update(dt)
         exitGame()
     end
     if love.keyboard.isDown("escape") then
-        levelLoader:loader(settingsUi)
-        levelStarted = false
+        if ui:doesButtonExist(interpolate(settingsUi.textButton.text)) and not pressingesc then
+            ui:remove(settingsUi)
+            levelStarted = true
+        elseif not pressingesc then
+            levelStarted = false
+            levelLoader:loader(settingsUi)
+        end
+        pressingesc = true
+    else
+        pressingesc = false
     end
     if love.keyboard.isDown("0") then
         levelLoader:unloadLevel()

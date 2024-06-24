@@ -4,7 +4,20 @@ ui = {
     clicking = false
 }
 
+function ui:doesButtonExist(text) 
+    for i = 1, self.buttonNum - 1 do
+        if self.buttons[i].text == text then
+            return true
+        end
+    end
+    return false
+end
+
 function ui:addButton(x, y, w, h, callback, text, image, type, sliceSize)
+    if ui:doesButtonExist(interpolate(doesButtonExist)) then
+        return
+    end
+
     if image ~= nil then
         if type == "slice" then
             imageLib:loadSlicesImage(image, sliceSize)
@@ -22,10 +35,13 @@ function ui:update(mousePos)
     local mouseDown = love.mouse.isDown(1)
 
     for i = 1, self.buttonNum - 1 do
-        if mousePos.x >= self.buttons[i].x and mousePos.x <= self.buttons[i].x + self.buttons[i].w and mousePos.y >= self.buttons[i].y and mousePos.y <= self.buttons[i].y + self.buttons[i].h then
-            if mouseDown and not self.clicking then
-                self.buttons[i].callback()
-                self.clicking = true
+        -- I don't want to but
+        if self.buttons[i] ~= nil then
+            if mousePos.x >= self.buttons[i].x and mousePos.x <= self.buttons[i].x + self.buttons[i].w and mousePos.y >= self.buttons[i].y and mousePos.y <= self.buttons[i].y + self.buttons[i].h then
+                if mouseDown and not self.clicking then
+                    self.buttons[i].callback()
+                    self.clicking = true
+                end
             end
         end
     end
@@ -77,18 +93,22 @@ end
 function ui:remove(uiToRemove) 
     local newUiTable = {}
     local newButtonNum = 1
+    local toRemoveSet = {}
+
+    -- Create a set of texts to remove for faster lookup
     for key, value in pairs(uiToRemove) do
-        for i = self.buttonNum - 1, 1, -1 do 
-            print(value.text)
-            print(self.buttons[i].text)
-            if self.buttons[i].text ~= value.text then
-                newUiTable[newButtonNum] = self.buttons[i]
-                newButtonNum = newButtonNum + 1
-            end
-        end
-        self.buttons = newUiTable
-        self.buttonNum = newButtonNum
-        newButtonNum = 1
-        newUiTable = {}
+        toRemoveSet[interpolate(value.text)] = true
     end
+
+    -- Iterate over existing buttons and copy those not in the removal set
+    for i = 1, self.buttonNum - 1 do
+        if not toRemoveSet[self.buttons[i].text] then
+            newUiTable[newButtonNum] = self.buttons[i]
+            newButtonNum = newButtonNum + 1
+        end
+    end
+
+    -- Update the buttons and button count
+    self.buttons = newUiTable
+    self.buttonNum = newButtonNum
 end
