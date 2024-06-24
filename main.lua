@@ -17,6 +17,7 @@ levelScores = {}
 levelImages = {}
 currentLevelId = nil
 levelStarted = false
+settings = {}
 
 draggingPlayer = false
 
@@ -76,6 +77,10 @@ function love.update(dt)
     
     if love.keyboard.isDown("q") then
         exitGame()
+    end
+    if love.keyboard.isDown("escape") then
+        levelLoader:loader(settingsUi)
+        levelStarted = false
     end
     if love.keyboard.isDown("0") then
         levelLoader:unloadLevel()

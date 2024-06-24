@@ -95,7 +95,7 @@ function player:momentumGrab(mousePos)
             levelStarted = true -- doesn't matter if set multiple times
             self.bodies[self.draggingIndex]:applyForce(momentumArrow:getForce().x, momentumArrow:getForce().y)
             score = score + 1
-            soundLib:playSound("sounds/fsh.mp3", (math.abs(momentumArrow:getForce().x) + math.abs(momentumArrow:getForce().y)) / 100000)
+            soundLib:playSound("sounds/fsh.wav", (math.abs(momentumArrow:getForce().x) + math.abs(momentumArrow:getForce().y)) / 100000)
             momentumArrow:hide()
         end
         self.draggingIndex = -1

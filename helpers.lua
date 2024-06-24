@@ -25,14 +25,22 @@ end
 -- thanks S.O. Mateen Ulhaq
 function splitString(inputstr, sep)
     if sep == nil then
-      sep = "%s"
+        sep = "%s"
     end
     local t = {}
-    for str in string.gmatch(inputstr, "([^"..sep.."]+)") do
-      table.insert(t, str)
+    local n = 1
+    while true do
+        local i, j = string.find(inputstr, sep, n)
+        if not i then
+            table.insert(t, string.sub(inputstr, n))
+            break
+        end
+        table.insert(t, string.sub(inputstr, n, i - 1))
+        n = j + 1
     end
     return t
 end
+
 
 function loadLevelScoreImages() 
     for i = 1, 100 do

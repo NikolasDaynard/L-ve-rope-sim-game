@@ -4,7 +4,7 @@ local screenWidth, screenHeight = love.window.getDesktopDimensions()
 
 -- Spike object definition
 local function levelLoadCallback(level)
-    soundLib:playSound("sounds/clicklous.mov", 1)
+    soundLib:playSound("sounds/clicklous.wav", 1)
     levelLoader:unloadLevel()
     levelLoader:loadLevel(level)
 end
@@ -78,6 +78,34 @@ levelRestartUi = {
             levelLoadCallback(levelselectionscreen)
         end,
     },
+}
+settingsUi = {
+    textButton = {
+        type = "button",
+        render = "slice",
+        image = "uiOutline.png",
+        x = (screenWidth / 2) - (screenWidth / 7),
+        y = screenHeight / 4,
+        w = (screenWidth / 3.5),
+        h = screenHeight / 2,
+        text = "Level ${currentLevelId}\n\n\n\n\n\n",
+        callback = function()
+            ui:remove(settingsUi)
+        end,
+    },
+    openLevels = {
+        type = "button",
+        x = (screenWidth / 2) - (screenWidth / 8),
+        y = screenHeight / 1.25,
+        w = (screenWidth / 4),
+        h = screenHeight / 8,
+        text = "Back",
+        callback = function()
+            levelLoadCallback(levelselectionscreen)
+        end,
+
+    }
+
 }
 
 level1 = {
@@ -585,9 +613,9 @@ level9 = {
         render = "rectangle",
         type = "finish",
         x = 15,
-        y = 20,
+        y = 50,
         width = 20,
-        height = 30,
+        height = 100,
     }
 }
 --[[
@@ -845,6 +873,7 @@ level12 = {
         width = 200,
         height = 200,
         rotation = 180,
+        force = -1
     },
     emp1 = {
         render = "circle",
@@ -876,6 +905,49 @@ level12 = {
         x = 600,
         y = 300,
         radius = 20,
+        triggerRadius = 130,
+    },
+    emp5 = {
+        render = "circle",
+        type = "emp",
+        x = 700,
+        y = 200,
+        radius = 20,
+        triggerRadius = 130,
+    },
+    spike = {
+        render = "rectangle",
+        type = "spike",
+        x = 200,
+        y = 200,
+        width = 200,
+        height = 400,
+        triggerRadius = 130,
+    },
+    finish = {
+        render = "rectangle",
+        type = "finish",
+        x = 600,
+        y = 100,
+        width = 20,
+        height = 20,
+    },
+    wall = {
+        render = "rectangle",
+        type = "wall",
+        x = 200,
+        y = 400,
+        width = 400,
+        height = 20,
+        triggerRadius = 130,
+    },
+    wall1 = {
+        render = "rectangle",
+        type = "wall",
+        x = 1100,
+        y = 400,
+        width = 700,
+        height = 20,
         triggerRadius = 130,
     },
 }

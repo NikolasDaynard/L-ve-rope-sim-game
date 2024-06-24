@@ -73,3 +73,22 @@ function ui:clear()
     self.buttonNum = 1
     ui.clicking = false
 end
+
+function ui:remove(uiToRemove) 
+    local newUiTable = {}
+    local newButtonNum = 1
+    for key, value in pairs(uiToRemove) do
+        for i = self.buttonNum - 1, 1, -1 do 
+            print(value.text)
+            print(self.buttons[i].text)
+            if self.buttons[i].text ~= value.text then
+                newUiTable[newButtonNum] = self.buttons[i]
+                newButtonNum = newButtonNum + 1
+            end
+        end
+        self.buttons = newUiTable
+        self.buttonNum = newButtonNum
+        newButtonNum = 1
+        newUiTable = {}
+    end
+end
