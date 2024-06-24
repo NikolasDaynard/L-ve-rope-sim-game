@@ -59,6 +59,7 @@ function beginContact(a, b, coll)
             index = tonumber(string.match(textA, "%d+")) 
             local tableAtIndex = levelLoader:findTableAtIndex(index, "spring")
             player:applyForceToSegment(textB, 0, -10000 * tableAtIndex.force)
+            soundLib:playSound("sounds/spring.mp3")
 
         elseif string.find(textB, "emp") ~= nil and string.find(textA, "player") ~= nil then
             index = tonumber(string.match(textB, "%d+")) 

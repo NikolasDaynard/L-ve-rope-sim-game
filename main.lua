@@ -100,6 +100,7 @@ function love.update(dt)
     levelLoader:updateLevel(dt)
     -- ui is unnafected by camera transforms
     soundLib:update()
+    soundLib:loop("sounds/soundtrack.mp3")
     ui:update({x = love.mouse.getX(), y = love.mouse.getY()})
 end
 

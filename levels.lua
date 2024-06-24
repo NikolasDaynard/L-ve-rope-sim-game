@@ -4,6 +4,7 @@ local screenWidth, screenHeight = love.window.getDesktopDimensions()
 
 -- Spike object definition
 local function levelLoadCallback(level)
+    soundLib:playSound("sounds/clicklous.mov", 1)
     levelLoader:unloadLevel()
     levelLoader:loadLevel(level)
 end
@@ -826,6 +827,24 @@ level12 = {
         width = 300,
         height = 200,
         rotation = -90,
+    },
+    physicsZone2 = {
+        render = "rectangle",
+        type = "physics",
+        x = 600,
+        y = 200,
+        width = 200,
+        height = 400,
+        rotation = -180,
+    },
+    physicsZone3 = {
+        render = "rectangle",
+        type = "physics",
+        x = 600,
+        y = 600,
+        width = 200,
+        height = 200,
+        rotation = 180,
     },
     emp1 = {
         render = "circle",
