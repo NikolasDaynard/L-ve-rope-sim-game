@@ -589,12 +589,120 @@ level9 = {
         height = 30,
     }
 }
+--[[
+   + +
+   | |
+   +-+
+   like those cheap ring games
+]]--
+level10 = {
+    id = {
+        type = "id",
+        value = 11
+    },
+    playerinfo = {
+        type = "player",
+        handle1x = 130,
+        handle1y = 880,
+        handle2x = 600,
+        handle2y = 880
+    },
+    par = {
+        type = "par",
+        value = 11
+    },
+    ground = {
+        render = "rectangle",
+        type = "wall",
+        x = 0,
+        y = 900,
+        width = 3200,
+        height = 25,
+    },
+    wall1 = {
+        render = "rectangle",
+        type = "wall",
+        x = 600,
+        y = 500,
+        width = 10,
+        height = 300,
+    },
+    wall2 = {
+        render = "rectangle",
+        type = "wall",
+        x = 700,
+        y = 645,
+        width = 200,
+        height = 10,
+    },
+    wall3 = {
+        render = "rectangle",
+        type = "wall",
+        x = 800,
+        y = 500,
+        width = 10,
+        height = 300,
+    },
+    wall4 = {
+        render = "rectangle",
+        type = "wall",
+        x = 800,
+        y = 500,
+        width = 10,
+        height = 300,
+    },
+    wall5 = {
+        render = "rectangle",
+        type = "wall",
+        x = 900,
+        y = 400,
+        width = 400,
+        height = 100,
+        rotation = 50,
+    },
+    wall5spike = {
+        render = "rectangle",
+        type = "spike",
+        x = 1100,
+        y = 200,
+        width = 400,
+        height = 100,
+        rotation = 50,
+    },
+    wall6 = {
+        render = "rectangle",
+        type = "wall",
+        x = 500,
+        y = 400,
+        width = 400,
+        height = 100,
+        rotation = -50,
+    },
+    wall6spike = {
+        render = "rectangle",
+        type = "spike",
+        x = 300,
+        y = 200,
+        width = 400,
+        height = 100,
+        rotation = -50,
+    },
+    finish = {
+        render = "rectangle",
+        type = "finish",
+        x = 700,
+        y = 635,
+        width = 150,
+        height = 10,
+        rotation = 0,
+    },
+}
 
 local levelsscreens = 3 - 1 -- has to have -1 because jank
 levelselectionBar = {
     q1 = {
         render = "slice", 
-        sliceSize = 1,
+        sliceSize = 0,
         image = "circlebutton.png",
         type = "button",
         x = ((screenWidth / (levelsscreens + 2)) * ((1) + 1)) - (screenWidth / (levelsscreens + 2)),
@@ -608,7 +716,7 @@ levelselectionBar = {
     },
     q2 = {
         render = "slice", 
-        sliceSize = 1,
+        sliceSize = 0,
         image = "circlebutton.png",
         type = "button",
         x = ((screenWidth / (levelsscreens + 2)) * ((2) + 1)) - (screenWidth / (levelsscreens + 2)),
@@ -622,7 +730,7 @@ levelselectionBar = {
     },
     q3 = {
         render = "slice", 
-        sliceSize = 1,
+        sliceSize = 0,
         image = "circlebutton.png",
         type = "button",
         x = ((screenWidth / (levelsscreens + 2)) * ((3) + 1)) - (screenWidth / (levelsscreens + 2)),
@@ -800,7 +908,7 @@ levelselectionscreen2 = {
         y = screenHeight / 3,
         w = screenWidth / 7,
         h = 60,
-        text = "10 par:" .. level1.par.value .. "\n best: ${levelScores[10]}", -- TODO; rhis
+        text = "10 par:" .. level10.par.value .. "\n best: ${levelScores[10]}", -- TODO; rhis
         callback = function()
             levelLoadCallback(level10)
         end,
@@ -814,7 +922,7 @@ levelselectionscreen2 = {
         y = screenHeight / 3,
         w = screenWidth / 7,
         h = 60,
-        text = "11 par:" .. level2.par.value .. "\n best: ${levelScores[11]}",
+        -- text = "11 par:" .. level11.par.value .. "\n best: ${levelScores[11]}",
         callback = function()
             levelLoadCallback(level11)
         end,

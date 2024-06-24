@@ -25,7 +25,7 @@ function love.load()
         local fileData = love.filesystem.read("highscore.json")
         levelScores = lunajson.decode(fileData)
     end
-    
+
     loadLevelScoreImages()
 
     cam = Camera()
@@ -74,9 +74,8 @@ function love.update(dt)
         dt = dt / 10
     end
     
-    if love.keyboard.isDown("escape") then
-        love.window.close()
-        love.event.quit()
+    if love.keyboard.isDown("q") then
+        exitGame()
     end
     if love.keyboard.isDown("0") then
         levelLoader:unloadLevel()

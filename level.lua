@@ -88,7 +88,7 @@ function levelLoader:loader(level)
         for key, value in pairs(level) do
             if value.type == "spike" then
                 value.body = love.physics.newBody(world, value.x, value.y, "static")
-                value.shape = love.physics.newRectangleShape(value.width, value.height)
+                value.shape = love.physics.newRectangleShape(0, 0, value.width, value.height, math.rad(value.rotation or 0))
                 value.fixture = love.physics.newFixture(value.body, value.shape)
                 -- Set fixture user data to spike object
                 value.fixture:setUserData("spike")
@@ -99,7 +99,7 @@ function levelLoader:loader(level)
                 player:reset()
             elseif value.type == "wall" then
                 value.body = love.physics.newBody(world, value.x, value.y, "static")
-                value.shape = love.physics.newRectangleShape(value.width, value.height)
+                value.shape = love.physics.newRectangleShape(0, 0, value.width, value.height, math.rad(value.rotation or 0))
                 value.fixture = love.physics.newFixture(value.body, value.shape)
             elseif value.type == "spring" then
                 value.body = love.physics.newBody(world, value.x, value.y, "static")
@@ -256,7 +256,7 @@ function levelLoader:renderLevel()
                 end
             end
             if value.render == "rectangle" then
-                love.graphics.rectangle("fill", value.body:getX() - (value.width / 2), value.body:getY() - (value.height / 2), value.width, value.height)
+                drawRotatedRect("fill", value.body:getX() - (value.width / 2), value.body:getY() - (value.height / 2), value.width, value.height, -math.rad(value.rotation or 0))
                 love.graphics.setColor(1, 1, 1)
             elseif value.render == "circle" then
                 love.graphics.circle("fill", value.body:getX(), value.body:getY(), value.radius)
