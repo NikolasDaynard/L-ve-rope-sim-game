@@ -5,6 +5,7 @@ require("level")
 require("levels")
 require("ui")
 require("image")
+require("sound")
 lunajson = require("libs.lunajson")
 Camera = require 'camera' 
 font = love.graphics.setNewFont("Early GameBoy.ttf", 15, "normal", 1)
@@ -60,7 +61,6 @@ function love.load()
     levelLoader:loadLevel(titlescreen)
 
     love.graphics.setBackgroundColor(.2, .2, .2)
-
 end
 
 -- Update function
@@ -99,6 +99,7 @@ function love.update(dt)
 
     levelLoader:updateLevel(dt)
     -- ui is unnafected by camera transforms
+    soundLib:update()
     ui:update({x = love.mouse.getX(), y = love.mouse.getY()})
 end
 
