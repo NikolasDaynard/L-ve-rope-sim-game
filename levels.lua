@@ -109,19 +109,20 @@ settingsUi = {
     },
     musicSlider = {
         type = "slider",
-        -- render = "slice",
-        -- image = "uiOutline.png",
+        barImage = "uiOutline.png",
+        nubImage = "uiOutline.png",
         x = (screenWidth / 2) - (screenWidth / 10),
-        y = screenHeight / 3.5,
+        y = screenHeight / 3,
         w = (screenWidth / 5),
         h = screenHeight / 20,
-        text = "Slider",
+        text = "Volume",
         maxValue = 1,
         minValue = 0,
-        value = 1,
+        value = "${settings.volume}",
         callback = function(value)
             settings.volume = value
             saveSettings()
+            print(settings.volume)
         end,
     },
     openLevels = {
@@ -983,6 +984,87 @@ level12 = {
         triggerRadius = 130,
     },
 }
+level13 = {
+    id = {
+        type = "id",
+        value = 13
+    },
+    playerinfo = {
+        type = "player",
+        handle1x = 40,
+        handle1y = 780,
+        handle2x = 50,
+        handle2y = 780
+    },
+    par = {
+        type = "par",
+        value = 11
+    },
+    ground = {
+        render = "rectangle",
+        type = "wall",
+        x = 0,
+        y = 900,
+        width = 3200,
+        height = 25,
+    },
+    ground = {
+        render = "rectangle",
+        type = "wall",
+        x = 0,
+        y = 900,
+        width = 3200,
+        height = 25,
+    },
+    wall1 = {
+        render = "rectangle",
+        type = "wall",
+        x = 200,
+        y = 500,
+        width = 100,
+        height = 800,
+    },
+    wall2 = {
+        render = "rectangle",
+        type = "wall",
+        x = 400,
+        y = 300,
+        width = 100,
+        height = 800,
+    },
+    wall3 = {
+        render = "rectangle",
+        type = "wall",
+        x = 600,
+        y = 500,
+        width = 100,
+        height = 800,
+    },
+    wall4 = {
+        render = "rectangle",
+        type = "wall",
+        x = 800,
+        y = 300,
+        width = 100,
+        height = 800,
+    },
+    wall5 = {
+        render = "rectangle",
+        type = "wall",
+        x = 1000,
+        y = 500,
+        width = 100,
+        height = 800,
+    },
+    wall6 = {
+        render = "rectangle",
+        type = "wall",
+        x = 1200,
+        y = 300,
+        width = 100,
+        height = 800,
+    },
+}
 
 local levelsscreens = 3 - 1 -- has to have -1 because jank
 levelselectionBar = {
@@ -1229,16 +1311,16 @@ levelselectionscreen2 = {
     },
     level4select = {
         render = "slice",
-        image = "${levelImages[4]}",
+        image = "${levelImages[13]}",
         sliceSize = 30,
         type = "button",
         x = ((screenWidth / 5) * 2) - (screenWidth / 7),
         y = screenHeight / 2,
         w = screenWidth / 7,
         h = 60,
-        text = "4 par:" .. level4.par.value .. "\n best: ${levelScores[4]}",
+        text = "13 par:" .. level13.par.value .. "\n best: ${levelScores[13]}",
         callback = function()
-            levelLoadCallback(level4)
+            levelLoadCallback(level13)
         end,
     },
     level5select = {

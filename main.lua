@@ -19,7 +19,7 @@ currentLevelId = nil
 levelStarted = false
 pressingesc = false
 -- defaults
-settings = {volume = 1}
+settings = {}
 
 draggingPlayer = false
 
@@ -32,7 +32,8 @@ function love.load()
     if love.filesystem.getInfo("settings.json") ~= nil then
         local fileData = love.filesystem.read("settings.json")
         settings = lunajson.decode(fileData)
-        print(settings.volume)
+    else
+        settings.volume = 1
     end
 
     loadLevelScoreImages()
@@ -56,7 +57,7 @@ function love.load()
 
     -- Set fullscreen with borders
     love.window.setMode(windowWidth, windowHeight, {
-        fullscreen = true,
+        fullscreen = false,
         fullscreentype = "desktop",
         resizable = true,
         borderless = false

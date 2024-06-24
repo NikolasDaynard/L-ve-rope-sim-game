@@ -16,7 +16,7 @@ function soundLib:playSound(name, volume)
     end
     self.sfx[name]:play()
     table.insert(self.soundSources, self.sfx[name])
-    self.soundSources[#self.soundSources]:setVolume(volume or 1)
+    self.soundSources[#self.soundSources]:setVolume((volume or 1) * settings.volume)
     -- self.soundSources[#self.soundSources]:setPitch(0.5)
 end
 
