@@ -4,6 +4,7 @@ require("momentumArrow")
 require("level")
 require("levels")
 require("ui")
+require("image")
 lunajson = require("libs.lunajson")
 Camera = require 'camera' 
 font = love.graphics.setNewFont("Early GameBoy.ttf", 15, "normal", 1)
@@ -54,6 +55,9 @@ function love.load()
     -- Initialize player with physics has to be before level
     player:init()
     levelLoader:loadLevel(titlescreen)
+
+    image:loadSlicesImage("uiOutline.png")
+
 end
 
 -- Update function
@@ -108,5 +112,6 @@ function love.draw()
     cam:detach()
     -- ui is unaffected by scaling 
     ui:render()
+    image:render("uiOutline.png", 100, 100, 2, 10)
     love.graphics.print("shots: " .. score .. " . " .. par, 0, 0, 0, 1, 1)
 end
