@@ -138,7 +138,7 @@ function levelLoader:loader(level)
                 value.fixture:setUserData("finish")
                 value.fixture:setCategory(1) 
             elseif value.type == "button" then
-                ui:addButton(value.x, value.y, value.w, value.h, value.callback, value.text)
+                ui:addButton(value.x, value.y, value.w, value.h, value.callback, value.text, value.image, value.render, value.sliceSize)
             elseif value.type == "par" then
                 par = value.value
             elseif value.type == "id" then

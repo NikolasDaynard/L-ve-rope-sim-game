@@ -18,6 +18,9 @@ titlescreen = {
     },
     start = {
         type = "button",
+        render = "slice",
+        image = "balluilarge.png",
+        -- sliceSize = 100,
         x = (screenWidth / 2) - 250,
         y = 400,
         w = 500,
@@ -31,6 +34,8 @@ titlescreen = {
 levelfinishUi = {
     finishButton = {
         type = "button",
+        render = "slice",
+        image = "uiOutline.png",
         x = (screenWidth / 2) - (screenWidth / 7),
         y = screenHeight / 3,
         w = (screenWidth / 3.5),
@@ -43,29 +48,19 @@ levelfinishUi = {
 }
 levelRestartUi = {
     infoButton = {
+        render = "slice",
+        image = "balluilarge.png",
         type = "button",
         x = (screenWidth / 2) - (screenWidth / 7),
-        y = screenHeight / 3,
+        y = screenHeight / 4,
         w = (screenWidth / 3.5),
-        h = screenHeight / 4,
-        text = "Level lost",
+        h = screenHeight / 2,
+        text = "\n\n\nLevel lost\n\n\nRestart?\n\n\n",
         callback = function()
             ui:clear()
             levelLoadCallback(previousLevel)
         end,
     },
-    restartButton = {
-        type = "button",
-        x = (screenWidth / 2) - (screenWidth / 7),
-        y = screenHeight / 2,
-        w = (screenWidth / 3.5),
-        h = screenHeight / 4,
-        text = "Restart?",
-        callback = function()
-            ui:clear()
-            levelLoadCallback(previousLevel) -- reloads
-        end,
-    }
 }
 
 level1 = {

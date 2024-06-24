@@ -56,7 +56,7 @@ function love.load()
     player:init()
     levelLoader:loadLevel(titlescreen)
 
-    image:loadSlicesImage("uiOutline.png")
+    love.graphics.setBackgroundColor(.2, .2, .2)
 
 end
 
@@ -112,6 +112,5 @@ function love.draw()
     cam:detach()
     -- ui is unaffected by scaling 
     ui:render()
-    image:render("uiOutline.png", 100, 100, 2, 10)
     love.graphics.print("shots: " .. score .. " . " .. par, 0, 0, 0, 1, 1)
 end

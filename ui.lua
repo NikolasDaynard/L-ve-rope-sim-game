@@ -4,8 +4,17 @@ ui = {
     clicking = false
 }
 
-function ui:addButton(x, y, w, h, callback, text)
-    self.buttons[self.buttonNum] = {x = x, y = y, w = w, h = h, text = text, callback = callback}
+function ui:addButton(x, y, w, h, callback, text, image, type, sliceSize)
+    if image ~= nil then
+        if type == "slice" then
+            imageLib:loadSlicesImage(image, sliceSize)
+        else
+            imageLib:loadImage(image)
+        end
+        self.buttons[self.buttonNum] = {x = x, y = y, w = w, h = h, text = text, callback = callback, image = image}
+    else
+        self.buttons[self.buttonNum] = {x = x, y = y, w = w, h = h, text = text, callback = callback}
+    end
     self.buttonNum = self.buttonNum + 1
 end
 
@@ -28,8 +37,12 @@ end
 
 function ui:render()
     for i = 1, self.buttonNum - 1 do
-        love.graphics.setColor(1, 1, 1) 
-        love.graphics.rectangle("fill", self.buttons[i].x, self.buttons[i].y, self.buttons[i].w, self.buttons[i].h)
+        if self.buttons[i].image ~= nil then
+            imageLib:render(self.buttons[i].image, self.buttons[i].x, self.buttons[i].y, self.buttons[i].w, self.buttons[i].h)
+        else
+            love.graphics.setColor(1, 1, 1) 
+            love.graphics.rectangle("fill", self.buttons[i].x, self.buttons[i].y, self.buttons[i].w, self.buttons[i].h)
+        end
         
         if self.buttons[i].text ~= nil then
             -- add variables to the string

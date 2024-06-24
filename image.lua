@@ -1,22 +1,22 @@
 -- thank you goodle
 
-image = {
+imageLib = {
     images = {},
     slices = {}
 }
 
-function image:loadImage(imageName) 
+function imageLib:loadImage(imageName) 
     self.images[imageName] = love.graphics.newImage(imageName)
     self.images[imageName]:setFilter("nearest", "nearest")
 end
-function image:loadSlicesImage(imageName) 
-    image:loadImage(imageName)
-    image:slice(imageName)
+function imageLib:loadSlicesImage(imageName, sliceSize) 
+    sliceSize = sliceSize or 10
+    imageLib:loadImage(imageName)
+    imageLib:slice(imageName, sliceSize)
 end
 
 -- creates a 9 way slice, good for pixel art ui
-function image:slice(imageName) 
-    local sliceSize = 10 -- Size of the corners and edges, 10 seems to work good
+function imageLib:slice(imageName, sliceSize) 
     local imageWidth, imageHeight = self.images[imageName]:getDimensions()
 
     local imageSlices = {
@@ -36,7 +36,7 @@ function image:slice(imageName)
     self.slices[imageName] = imageSlices
 end
 
-function image:render(imageName, x, y, scaleX, scaleY)
+function imageLib:render(imageName, x, y, scaleX, scaleY, sliceSize)
     scaleX = scaleX or 1
     scaleY = scaleY or 1
 
@@ -45,7 +45,7 @@ function image:render(imageName, x, y, scaleX, scaleY)
             love.graphics.draw(self.images[imageName], x, y, 0, scaleX, scaleY)
         else
             local imageWidth, imageHeight = self.images[imageName]:getDimensions()
-            image:renderSlices(imageName, self.slices[imageName], x, y, scaleX * imageWidth, scaleY * imageHeight)
+            imageLib:renderSlices(imageName, self.slices[imageName], x, y, imageWidth * scaleX, imageHeight * scaleY, sliceSize)
             print("slices")
         end
     else
@@ -54,47 +54,113 @@ function image:render(imageName, x, y, scaleX, scaleY)
     end
 end
 
-function image:renderSlices(imageName, slices,x, y, targetWidth, targetHeight)
+function imageLib:renderSlices(imageName, slices, x, y, targetWidth, targetHeight, sliceSize)
     local imageWidth, imageHeight = self.images[imageName]:getDimensions()
-    local scaleX, scaleY
-    local sliceSize = 10
-    local slices = self.slices[imageName] -- hard to write makes me sad
 
     for i, slice in ipairs(slices) do
         local sx, sy, sw, sh = unpack(slice)
+        local scaleX, scaleY
+        local dx, dy
 
         if i == 2 or i == 8 then
-            -- Top and bottom edges horizontally
+            -- Top and bottom edges (stretch horizontally)
             scaleX = (targetWidth - 2 * sliceSize) / sw
             scaleY = 1
+            dx = x + sliceSize * ((i - 1) % 3)
+            dy = y + (i == 2 and 0 or targetHeight - sliceSize)
         elseif i == 4 or i == 6 then
-            -- Left and right edges vertically
+            -- Left and right edges (stretch vertically)
             scaleX = 1
             scaleY = (targetHeight - 2 * sliceSize) / sh
+            dx = x + (i == 4 and 0 or targetWidth - sliceSize)
+            dy = y + sliceSize * math.floor((i - 1) / 3)
         elseif i == 5 then
-            -- Center horizontal + vertical
+            -- Center (stretch both horizontally and vertically)
             scaleX = (targetWidth - 2 * sliceSize) / sw
             scaleY = (targetHeight - 2 * sliceSize) / sh
+            dx = x + sliceSize
+            dy = y + sliceSize
         else
-            -- Corners
+            -- Corners (no scaling)
             scaleX = 1
             scaleY = 1
+            dx = x + (i == 1 and 0 or targetWidth - sliceSize)
+            dy = y + (i == 1 and 0 or targetHeight - sliceSize)
         end
 
-        -- Determine the draw position
-        local dx
-        if i == 2 or i == 5 or i == 8 then
-            dx = x + (sliceSize + (targetWidth - 2 * sliceSize)) * ((i - 1) % 3)
-        else
-            dx = x + 0
-        end
-        local dy
-        if i >= 4 and i <= 6 then
-            dy = y + math.floor((i - 1) / 3) * (sliceSize + (targetHeight - 2 * sliceSize))
-        else
-            dy = y + 0
-        end
+        -- Draw the section
+        love.graphics.draw(self.images[imageName], love.graphics.newQuad(sx, sy, sw, sh, imageWidth, imageHeight), dx, dy, 0, scaleX, scaleY)
+    end
+end
+function imageLib:render(imageName, x, y, targetWidth, targetHeight)
+    scaleX = scaleX or 1
+    scaleY = scaleY or 1
 
+    if self.images[imageName] ~= nil then
+        if self.slices[imageName] == nil then
+            local imageWidth, imageHeight = self.images[imageName]:getDimensions()
+            love.graphics.draw(self.images[imageName], x, y, 0, targetWidth / imageWidth, imageHeight / targetHeight)
+        else
+            imageLib:renderSlices(imageName, self.slices[imageName], x, y, targetWidth, targetHeight)
+        end
+    else
+        print(imageName)
+        print("twas nil")
+    end
+end
+function imageLib:renderSlices(imageName, slices, x, y, targetWidth, targetHeight)
+    local imageWidth, imageHeight = self.images[imageName]:getDimensions()
+    local sliceSize = 10
+
+    for i, slice in ipairs(slices) do
+        local sx, sy, sw, sh = unpack(slice)
+        local scaleX, scaleY
+        local dx, dy
+
+        if i == 2 or i == 8 then
+            -- Top and bottom edges (stretch horizontally)
+            scaleX = (targetWidth - 2 * sliceSize) / sw
+            scaleY = 1
+            dx = x + sliceSize * ((i - 1) % 3)
+            if i == 2 then
+                dy = y
+            elseif i == 8 then
+                dy = y + targetHeight - sliceSize
+            end
+        elseif i == 4 or i == 6 then
+            -- Left and right edges (stretch vertically)
+            scaleX = 1
+            scaleY = (targetHeight - 2 * sliceSize) / sh
+            dy = y + sliceSize * math.floor((i - 1) / 3)
+            if i == 4 then
+                dx = x
+            elseif i == 6 then
+                dx = x + targetWidth - sliceSize
+            end
+        elseif i == 5 then
+            -- Center (stretch both horizontally and vertically)
+            scaleX = (targetWidth - 2 * sliceSize) / sw
+            scaleY = (targetHeight - 2 * sliceSize) / sh
+            dx = x + sliceSize
+            dy = y + sliceSize
+        else
+            -- Corners (no scaling)
+            scaleX = 1
+            scaleY = 1
+            if i == 1 then
+                dx = x
+                dy = y
+            elseif i == 3 then
+                dx = x + targetWidth - sliceSize
+                dy = y
+            elseif i == 7 then
+                dx = x
+                dy = y + targetHeight - sliceSize
+            elseif i == 9 then
+                dx = x + targetWidth - sliceSize
+                dy = y + targetHeight - sliceSize
+            end
+        end
 
         -- Draw the section
         love.graphics.draw(self.images[imageName], love.graphics.newQuad(sx, sy, sw, sh, imageWidth, imageHeight), dx, dy, 0, scaleX, scaleY)
