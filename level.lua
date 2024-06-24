@@ -53,6 +53,7 @@ function beginContact(a, b, coll)
             local jsonString = lunajson.encode(levelScores)
             love.filesystem.write("highscore.json", jsonString)
             player:won()
+            loadLevelScoreImages()
 
         elseif string.find(textB, "player") ~= nil and string.find(textA, "spring") ~= nil then
             index = tonumber(string.match(textA, "%d+")) 
@@ -138,7 +139,7 @@ function levelLoader:loader(level)
                 value.fixture:setUserData("finish")
                 value.fixture:setCategory(1) 
             elseif value.type == "button" then
-                ui:addButton(value.x, value.y, value.w, value.h, value.callback, value.text, value.image, value.render, value.sliceSize)
+                ui:addButton(value.x, value.y, value.w, value.h, value.callback, value.text, interpolate(value.image), value.render, value.sliceSize)
             elseif value.type == "par" then
                 par = value.value
             elseif value.type == "id" then

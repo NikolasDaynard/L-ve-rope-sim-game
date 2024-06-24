@@ -13,6 +13,7 @@ love.graphics.setFont(font)
 score = 0
 par = 0
 levelScores = {}
+levelImages = {}
 currentLevelId = nil
 levelStarted = false
 
@@ -24,6 +25,8 @@ function love.load()
         local fileData = love.filesystem.read("highscore.json")
         levelScores = lunajson.decode(fileData)
     end
+    
+    loadLevelScoreImages()
 
     cam = Camera()
     local screenWidth, screenHeight = love.window.getDesktopDimensions()

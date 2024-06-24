@@ -6,6 +6,10 @@ function lerp(a,b,t)
 end
 -- Replaces ${foo} with the value of the global foo
 function interpolate(str)
+    if str == nil then
+        return str
+    end
+
     return (str:gsub("%${(.-)}", function(key)
         local chunk, err = load("return " .. key)
         if chunk then
@@ -28,4 +32,14 @@ function splitString(inputstr, sep)
       table.insert(t, str)
     end
     return t
-  end
+end
+
+function loadLevelScoreImages() 
+    for i = 1, 100 do
+        if levelScores[i] == 1 then
+            levelImages[i] = "leveloutlinefc.png"
+        else
+            levelImages[i] = "leveloutline.png"
+        end
+    end
+end
