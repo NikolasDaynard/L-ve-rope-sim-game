@@ -64,6 +64,14 @@ function beginContact(a, b, coll)
             index = tonumber(string.match(textB, "%d+")) 
             local tableAtIndex = levelLoader:findTableAtIndex(index, "emp")
             tableAtIndex.empTimer = tableAtIndex.empTimer - .001
+        elseif string.find(textA, "physics") ~= nil and string.find(textB, "player") ~= nil then
+            index = tonumber(string.match(textA, "%d+")) 
+            local tableAtIndex = levelLoader:findTableAtIndex(index, "physics")
+            -- defaults to up
+            local angle = (tableAtIndex.rotation or 0) + 90
+            local forceX = -10000 * math.cos(math.rad(angle)) * (tableAtIndex.force or 1)
+            local forceY = -10000 * math.sin(math.rad(angle)) * (tableAtIndex.force or 1)
+            player:applyForceToSegment(textB, forceX, forceY)
         end
     end
 end
@@ -85,6 +93,7 @@ function levelLoader:loader(level)
     if level ~= nil then
         local empIndex = 1
         local springIndex = 1
+        local physicsIndex = 1
         for key, value in pairs(level) do
             if value.type == "spike" then
                 value.body = love.physics.newBody(world, value.x, value.y, "static")
@@ -114,6 +123,19 @@ function levelLoader:loader(level)
                 value.fixture:setCategory(1) 
                 value.fixture:setSensor(true) -- no collision
                 springIndex = springIndex + 1
+            elseif value.type == "physics" then
+                value.body = love.physics.newBody(world, value.x, value.y, "static")
+                value.shape = love.physics.newRectangleShape(0, 0, value.width, value.height, math.rad(value.rotation or 0))
+                value.fixture = love.physics.newFixture(value.body, value.shape)
+                value.fixture:setUserData("physics" .. physicsIndex)
+
+                if value.force == nil then
+                    value.force = 1
+                end
+
+                value.fixture:setCategory(1) 
+                value.fixture:setSensor(true) -- no collision
+                physicsIndex = physicsIndex + 1
             elseif value.type == "emp" then
                 value.body = love.physics.newBody(world, value.x, value.y, "static")
                 value.shape = love.physics.newCircleShape(value.radius)
@@ -241,6 +263,8 @@ function levelLoader:renderLevel()
                 love.graphics.setColor(1, 0.2, 0.2)
             elseif value.type == "spring" then
                 love.graphics.setColor(1, 0.7, 0.5)
+            elseif value.type == "physics" then
+                love.graphics.setColor(0.2, 0.3, 1, .5)
             elseif value.type == "emp" then
                 if value.empTimer < 3 and value.empTimer > 2.5 then
                     love.graphics.setColor(0.7, 0.7 * (value.empTimer / 5), 0.3)

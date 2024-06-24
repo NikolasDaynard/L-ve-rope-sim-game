@@ -598,7 +598,7 @@ level9 = {
 level10 = {
     id = {
         type = "id",
-        value = 11
+        value = 10
     },
     playerinfo = {
         type = "player",
@@ -695,6 +695,169 @@ level10 = {
         width = 150,
         height = 10,
         rotation = 0,
+    },
+}
+--[[   | 
+    0   ->
+     = |
+]]--
+level11 = {
+    id = {
+        type = "id",
+        value = 11
+    },
+    playerinfo = {
+        type = "player",
+        handle1x = 40,
+        handle1y = 880,
+        handle2x = 50,
+        handle2y = 880
+    },
+    par = {
+        type = "par",
+        value = 11
+    },
+    ground = {
+        render = "rectangle",
+        type = "wall",
+        x = 0,
+        y = 900,
+        width = 3200,
+        height = 25,
+    },
+    wall1 = {
+        render = "rectangle",
+        type = "wall",
+        x = 500,
+        y = 450,
+        width = 400,
+        height = 700,
+        rotation = 0,
+    },
+    physicsZone = {
+        render = "rectangle",
+        type = "physics",
+        x = 900,
+        y = 400,
+        width = 300,
+        height = 500,
+        rotation = 90,
+    },
+    physicsZone1 = {
+        render = "rectangle",
+        type = "physics",
+        x = 1300,
+        y = 400,
+        width = 300,
+        height = 500,
+        rotation = 0,
+    },
+    physicsZone2 = {
+        render = "rectangle",
+        type = "physics",
+        x = 1100,
+        y = 600,
+        width = 300,
+        height = 500,
+        rotation = -120,
+    },
+    finish = {
+        render = "rectangle",
+        type = "finish",
+        x = 400,
+        y = 100,
+        width = 10,
+        height = 200,
+    },
+    finishblock = {
+        render = "rectangle",
+        type = "physics",
+        x = 335,
+        y = 50,
+        width = 100,
+        height = 75,
+        force = 10,
+        rotation = -90
+    },
+}
+
+--[[
+    basically a bunch of physics zones try to push you into emps
+]]--
+
+level12 = {
+    id = {
+        type = "id",
+        value = 12
+    },
+    playerinfo = {
+        type = "player",
+        handle1x = 40,
+        handle1y = 780,
+        handle2x = 50,
+        handle2y = 780
+    },
+    par = {
+        type = "par",
+        value = 11
+    },
+    ground = {
+        render = "rectangle",
+        type = "wall",
+        x = 0,
+        y = 900,
+        width = 3200,
+        height = 25,
+    },
+    physicsZone = {
+        render = "rectangle",
+        type = "physics",
+        x = 500,
+        y = 400,
+        width = 300,
+        height = 200,
+        rotation = 90,
+    },
+    physicsZone1 = {
+        render = "rectangle",
+        type = "physics",
+        x = 700,
+        y = 400,
+        width = 300,
+        height = 200,
+        rotation = -90,
+    },
+    emp1 = {
+        render = "circle",
+        type = "emp",
+        x = 600,
+        y = 600,
+        radius = 20,
+        triggerRadius = 130,
+    },
+    emp2 = {
+        render = "circle",
+        type = "emp",
+        x = 600,
+        y = 500,
+        radius = 20,
+        triggerRadius = 130,
+    },
+    emp3 = {
+        render = "circle",
+        type = "emp",
+        x = 600,
+        y = 400,
+        radius = 20,
+        triggerRadius = 130,
+    },
+    emp4 = {
+        render = "circle",
+        type = "emp",
+        x = 600,
+        y = 300,
+        radius = 20,
+        triggerRadius = 130,
     },
 }
 
@@ -922,23 +1085,23 @@ levelselectionscreen2 = {
         y = screenHeight / 3,
         w = screenWidth / 7,
         h = 60,
-        -- text = "11 par:" .. level11.par.value .. "\n best: ${levelScores[11]}",
+        text = "11 par:" .. level11.par.value .. "\n best: ${levelScores[11]}",
         callback = function()
             levelLoadCallback(level11)
         end,
     },
     level3select = {
         render = "slice",
-        image = "${levelImages[3]}",
+        image = "${levelImages[12]}",
         sliceSize = 30,
         type = "button",
         x = ((screenWidth / 5) * 4) - (screenWidth / 7),
         y = screenHeight / 3,
         w = screenWidth / 7,
         h = 60,
-        text = "3 par:" .. level3.par.value .. "\n best: ${levelScores[3]}",
+        text = "12 par:" .. level12.par.value .. "\n best: ${levelScores[12]}",
         callback = function()
-            levelLoadCallback(level3)
+            levelLoadCallback(level12)
         end,
     },
     level4select = {
