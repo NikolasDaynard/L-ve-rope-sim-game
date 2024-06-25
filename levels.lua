@@ -1639,7 +1639,7 @@ level20 = {
     },
     par = {
         type = "par",
-        value = 3
+        value = 5
     },
     ground = {
         render = "rectangle",
@@ -1810,6 +1810,270 @@ level20 = {
         width = 20,
         height = 50,
     }
+}
+level21 = {
+    id = {
+        type = "id",
+        value = 21
+    },
+    playerinfo = {
+        type = "player",
+        handle1x = 710,
+        handle1y = 330,
+        handle2x = 700,
+        handle2y = 300
+    },
+    par = {
+        type = "par",
+        value = 20
+    },
+    ground = {
+        render = "rectangle",
+        type = "spike",
+        x = 0,
+        y = 900,
+        width = 3200,
+        height = 25,
+    },
+    spinnywall = {
+        render = "rectangle",
+        type = "wall",
+        x = 1440 / 2,
+        y = 400,
+        width = 300,
+        height = 200,
+        rotation = 0,
+        update = function(levelTime, dt)
+            level21.spinnywall.rotation = 0
+            level21.spinnywall.rotation = level21.spinnywall.rotation + 300 * levelTime
+        end,
+    },
+    wall = {
+        render = "rectangle",
+        type = "wall",
+        x = 200,
+        y = 0,
+        width = 10,
+        height = 2000,
+        rotation = 0,
+        update = function(levelTime, dt)
+            level21.wall.y = 0
+            level21.wall.y = level21.wall.y + 300 * levelTime
+        end,
+    },
+    blockerer = {
+        render = "rectangle",
+        type = "wall",
+        x = 0,
+        y = 200,
+        width = 400,
+        height = 10,
+        rotation = 0,
+    },
+    finish = {
+        render = "rectangle",
+        type = "finish",
+        x = 0,
+        y = 100,
+        width = 100,
+        height = 100,
+        rotation = 0,
+    },
+}
+level22 = {
+    id = {
+        type = "id",
+        value = 22
+    },
+    playerinfo = {
+        type = "player",
+        handle1x = 20,
+        handle1y = 880,
+        handle2x = 50,
+        handle2y = 880
+    },
+    par = {
+        type = "par",
+        value = 20
+    },
+    ground = {
+        render = "rectangle",
+        type = "wall",
+        x = 0,
+        y = 900,
+        width = 3200,
+        height = 25,
+    },
+    finish = {
+        render = "rectangle",
+        type = "finish",
+        x = 1440,
+        y = 900,
+        width = 100,
+        height = 1000,
+        update = function()
+            level22.finish.y = 1100
+            if level22.switch1.enabled == true then
+                level22.finish.y = level22.finish.y - 50
+            end
+            if level22.switch2.enabled == true then
+                level22.finish.y = level22.finish.y - 50
+            end
+            if level22.switch3.enabled == true then
+                level22.finish.y = level22.finish.y - 50
+            end
+            if level22.switch4.enabled == true then
+                level22.finish.y = level22.finish.y - 50
+            end
+            if level22.switch5.enabled == true then
+                level22.finish.y = level22.finish.y - 50
+            end
+            if level22.switch6.enabled == true then
+                level22.finish.y = level22.finish.y - 50
+            end
+        end
+    },
+    switch1 = {
+        render = "rectangle",
+        type = "switch",
+        x = 200,
+        y = 600,
+        width = 20,
+        height = 50,
+    },
+    switch2 = {
+        render = "rectangle",
+        type = "switch",
+        x = 500,
+        y = 700,
+        width = 20,
+        height = 50,
+    },
+    switch3 = {
+        render = "rectangle",
+        type = "switch",
+        x = 1000,
+        y = 300,
+        width = 20,
+        height = 50,
+    },
+    switch4 = {
+        render = "rectangle",
+        type = "switch",
+        x = 500,
+        y = 200,
+        width = 20,
+        height = 50,
+    },
+    switch5 = {
+        render = "rectangle",
+        type = "switch",
+        x = 550,
+        y = 500,
+        width = 20,
+        height = 50,
+    },
+    switch6 = {
+        render = "rectangle",
+        type = "switch",
+        x = 700,
+        y = 300,
+        width = 20,
+        height = 50,
+    },
+    wall = {
+        render = "rectangle",
+        type = "wall",
+        x = 1440,
+        y = 350,
+        width = 200,
+        height = 20,
+    },
+    wall2 = {
+        render = "rectangle",
+        type = "wall",
+        x = 1350,
+        y = 700,
+        width = 10,
+        height = 800,
+    },
+}
+level23 = {
+    id = {
+        type = "id",
+        value = 22
+    },
+    playerinfo = {
+        type = "player",
+        handle1x = 20,
+        handle1y = 880,
+        handle2x = 50,
+        handle2y = 880
+    },
+    par = {
+        type = "par",
+        value = 20
+    },
+    ground = {
+        render = "rectangle",
+        type = "wall",
+        x = 0,
+        y = 900,
+        width = 3200,
+        height = 25,
+    },
+    finish = {
+        render = "rectangle",
+        type = "finish",
+        x = 300,
+        y = 500,
+        width = 10,
+        height = 1000,
+        update = function(levelTime)
+            level23.finish.x = 300
+            level23.finish.x = level23.finish.x + 200 * levelTime
+        end
+    },
+    wall = {
+        render = "rectangle",
+        type = "wall",
+        x = 200,
+        y = 500,
+        width = 100,
+        height = 800,
+    },
+    wall2 = {
+        render = "rectangle",
+        type = "wall",
+        x = 400,
+        y = 300,
+        width = 100,
+        height = 800,
+    },
+    switch = {
+        render = "rectangle",
+        type = "switch",
+        x = 500,
+        y = 300,
+        width = 100,
+        height = 100,
+    },
+    spike = {
+        render = "rectangle",
+        type = "spike",
+        x = 1900,
+        y = 990,
+        width = 3200,
+        height = 25,
+        update = function(levelTime)
+            if level23.switch.enabled then
+                level23.spike.y = 880
+            else
+                level23.spike.y = 990
+            end
+        end
+    },
+
 }
 
 local levelsscreens = 3 - 1 -- has to have -1 because jank
@@ -2183,44 +2447,44 @@ levelselectionscreen3 = {
     },
     level3select = {
         render = "slice",
-        image = "${levelImages[12]}",
+        image = "${levelImages[21]}",
         sliceSize = 30,
         type = "button",
         x = ((screenWidth / 5) * 4) - (screenWidth / 7),
         y = screenHeight / 3,
         w = screenWidth / 7,
         h = 60,
-        text = "12 par:" .. level12.par.value .. "\n best: ${levelScores[12]}",
+        text = "21 par:" .. level21.par.value .. "\n best: ${levelScores[21]}",
         callback = function()
-            levelLoadCallback(level12)
+            levelLoadCallback(level21)
         end,
     },
     level4select = {
         render = "slice",
-        image = "${levelImages[13]}",
+        image = "${levelImages[22]}",
         sliceSize = 30,
         type = "button",
         x = ((screenWidth / 5) * 2) - (screenWidth / 7),
         y = screenHeight / 2,
         w = screenWidth / 7,
         h = 60,
-        text = "13 par:" .. level13.par.value .. "\n best: ${levelScores[13]}",
+        text = "22 par:" .. level22.par.value .. "\n best: ${levelScores[22]}",
         callback = function()
-            levelLoadCallback(level13)
+            levelLoadCallback(level22)
         end,
     },
     level5select = {
         render = "slice",
-        image = "${levelImages[14]}",
+        image = "${levelImages[23]}",
         sliceSize = 30,
         type = "button",
         x = ((screenWidth / 5) * 3) - (screenWidth / 7),
         y = screenHeight / 2,
         w = screenWidth / 7,
         h = 60,
-        text = "14 par:" .. level14.par.value .. "\n best: ${levelScores[14]}",
+        text = "23 par:" .. level23.par.value .. "\n best: ${levelScores[23]}",
         callback = function()
-            levelLoadCallback(level14)
+            levelLoadCallback(level23)
         end,
     },
     level6select = {

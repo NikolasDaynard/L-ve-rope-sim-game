@@ -192,6 +192,8 @@ function levelLoader:loader(level)
                 par = value.value
             elseif value.type == "id" then
                 currentLevelId = value.value
+            else
+                print("Type not recognised: " .. value.type)
             end
         end
         -- Set collision callback function
@@ -247,7 +249,7 @@ function levelLoader:updateLevel(dt)
     if loadedLevel ~= nil then
         for key, value in pairs(loadedLevel) do
             if value.update ~= nil then
-                value.update(levelTime)
+                value.update(levelTime, dt)
                 value.body:setPosition(value.x, value.y)
                 value.body:setAngle(math.rad(value.rotation or 0))
             end
