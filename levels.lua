@@ -1530,6 +1530,287 @@ level18 = {
         height = 100,
     },
 }
+level19 = {
+    id = {
+        type = "id",
+        value = 19
+    },
+    playerinfo = {
+        type = "player",
+        handle1x = 400,
+        handle1y = 880,
+        handle2x = 600,
+        handle2y = 880
+    },
+    par = {
+        type = "par",
+        value = 3
+    },
+    ground = {
+        render = "rectangle",
+        type = "wall",
+        x = 0,
+        y = 900,
+        width = 3200,
+        height = 25,
+    },
+    movingPlat = {
+        render = "rectangle",
+        type = "spring",
+        x = 0,
+        y = 700,
+        width = 100,
+        height = 25,
+        update = function(levelTime)
+            levelTime = levelTime * 3
+            local posX = 400
+            level19.movingPlat.x = (posX + (math.sin(levelTime)) * 100)
+        end,
+        rotation = -25,
+        force = 100,
+    },
+    movingPlat2 = {
+        render = "rectangle",
+        type = "spring",
+        x = 0,
+        y = 700,
+        width = 100,
+        height = 25,
+        update = function(levelTime)
+            levelTime = levelTime * 3
+            local posX = 700
+            level19.movingPlat2.x = (posX + (math.sin(levelTime)) * 100)
+        end,
+        rotation = 25,
+        force = 100,
+    },
+    spikes = {
+        render = "rectangle",
+        type = "spike",
+        x = 0,
+        y = 500,
+        width = 100,
+        height = 1000,
+    },
+    spikes2 = {
+        render = "rectangle",
+        type = "spike",
+        x = 1400,
+        y = 500,
+        width = 100,
+        height = 1000,
+    },
+    wall1 = {
+        render = "rectangle",
+        type = "wall",
+        x = 200,
+        y = 700,
+        width = 350,
+        height = 25,
+    },
+    wall2 = {
+        render = "rectangle",
+        type = "wall",
+        x = 1000,
+        y = 700,
+        width = 500,
+        height = 25,
+    },
+    finish = {
+        render = "rectangle",
+        type = "finish",
+        x = 500,
+        y = 15,
+        width = 150,
+        height = 30,
+    },
+}
+level20 = {
+    id = {
+        type = "id",
+        value = 20
+    },
+    playerinfo = {
+        type = "player",
+        handle1x = 400,
+        handle1y = 880,
+        handle2x = 600,
+        handle2y = 880
+    },
+    par = {
+        type = "par",
+        value = 3
+    },
+    ground = {
+        render = "rectangle",
+        type = "wall",
+        x = 0,
+        y = 900,
+        width = 3200,
+        height = 25,
+    },
+    finish = {
+        render = "circle",
+        type = "finish",
+        x = 1440 / 2,
+        y = 900 / 2,
+        radius = 20,
+        width = 20,
+        height = 20,
+    },
+    spike = {
+        render = "rectangle",
+        type = "spike",
+        x = (1440 / 2) + 200,
+        y = 900 / 2,
+        width = 20,
+        height = 20,
+        -- move circularly around (1440 / 2), 900 / 2
+        update = function(levelTime)
+            levelTime = levelTime * 3
+            if level20.switch.enabled then
+                levelTime = levelTime / 3
+            end
+
+            local centerX = 1440 / 2
+            local centerY = 900 / 2
+
+            local newX = centerX + math.cos(levelTime) * 100
+            local newY = centerY + math.sin(levelTime) * 100
+    
+            level20.spike.x = newX
+            level20.spike.y = newY
+        end
+    },
+    spike2 = {
+        render = "rectangle",
+        type = "spike",
+        x = (1440 / 2) + 200,
+        y = 900 / 2,
+        width = 20,
+        height = 20,
+        -- move circularly around (1440 / 2), 900 / 2
+        update = function(levelTime)
+            levelTime = levelTime * 4.5
+            if level20.switch.enabled then
+                levelTime = levelTime / 3
+            end
+
+            local centerX = 1440 / 2
+            local centerY = 900 / 2
+
+            local newX = centerX + math.cos(levelTime) * 100
+            local newY = centerY + math.sin(levelTime) * 100
+    
+            level20.spike2.x = newX
+            level20.spike2.y = newY
+        end
+    },
+    spike3 = {
+        render = "rectangle",
+        type = "spike",
+        x = (1440 / 2) + 200,
+        y = 900 / 2,
+        width = 20,
+        height = 20,
+        -- move circularly around (1440 / 2), 900 / 2
+        update = function(levelTime)
+            levelTime = levelTime * 5
+            if level20.switch.enabled then
+                levelTime = levelTime / 3
+            end
+
+            local centerX = 1440 / 2
+            local centerY = 900 / 2
+
+            local newX = centerX + math.cos(levelTime) * 100
+            local newY = centerY + math.sin(levelTime) * 100
+    
+            level20.spike3.x = newX
+            level20.spike3.y = newY
+        end
+    },
+    spike4 = {
+        render = "rectangle",
+        type = "spike",
+        x = (1440 / 2) + 200,
+        y = 900 / 2,
+        width = 20,
+        height = 20,
+        -- move circularly around (1440 / 2), 900 / 2
+        update = function(levelTime)
+            levelTime = levelTime * 6.02
+            if level20.switch.enabled then
+                levelTime = levelTime / 3
+            end
+
+            local centerX = 1440 / 2
+            local centerY = 900 / 2
+
+            local newX = centerX + math.cos(levelTime) * 100
+            local newY = centerY + math.sin(levelTime) * 100
+    
+            level20.spike4.x = newX
+            level20.spike4.y = newY
+        end
+    },
+    spike5 = {
+        render = "rectangle",
+        type = "spike",
+        x = (1440 / 2) + 200,
+        y = 900 / 2,
+        width = 20,
+        height = 20,
+        -- move circularly around (1440 / 2), 900 / 2
+        update = function(levelTime)
+            levelTime = levelTime * 7
+            if level20.switch.enabled then
+                levelTime = levelTime / 3
+            end
+
+            local centerX = 1440 / 2
+            local centerY = 900 / 2
+
+            local newX = centerX + math.cos(levelTime) * 100
+            local newY = centerY + math.sin(levelTime) * 100
+    
+            level20.spike5.x = newX
+            level20.spike5.y = newY
+        end
+    },
+    spike6 = {
+        render = "rectangle",
+        type = "spike",
+        x = (1440 / 2) + 200,
+        y = 900 / 2,
+        width = 20,
+        height = 20,
+        -- move circularly around (1440 / 2), 900 / 2
+        update = function(levelTime)
+            levelTime = levelTime * 8.33
+            if level20.switch.enabled then
+                levelTime = levelTime / 3
+            end
+
+            local centerX = 1440 / 2
+            local centerY = 900 / 2
+
+            local newX = centerX + math.cos(levelTime) * 100
+            local newY = centerY + math.sin(levelTime) * 100
+    
+            level20.spike6.x = newX
+            level20.spike6.y = newY
+        end
+    },
+    switch = {
+        render = "rectangle",
+        type = "switch",
+        x = 200,
+        y = 600,
+        width = 20,
+        height = 50,
+    }
+}
 
 local levelsscreens = 3 - 1 -- has to have -1 because jank
 levelselectionBar = {
@@ -1758,6 +2039,146 @@ levelselectionscreen2 = {
         text = "11 par:" .. level11.par.value .. "\n best: ${levelScores[11]}",
         callback = function()
             levelLoadCallback(level11)
+        end,
+    },
+    level3select = {
+        render = "slice",
+        image = "${levelImages[12]}",
+        sliceSize = 30,
+        type = "button",
+        x = ((screenWidth / 5) * 4) - (screenWidth / 7),
+        y = screenHeight / 3,
+        w = screenWidth / 7,
+        h = 60,
+        text = "12 par:" .. level12.par.value .. "\n best: ${levelScores[12]}",
+        callback = function()
+            levelLoadCallback(level12)
+        end,
+    },
+    level4select = {
+        render = "slice",
+        image = "${levelImages[13]}",
+        sliceSize = 30,
+        type = "button",
+        x = ((screenWidth / 5) * 2) - (screenWidth / 7),
+        y = screenHeight / 2,
+        w = screenWidth / 7,
+        h = 60,
+        text = "13 par:" .. level13.par.value .. "\n best: ${levelScores[13]}",
+        callback = function()
+            levelLoadCallback(level13)
+        end,
+    },
+    level5select = {
+        render = "slice",
+        image = "${levelImages[14]}",
+        sliceSize = 30,
+        type = "button",
+        x = ((screenWidth / 5) * 3) - (screenWidth / 7),
+        y = screenHeight / 2,
+        w = screenWidth / 7,
+        h = 60,
+        text = "14 par:" .. level14.par.value .. "\n best: ${levelScores[14]}",
+        callback = function()
+            levelLoadCallback(level14)
+        end,
+    },
+    level6select = {
+        render = "slice",
+        image = "${levelImages[15]}",
+        sliceSize = 30,
+        type = "button",
+        x = ((screenWidth / 5) * 4) - (screenWidth / 7),
+        y = screenHeight / 2,
+        w = screenWidth / 7,
+        h = 60,
+        text = "15 par:" .. level15.par.value .. "\n best: ${levelScores[15]}",
+        callback = function()
+            levelLoadCallback(level15)
+        end,
+    },
+    level7select = {
+        render = "slice",
+        image = "${levelImages[16]}",
+        sliceSize = 30,
+        type = "button",
+        x = ((screenWidth / 5) * 2) - (screenWidth / 7),
+        y = screenHeight / 1.5,
+        w = screenWidth / 7,
+        h = 60,
+        text = "16 par:" .. level16.par.value .. "\n best: ${levelScores[16]}",
+        callback = function()
+            levelLoadCallback(level16)
+        end,
+    },
+    level17select = {
+        render = "slice",
+        image = "${levelImages[17]}",
+        sliceSize = 30,
+        type = "button",
+        x = ((screenWidth / 5) * 3) - (screenWidth / 7),
+        y = screenHeight / 1.5,
+        w = screenWidth / 7,
+        h = 60,
+        text = "17 par:" .. level17.par.value .. "\n best: ${levelScores[17]}",
+        callback = function()
+            levelLoadCallback(level17)
+        end,
+    },
+    level18select = {
+        render = "slice",
+        image = "${levelImages[18]}",
+        sliceSize = 30,
+        type = "button",
+        x = ((screenWidth / 5) * 4) - (screenWidth / 7),
+        y = screenHeight / 1.5,
+        w = screenWidth / 7,
+        h = 60,
+        text = "18 par:" .. level18.par.value .. "\n best: ${levelScores[18]}",
+        callback = function()
+            levelLoadCallback(level18)
+        end,
+    },
+    levelselectionBar.q1,
+    levelselectionBar.q2,
+    levelselectionBar.q3,
+
+}
+-- LETS GO WE NEEDED ANOTHER
+levelselectionscreen3 = {
+    playerinfo = {
+        type = "player",
+        handle1x = -1000,
+        handle1y = -100,
+        handle2x = -1000,
+        handle2y = -100
+    },
+    level1select = {
+        render = "slice",
+        image = "${levelImages[19]}",
+        sliceSize = 30,
+        type = "button",
+        x = ((screenWidth / 5) * 2) - (screenWidth / 7),
+        y = screenHeight / 3,
+        w = screenWidth / 7,
+        h = 60,
+        text = "19 par:" .. level19.par.value .. "\n best: ${levelScores[19]}", -- TODO; rhis
+        callback = function()
+            levelLoadCallback(level19)
+        end,
+    },
+    level2select = {
+        render = "slice",
+        image = "${levelImages[20]}",
+        sliceSize = 30,
+        type = "button",
+        x = ((screenWidth / 5) * 3) - (screenWidth / 7),
+        y = screenHeight / 3,
+        w = screenWidth / 7,
+        h = 60,
+        text = "20 par:" .. level20.par.value .. "\n best: ${levelScores[20]}",
+        callback = function()
+            levelLoadCallback(level20)
         end,
     },
     level3select = {
