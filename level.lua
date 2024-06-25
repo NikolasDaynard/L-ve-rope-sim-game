@@ -5,6 +5,8 @@ levelLoader = {}
 
 function createBoundaries()
     local windowWidth, windowHeight = love.graphics.getDimensions()
+    windowWidth = 1440
+    windowHeight = 900
     
     -- Create static bodies for each edge of the window
     local boundaries = {
@@ -260,8 +262,11 @@ end
 function levelLoader:renderLevel() 
     if loadedLevel ~= nil then
         for key, value in pairs(loadedLevel) do
+            love.graphics.setColor(1, 1, 1)
             if value.type == "finish" then
                 love.graphics.setColor(0.2, 1, 0.2)
+            elseif value.type == "wall" then
+                love.graphics.setColor(1, 1, 1)
             elseif value.type == "spike" then
                 love.graphics.setColor(1, 0.2, 0.2)
             elseif value.type == "spring" then
@@ -289,6 +294,7 @@ function levelLoader:renderLevel()
                 love.graphics.circle("fill", value.body:getX(), value.body:getY(), value.radius)
                 love.graphics.setColor(1, 1, 1)
             end
+            love.graphics.setColor(1, 1, 1)
         end
     end
 end

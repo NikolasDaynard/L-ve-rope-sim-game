@@ -998,7 +998,7 @@ level13 = {
     },
     par = {
         type = "par",
-        value = 11
+        value = 23
     },
     ground = {
         render = "rectangle",
@@ -1023,6 +1023,51 @@ level13 = {
         y = 500,
         width = 100,
         height = 800,
+    },
+    emp1 = {
+        render = "cirle",
+        type = "emp",
+        x = 200,
+        y = 100,
+        radius = 10,
+        triggerRadius = 200,
+        speed = .5
+    },
+    emp2 = {
+        render = "cirle",
+        type = "emp",
+        x = 600,
+        y = 100,
+        radius = 10,
+        triggerRadius = 200,
+        speed = .5
+    },
+    emp3 = {
+        render = "cirle",
+        type = "emp",
+        x = 1000,
+        y = 100,
+        radius = 10,
+        triggerRadius = 200,
+        speed = .5
+    },
+    emp4 = {
+        render = "cirle",
+        type = "emp",
+        x = 400,
+        y = 700,
+        radius = 10,
+        triggerRadius = 200,
+        speed = .5
+    },
+    emp5 = {
+        render = "cirle",
+        type = "emp",
+        x = 800,
+        y = 700,
+        radius = 10,
+        triggerRadius = 200,
+        speed = .5
     },
     wall2 = {
         render = "rectangle",
@@ -1064,6 +1109,17 @@ level13 = {
         width = 100,
         height = 800,
     },
+    finish = {
+        render = "rectangle",
+        type = "finish",
+        x = 1400,
+        y = 500,
+        width = 100,
+        height = 1000,
+    },
+}
+level14 = {
+    
 }
 
 local levelsscreens = 3 - 1 -- has to have -1 because jank

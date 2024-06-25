@@ -210,6 +210,9 @@ function camera:lockWindow(x, y, x_min, x_max, y_min, y_max, smoother, ...)
 	-- move
 	self:move((smoother or self.smoother)(dx,dy,...))
 end
+function camera:getScale()
+	return self.scale
+end
 
 -- the module
 return setmetatable({new = new, smooth = camera.smooth},
