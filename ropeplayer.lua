@@ -70,7 +70,7 @@ function player:update(dt)
                 if self.radiusOffset[i + 1] ~= nil then
                     if self.radiusOffset[i + 1] > 15 then -- arbitrary pop time
                         self.radiusOffset[i + 1] = -10
-                        soundLib:playSound("sounds/poptrimed.mov")
+                        soundLib:playSound("sounds/poptrimed.mov", settings.SFX)
                     elseif self.radiusOffset[i + 1] > -10 then
                         self.radiusOffset[i + 1] = self.radiusOffset[i + 1] + 2
                     end
@@ -78,7 +78,7 @@ function player:update(dt)
                 if self.radiusOffset[i - 1] ~= nil then
                     if self.radiusOffset[i - 1] > 15 then -- arbitrary pop time
                         self.radiusOffset[i - 1] = -10
-                        soundLib:playSound("sounds/poptrimed.mov")
+                        soundLib:playSound("sounds/poptrimed.mov", settings.SFX)
                     elseif self.radiusOffset[i - 1] > -10 then
                         self.radiusOffset[i - 1] = self.radiusOffset[i - 1] + 2
                     end
@@ -95,7 +95,7 @@ function player:momentumGrab(mousePos)
             levelStarted = true -- doesn't matter if set multiple times
             self.bodies[self.draggingIndex]:applyForce(momentumArrow:getForce().x, momentumArrow:getForce().y)
             score = score + 1
-            soundLib:playSound("sounds/fsh.wav", (math.abs(momentumArrow:getForce().x) + math.abs(momentumArrow:getForce().y)) / 100000)
+            soundLib:playSound("sounds/fsh.wav", ((math.abs(momentumArrow:getForce().x) + math.abs(momentumArrow:getForce().y)) / 100000) * settings.SFX)
             momentumArrow:hide()
         end
         self.draggingIndex = -1

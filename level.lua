@@ -60,8 +60,12 @@ function beginContact(a, b, coll)
         elseif string.find(textB, "player") ~= nil and string.find(textA, "spring") ~= nil then
             index = tonumber(string.match(textA, "%d+")) 
             local tableAtIndex = levelLoader:findTableAtIndex(index, "spring")
-            player:applyForceToSegment(textB, 0, -10000 * tableAtIndex.force)
-            soundLib:playSound("sounds/spring.wav")
+
+            local angle = (tableAtIndex.rotation or 0) + 90
+            local forceX = -10000 * math.cos(math.rad(angle)) * (tableAtIndex.force or 1)
+            local forceY = -10000 * math.sin(math.rad(angle)) * (tableAtIndex.force or 1)
+            player:applyForceToSegment(textB, forceX, forceY)
+            soundLib:playSound("sounds/spring.wav", settings.SFX)
 
         elseif string.find(textB, "emp") ~= nil and string.find(textA, "player") ~= nil then
             index = tonumber(string.match(textB, "%d+")) 
@@ -115,7 +119,7 @@ function levelLoader:loader(level)
                 value.fixture = love.physics.newFixture(value.body, value.shape)
             elseif value.type == "spring" then
                 value.body = love.physics.newBody(world, value.x, value.y, "static")
-                value.shape = love.physics.newRectangleShape(value.width, value.height)
+                value.shape = love.physics.newRectangleShape(0, 0, value.width, value.height, math.rad(value.rotation or 0))
                 value.fixture = love.physics.newFixture(value.body, value.shape)
                 value.fixture:setUserData("spring" .. springIndex)
 
@@ -273,6 +277,7 @@ function levelLoader:renderLevel()
                 love.graphics.setColor(1, 0.7, 0.5)
             elseif value.type == "physics" then
                 love.graphics.setColor(0.2, 0.3, 1, .5)
+                
             elseif value.type == "emp" then
                 if value.empTimer < 3 and value.empTimer > 2.5 then
                     love.graphics.setColor(0.7, 0.7 * (value.empTimer / 5), 0.3)

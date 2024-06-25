@@ -34,6 +34,9 @@ function love.load()
         settings = lunajson.decode(fileData)
     else
         settings.volume = 1
+        settings.musicVolume = 1
+        settings.SFX = 1
+        saveSettings()
     end
 
     loadLevelScoreImages()
@@ -142,7 +145,7 @@ function love.update(dt)
     levelLoader:updateLevel(dt)
     -- ui is unnafected by camera transforms
     soundLib:update()
-    soundLib:loop("sounds/soundtrack.mp3")
+    soundLib:loop("sounds/soundtrack.mp3", settings.musicVolume)
     ui:update({x = cam:mousePosition().x, y = cam:mousePosition().y})
 end
 

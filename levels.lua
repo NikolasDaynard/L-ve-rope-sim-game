@@ -4,7 +4,7 @@ local screenWidth, screenHeight = love.window.getDesktopDimensions()
 
 -- Spike object definition
 local function levelLoadCallback(level)
-    soundLib:playSound("sounds/clicklous.wav", 1)
+    soundLib:playSound("sounds/clicklous.wav", settings.SFX)
     levelLoader:unloadLevel()
     levelLoader:loadLevel(level)
 end
@@ -112,7 +112,7 @@ settingsUi = {
         barImage = "uiOutline.png",
         nubImage = "uiOutline.png",
         x = (screenWidth / 2) - (screenWidth / 10),
-        y = screenHeight / 3,
+        y = screenHeight / 2.7,
         w = (screenWidth / 5),
         h = screenHeight / 20,
         text = "Volume",
@@ -123,6 +123,42 @@ settingsUi = {
             settings.volume = value
             saveSettings()
             print(settings.volume)
+        end,
+    },
+    musicVolSlider = {
+        type = "slider",
+        barImage = "uiOutline.png",
+        nubImage = "uiOutline.png",
+        x = (screenWidth / 2) - (screenWidth / 10),
+        y = screenHeight / 2.2,
+        w = (screenWidth / 5),
+        h = screenHeight / 20,
+        text = "Music Volume",
+        maxValue = 1,
+        minValue = 0,
+        value = "${settings.musicVolume}",
+        callback = function(value)
+            settings.musicVolume = value
+            saveSettings()
+            print(settings.musicVolume)
+        end,
+    },
+    sfxVolSlider = {
+        type = "slider",
+        barImage = "uiOutline.png",
+        nubImage = "uiOutline.png",
+        x = (screenWidth / 2) - (screenWidth / 10),
+        y = screenHeight / 1.84,
+        w = (screenWidth / 5),
+        h = screenHeight / 20,
+        text = "SFX Volume",
+        maxValue = 1,
+        minValue = 0,
+        value = "${settings.SFX}",
+        callback = function(value)
+            settings.SFX = value
+            saveSettings()
+            print(settings.SFX)
         end,
     },
     openLevels = {
@@ -1119,8 +1155,188 @@ level13 = {
     },
 }
 level14 = {
-    
+    id = {
+        type = "id",
+        value = 14
+    },
+    playerinfo = {
+        type = "player",
+        handle1x = 40,
+        handle1y = 200,
+        handle2x = 50,
+        handle2y = 200
+    },
+    par = {
+        type = "par",
+        value = 2
+    },
+    wall1 = {
+        render = "rectangle",
+        type = "wall",
+        x = 100,
+        y = 500,
+        width = 1000,
+        height = 300,
+        rotation = 45,
+    },
+    wall2 = {
+        render = "rectangle",
+        type = "wall",
+        x = 1300,
+        y = 500,
+        width = 1000,
+        height = 300,
+        rotation = -45,
+    },
+    spring1 = {
+        render = "rectangle",
+        type = "spring",
+        x = 400,
+        y = 550,
+        width = 70,
+        height = 30,
+        rotation = 45,
+        force = 4,
+    },
+    spring2 = {
+        render = "rectangle",
+        type = "spring",
+        x = 1000,
+        y = 550,
+        width = 70,
+        height = 30,
+        rotation = -45,
+        force = 4,
+    },
+    spring3 = {
+        render = "rectangle",
+        type = "spring",
+        x = 300,
+        y = 450,
+        width = 70,
+        height = 30,
+        rotation = 45,
+        force = 3,
+    },
+    spring4 = {
+        render = "rectangle",
+        type = "spring",
+        x = 1100,
+        y = 450,
+        width = 70,
+        height = 30,
+        rotation = -45,
+        force = 3,
+    },
+    spring5 = {
+        render = "rectangle",
+        type = "spring",
+        x = 200,
+        y = 350,
+        width = 70,
+        height = 30,
+        rotation = 45,
+        force = 2,
+    },
+    spring6 = {
+        render = "rectangle",
+        type = "spring",
+        x = 1200,
+        y = 350,
+        width = 70,
+        height = 30,
+        rotation = -45,
+        force = 2,
+    },
+    spring7 = {
+        render = "rectangle",
+        type = "spring",
+        x = 100,
+        y = 250,
+        width = 70,
+        height = 30,
+        rotation = 45,
+        force = 2,
+    },
+    spring8 = {
+        render = "rectangle",
+        type = "spring",
+        x = 1300,
+        y = 250,
+        width = 70,
+        height = 30,
+        rotation = -45,
+        force = 2,
+    },
+    spike1 = {
+        render = "rectangle",
+        type = "spike",
+        x = 500,
+        y = 650,
+        width = 300,
+        height = 30,
+        rotation = 45,
+    },
+    spike2 = {
+        render = "rectangle",
+        type = "spike",
+        x = 900,
+        y = 650,
+        width = 300,
+        height = 30,
+        rotation = -45,
+    },
+    finish = {
+        render = "rectangle",
+        type = "finish",
+        x = 1440 / 2,
+        y = 900,
+        width = 700,
+        height = 100,
+    },
 }
+level15 = {
+    id = {
+        type = "id",
+        value = 14
+    },
+    playerinfo = {
+        type = "player",
+        handle1x = 40,
+        handle1y = 200,
+        handle2x = 50,
+        handle2y = 200
+    },
+    par = {
+        type = "par",
+        value = 2
+    },
+    wall1 = {
+        render = "rectangle",
+        type = "wall",
+        x = 100,
+        y = 300,
+        width = 1000,
+        height = 300,
+    },
+    ground = {
+        render = "rectangle",
+        type = "spike",
+        x = 0,
+        y = 900,
+        width = 3200,
+        height = 25,
+    },
+    finish = {
+        render = "rectangle",
+        type = "finish",
+        x = 0,
+        y = 675,
+        width = 100,
+        height = 450,
+    },
+}
+
 
 local levelsscreens = 3 - 1 -- has to have -1 because jank
 levelselectionBar = {
@@ -1381,30 +1597,30 @@ levelselectionscreen2 = {
     },
     level5select = {
         render = "slice",
-        image = "${levelImages[5]}",
+        image = "${levelImages[14]}",
         sliceSize = 30,
         type = "button",
         x = ((screenWidth / 5) * 3) - (screenWidth / 7),
         y = screenHeight / 2,
         w = screenWidth / 7,
         h = 60,
-        text = "5 par:" .. level5.par.value .. "\n best: ${levelScores[5]}",
+        text = "14 par:" .. level14.par.value .. "\n best: ${levelScores[14]}",
         callback = function()
-            levelLoadCallback(level5)
+            levelLoadCallback(level14)
         end,
     },
     level6select = {
         render = "slice",
-        image = "${levelImages[6]}",
+        image = "${levelImages[15]}",
         sliceSize = 30,
         type = "button",
         x = ((screenWidth / 5) * 4) - (screenWidth / 7),
         y = screenHeight / 2,
         w = screenWidth / 7,
         h = 60,
-        text = "6 par:" .. level6.par.value .. "\n best: ${levelScores[6]}",
+        text = "15 par:" .. level15.par.value .. "\n best: ${levelScores[15]}",
         callback = function()
-            levelLoadCallback(level6)
+            levelLoadCallback(level15)
         end,
     },
     level7select = {
