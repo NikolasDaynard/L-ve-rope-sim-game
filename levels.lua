@@ -295,7 +295,7 @@ level3 = {
     },
     par = {
         type = "par",
-        value = 2
+        value = 3
     },
     ground = {
         render = "rectangle",
@@ -461,7 +461,7 @@ level6 = {
     },
     par = {
         type = "par",
-        value = 2
+        value = 3
     },
     ground = {
         render = "rectangle",
@@ -528,7 +528,7 @@ level7 = {
     },
     par = {
         type = "par",
-        value = 3
+        value = 5
     },
     ground = {
         render = "rectangle",
@@ -599,7 +599,7 @@ level8 = {
     },
     par = {
         type = "par",
-        value = 3
+        value = 5
     },
     ground = {
         render = "rectangle",
@@ -877,7 +877,7 @@ level11 = {
         render = "rectangle",
         type = "finish",
         x = 400,
-        y = 100,
+        y = 0,
         width = 10,
         height = 200,
     },
@@ -911,7 +911,7 @@ level12 = {
     },
     par = {
         type = "par",
-        value = 11
+        value = 5
     },
     ground = {
         render = "rectangle",
@@ -2026,7 +2026,7 @@ level23 = {
     },
     par = {
         type = "par",
-        value = 20
+        value = 8
     },
     ground = {
         render = "rectangle",
@@ -2208,7 +2208,7 @@ level25 = {
     },
     par = {
         type = "par",
-        value = 11
+        value = 3
     },
     ground = {
         render = "rectangle",
@@ -2285,7 +2285,7 @@ level25 = {
     finishwalls = {
         render = "rectangle",
         type = "spike",
-        x = 1440 / 2 + 100,
+        x = 1440 / 2 + 200,
         y = 20,
         width = 200,
         height = 20,
@@ -2293,7 +2293,7 @@ level25 = {
     finishwalls2 = {
         render = "rectangle",
         type = "spike",
-        x = 1440 / 2 - 100,
+        x = 1440 / 2 - 200,
         y = 20,
         width = 200,
         height = 20,
@@ -2318,7 +2318,7 @@ level26 = {
     },
     par = {
         type = "par",
-        value = 11
+        value = 5
     },
     ground = {
         render = "rectangle",
@@ -2439,7 +2439,7 @@ level27 = {
     },
     par = {
         type = "par",
-        value = 11
+        value = 8
     },
     ground = {
         render = "rectangle",
