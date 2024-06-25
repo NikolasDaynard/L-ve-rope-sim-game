@@ -122,7 +122,6 @@ settingsUi = {
         callback = function(value)
             settings.volume = value
             saveSettings()
-            print(settings.volume)
         end,
     },
     musicVolSlider = {
@@ -140,7 +139,6 @@ settingsUi = {
         callback = function(value)
             settings.musicVolume = value
             saveSettings()
-            print(settings.musicVolume)
         end,
     },
     sfxVolSlider = {
@@ -158,7 +156,6 @@ settingsUi = {
         callback = function(value)
             settings.SFX = value
             saveSettings()
-            print(settings.SFX)
         end,
     },
     openLevels = {
@@ -2105,7 +2102,7 @@ level24 = {
     },
     par = {
         type = "par",
-        value = 20
+        value = 11
     },
     ground = {
         render = "rectangle",
@@ -2150,6 +2147,13 @@ level24 = {
         y = 750,
         width = 300,
         height = 200,
+        update = function()
+            if level24.switch1.enabled then
+                level24.switch1.x = -1000
+            else
+                level24.switch1.x = 300
+            end
+        end
     },
     switch2 = {
         render = "rectangle",
@@ -2158,9 +2162,318 @@ level24 = {
         y = 450,
         width = 300,
         height = 200,
+        update = function()
+            if level24.switch2.enabled then
+                level24.switch2.x = -1000
+            else
+                level24.switch2.x = 700
+            end
+        end
+    },
+    finishblock = {
+        render = "rectangle",
+        type = "wall",
+        x = 1440,
+        y = 200,
+        width = 600,
+        height = 20,
+        update = function()
+            if level24.switch1.enabled and level24.switch2.enabled then
+                level24.finishblock.x = -1000
+            else
+                level24.finishblock.x = 1440
+            end
+        end
+    },
+    finish = {
+        render = "rectangle",
+        type = "finish",
+        x = 1440,
+        y = 350,
+        width = 600,
+        height = 200,
     },
 }
-
+level25 = {
+    id = {
+        type = "id",
+        value = 25
+    },
+    playerinfo = {
+        type = "player",
+        handle1x = 20,
+        handle1y = 140,
+        handle2x = 50,
+        handle2y = 140
+    },
+    par = {
+        type = "par",
+        value = 11
+    },
+    ground = {
+        render = "rectangle",
+        type = "wall",
+        x = 0,
+        y = 900,
+        width = 3200,
+        height = 25,
+    },
+    spring = {
+        render = "rectangle",
+        type = "spring",
+        x = 400,
+        y = 500,
+        width = 200,
+        height = 20,
+        rotation = 30,
+        force = 100,
+        update = function(levelTime) 
+            level25.spring.rotation = 0
+            level25.spring.rotation = levelTime * 300
+        end
+    },
+    spring1 = {
+        render = "rectangle",
+        type = "spring",
+        x = 900,
+        y = 800,
+        width = 200,
+        height = 20,
+        rotation = 30,
+        force = 100,
+        update = function(levelTime) 
+            level25.spring1.rotation = 0
+            level25.spring1.rotation = levelTime * 122
+        end
+    },
+    spring2 = {
+        render = "rectangle",
+        type = "spring",
+        x = 700,
+        y = 300,
+        width = 200,
+        height = 20,
+        rotation = 30,
+        force = 100,
+        update = function(levelTime) 
+            level25.spring2.rotation = 0
+            level25.spring2.rotation = levelTime * 270
+        end
+    },
+    spring3 = {
+        render = "rectangle",
+        type = "spring",
+        x = 900,
+        y = 200,
+        width = 200,
+        height = 20,
+        rotation = 30,
+        force = 100,
+        update = function(levelTime) 
+            level25.spring3.rotation = 0
+            level25.spring3.rotation = levelTime * 312
+        end
+    },
+    finish = {
+        render = "rectangle",
+        type = "finish",
+        x = 1440 / 2,
+        y = 20,
+        width = 200,
+        height = 20,
+    },
+    finishwalls = {
+        render = "rectangle",
+        type = "spike",
+        x = 1440 / 2 + 100,
+        y = 20,
+        width = 200,
+        height = 20,
+    },
+    finishwalls2 = {
+        render = "rectangle",
+        type = "spike",
+        x = 1440 / 2 - 100,
+        y = 20,
+        width = 200,
+        height = 20,
+    },
+}
+--[[
+  /
+ /
+/
+]]--
+level26 = {
+    id = {
+        type = "id",
+        value = 26
+    },
+    playerinfo = {
+        type = "player",
+        handle1x = 20,
+        handle1y = 140,
+        handle2x = 50,
+        handle2y = 140
+    },
+    par = {
+        type = "par",
+        value = 11
+    },
+    ground = {
+        render = "rectangle",
+        type = "finish",
+        x = 0,
+        y = 900,
+        width = 3200,
+        height = 25,
+    },
+    wall = {
+        render = "rectangle",
+        type = "wall",
+        x = 230,
+        y = 500,
+        width = 500,
+        height = 10,
+        rotation = -30
+    },
+    wall2 = {
+        render = "rectangle",
+        type = "wall",
+        x = 1230,
+        y = 500,
+        width = 500,
+        height = 10,
+        rotation = 30
+    },
+    spike1 = {
+        render = "rectangle",
+        type = "spike",
+        x = 1440 / 2,
+        y = 400,
+        width = 20,
+        height = 10,
+        update = function(levelTime)
+            levelTime = levelTime * 2
+            level26.spike1.x = 1440 / 2
+            level26.spike1.x = level26.spike1.x + 290 * math.sin(levelTime)
+        end
+    },
+    spike2 = {
+        render = "rectangle",
+        type = "spike",
+        x = 1440 / 2,
+        y = 400,
+        width = 20,
+        height = 10,
+        update = function(levelTime)
+            levelTime = levelTime * 2.3
+            level26.spike2.x = 1440 / 2
+            level26.spike2.x = level26.spike2.x + 290 * math.sin(levelTime)
+        end
+    },
+    spike3 = {
+        render = "rectangle",
+        type = "spike",
+        x = 1440 / 2,
+        y = 400,
+        width = 40,
+        height = 10,
+        update = function(levelTime)
+            levelTime = levelTime * 2.5
+            level26.spike3.x = 1440 / 2
+            level26.spike3.x = level26.spike3.x + 290 * math.sin(levelTime)
+        end
+    },
+    spike4 = {
+        render = "rectangle",
+        type = "spike",
+        x = 1440 / 2,
+        y = 400,
+        width = 40,
+        height = 10,
+        update = function(levelTime)
+            levelTime = -levelTime * 9.1
+            level26.spike4.x = 1440 / 2
+            level26.spike4.x = level26.spike4.x + 290 * math.sin(levelTime)
+        end
+    },
+    spike5 = {
+        render = "rectangle",
+        type = "spike",
+        x = 1440 / 2,
+        y = 400,
+        width = 40,
+        height = 10,
+        update = function(levelTime)
+            levelTime = -levelTime * 3.21231
+            level26.spike5.x = 1440 / 2
+            level26.spike5.x = level26.spike5.x + 290 * math.sin(levelTime)
+        end
+    },
+    spike6 = {
+        render = "rectangle",
+        type = "spike",
+        x = 1440 / 2,
+        y = 400,
+        width = 40,
+        height = 10,
+        update = function(levelTime)
+            levelTime = levelTime * 3.829
+            level26.spike6.x = 1440 / 2
+            level26.spike6.x = level26.spike6.x + 290 * math.sin(levelTime)
+        end
+    },
+}
+level27 = {
+    id = {
+        type = "id",
+        value = 27
+    },
+    playerinfo = {
+        type = "player",
+        handle1x = 20,
+        handle1y = 140,
+        handle2x = 50,
+        handle2y = 140
+    },
+    par = {
+        type = "par",
+        value = 11
+    },
+    ground = {
+        render = "rectangle",
+        type = "wall",
+        x = 0,
+        y = 900,
+        width = 3200,
+        height = 25,
+    },
+    wall1 = {
+        render = "rectangle",
+        type = "spike",
+        x = 600,
+        y = 900,
+        width = 300,
+        height = 600,
+    },
+    wall2 = {
+        render = "rectangle",
+        type = "spike",
+        x = 600,
+        y = 100,
+        width = 300,
+        height = 600,
+    },
+    finish = {
+        render = "rectangle",
+        type = "finish",
+        x = 800,
+        y = 900,
+        width = 100,
+        height = 300,
+    },
+}
 
 local levelsscreens = 3 - 1 -- has to have -1 because jank
 levelselectionBar = {
@@ -2589,44 +2902,44 @@ levelselectionscreen3 = {
     },
     level7select = {
         render = "slice",
-        image = "${levelImages[16]}",
+        image = "${levelImages[25]}",
         sliceSize = 30,
         type = "button",
         x = ((screenWidth / 5) * 2) - (screenWidth / 7),
         y = screenHeight / 1.5,
         w = screenWidth / 7,
         h = 60,
-        text = "16 par:" .. level16.par.value .. "\n best: ${levelScores[16]}",
+        text = "25 par:" .. level25.par.value .. "\n best: ${levelScores[25]}",
         callback = function()
-            levelLoadCallback(level16)
+            levelLoadCallback(level25)
         end,
     },
     level17select = {
         render = "slice",
-        image = "${levelImages[17]}",
+        image = "${levelImages[26]}",
         sliceSize = 30,
         type = "button",
         x = ((screenWidth / 5) * 3) - (screenWidth / 7),
         y = screenHeight / 1.5,
         w = screenWidth / 7,
         h = 60,
-        text = "17 par:" .. level17.par.value .. "\n best: ${levelScores[17]}",
+        text = "26 par:" .. level26.par.value .. "\n best: ${levelScores[26]}",
         callback = function()
-            levelLoadCallback(level17)
+            levelLoadCallback(level26)
         end,
     },
-    level18select = {
+    level27select = {
         render = "slice",
-        image = "${levelImages[18]}",
+        image = "${levelImages[27]}",
         sliceSize = 30,
         type = "button",
         x = ((screenWidth / 5) * 4) - (screenWidth / 7),
         y = screenHeight / 1.5,
         w = screenWidth / 7,
         h = 60,
-        text = "18 par:" .. level18.par.value .. "\n best: ${levelScores[18]}",
+        text = "27 par:" .. level27.par.value .. "\n best: ${levelScores[27]}",
         callback = function()
-            levelLoadCallback(level18)
+            levelLoadCallback(level27)
         end,
     },
     levelselectionBar.q1,

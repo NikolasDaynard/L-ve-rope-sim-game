@@ -95,12 +95,14 @@ end
 
 function levelLoader:findTableAtIndex(indexToFind, type)
     local currentNum = 1
-    for key, value in pairs(loadedLevel) do
-        if value.type == type then
-            if currentNum == indexToFind then
-                return value
+    if loadedLevel ~= nil then
+        for key, value in pairs(loadedLevel) do
+            if value.type == type then
+                if currentNum == indexToFind then
+                    return value
+                end
+                currentNum = currentNum + 1
             end
-            currentNum = currentNum + 1
         end
     end
     return nil
@@ -273,6 +275,7 @@ function levelLoader:updateLevel(dt)
                                     player.radiusOffset[i] = -10
                                 end
                             end
+                            soundLib:playSound("sounds/clicklous.wav")
                             
                             value.triggerFixture:destroy()
                             value.fixture:destroy()
