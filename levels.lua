@@ -1298,7 +1298,7 @@ level14 = {
 level15 = {
     id = {
         type = "id",
-        value = 14
+        value = 15
     },
     playerinfo = {
         type = "player",
@@ -1309,7 +1309,7 @@ level15 = {
     },
     par = {
         type = "par",
-        value = 2
+        value = 4
     },
     wall1 = {
         render = "rectangle",
@@ -1336,7 +1336,200 @@ level15 = {
         height = 450,
     },
 }
+-- 1 segment
+level16 = {
+    id = {
+        type = "id",
+        value = 16
+    },
+    playerinfo = {
+        type = "player",
+        handle1x = 20,
+        handle1y = 880,
+        handle2x = 300,
+        handle2y = 880
+    },
+    par = {
+        type = "par",
+        value = 4
+    },
+    ground = {
+        render = "rectangle",
+        type = "wall",
+        x = 0,
+        y = 900,
+        width = 3200,
+        height = 25,
+    },
+    emp = {
+        render = "circle",
+        type = "emp",
+        x = 300,
+        y = 880,
+        radius = 20,
+        triggerRadius = 250, 
+        speed = 100000,
+    },
+    wall1 = {
+        render = "rectangle",
+        type = "wall",
+        x = 350,
+        y = 500,
+        width = 10,
+        height = 800,
+    },
+    physics = {
+        render = "rectangle",
+        type = "physics",
+        x = 0,
+        y = 500,
+        width = 600,
+        height = 800,
+    },
+    finish = {
+        render = "rectangle",
+        type = "finish",
+        x = 1300,
+        y = 500,
+        width = 100,
+        height = 1000,
+    },
+}
 
+level17 = {
+    id = {
+        type = "id",
+        value = 17
+    },
+    playerinfo = {
+        type = "player",
+        handle1x = 300,
+        handle1y = 880,
+        handle2x = 300,
+        handle2y = 880
+    },
+    par = {
+        type = "par",
+        value = 4
+    },
+    ground = {
+        render = "rectangle",
+        type = "wall",
+        x = 0,
+        y = 900,
+        width = 3200,
+        height = 25,
+    },
+    spring1 = {
+        render = "rectangle",
+        type = "spring",
+        x = 0,
+        y = 300,
+        width = 900,
+        height = 100,
+        force = 100,
+        rotation = 90,
+    },
+    spring2 = {
+        render = "rectangle",
+        type = "spring",
+        x = 1440,
+        y = 300,
+        width = 900,
+        height = 100,
+        force = 100,
+        rotation = -90,
+    },
+    walls = {
+        render = "rectangle",
+        type = "wall",
+        x = (1440 / 2) - 30,
+        y = 0,
+        width = 10,
+        height = 120,
+    },
+    walls2 = {
+        render = "rectangle",
+        type = "wall",
+        x = (1440 / 2) + 30,
+        y = 0,
+        width = 10,
+        height = 120,
+    },
+    walls3 = {
+        render = "rectangle",
+        type = "wall",
+        x = (1440 / 2),
+        y = 700,
+        width = 1000,
+        height = 10,
+    },
+    finish = {
+        render = "rectangle",
+        type = "finish",
+        x = 1440 / 2,
+        y = 0,
+        width = 10,
+        height = 100,
+    },
+}
+level18 = {
+    id = {
+        type = "id",
+        value = 18
+    },
+    playerinfo = {
+        type = "player",
+        handle1x = 10,
+        handle1y = 880,
+        handle2x = 50,
+        handle2y = 880
+    },
+    par = {
+        type = "par",
+        value = 12
+    },
+    ground = {
+        render = "rectangle",
+        type = "wall",
+        x = 0,
+        y = 900,
+        width = 3200,
+        height = 25,
+    },
+    spike1 = {
+        render = "rectangle",
+        type = "spike",
+        x = 300,
+        y = 550,
+        width = 100,
+        height = 800,
+    },
+    physics = {
+        render = "rectangle",
+        type = "physics",
+        x = 700,
+        y = 200,
+        width = 500,
+        height = 200,
+    },
+    spike2 = {
+        render = "rectangle",
+        type = "spike",
+        x = 1440,
+        y = 550,
+        width = 100,
+        height = 800,
+    },
+    finish = {
+        render = "rectangle",
+        type = "finish",
+        x = 700,
+        y = 900,
+        width = 400,
+        height = 100,
+    },
+}
 
 local levelsscreens = 3 - 1 -- has to have -1 because jank
 levelselectionBar = {
@@ -1625,44 +1818,44 @@ levelselectionscreen2 = {
     },
     level7select = {
         render = "slice",
-        image = "${levelImages[7]}",
+        image = "${levelImages[16]}",
         sliceSize = 30,
         type = "button",
         x = ((screenWidth / 5) * 2) - (screenWidth / 7),
         y = screenHeight / 1.5,
         w = screenWidth / 7,
         h = 60,
-        text = "7 par:" .. level7.par.value .. "\n best: ${levelScores[7]}",
+        text = "16 par:" .. level16.par.value .. "\n best: ${levelScores[16]}",
         callback = function()
-            levelLoadCallback(level7)
+            levelLoadCallback(level16)
         end,
     },
-    level8select = {
+    level17select = {
         render = "slice",
-        image = "${levelImages[8]}",
+        image = "${levelImages[17]}",
         sliceSize = 30,
         type = "button",
         x = ((screenWidth / 5) * 3) - (screenWidth / 7),
         y = screenHeight / 1.5,
         w = screenWidth / 7,
         h = 60,
-        text = "8 par:" .. level8.par.value .. "\n best: ${levelScores[8]}",
+        text = "17 par:" .. level17.par.value .. "\n best: ${levelScores[17]}",
         callback = function()
-            levelLoadCallback(level8)
+            levelLoadCallback(level17)
         end,
     },
-    level9select = {
+    level18select = {
         render = "slice",
-        image = "${levelImages[9]}",
+        image = "${levelImages[18]}",
         sliceSize = 30,
         type = "button",
         x = ((screenWidth / 5) * 4) - (screenWidth / 7),
         y = screenHeight / 1.5,
         w = screenWidth / 7,
         h = 60,
-        text = "9 par:" .. level9.par.value .. "\n best: ${levelScores[9]}",
+        text = "18 par:" .. level18.par.value .. "\n best: ${levelScores[18]}",
         callback = function()
-            levelLoadCallback(level9)
+            levelLoadCallback(level18)
         end,
     },
     levelselectionBar.q1,
