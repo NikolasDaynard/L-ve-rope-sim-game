@@ -43,7 +43,7 @@ function beginContact(a, b, coll)
             if player:isSegmentValid(textB) then
                 levelLoader:loader(levelfinishUi)
             end
-            if levelScores[currentLevelId] ~= nil then
+            if levelScores[currentLevelId] ~= nil and levelScores[currentLevelId] ~= 0 then
                 if levelScores[currentLevelId] > score then
                     levelScores[currentLevelId] = score
                 end
@@ -52,6 +52,11 @@ function beginContact(a, b, coll)
                 end
             else
                 levelScores[currentLevelId] = score
+            end
+            for i = 1, 100 do
+                if levelScores[i] == nil then
+                    levelScores[i] = 0
+                end
             end
             local jsonString = lunajson.encode(levelScores)
             love.filesystem.write("highscore.json", jsonString)

@@ -46,7 +46,7 @@ function loadLevelScoreImages()
     for i = 1, 100 do
         if levelScores[i] == 1 then
             levelImages[i] = "leveloutlinefc.png"
-        elseif levelScores[i] ~= nil then
+        elseif levelScores[i] ~= nil and levelScores[i] ~= 0 then
             levelImages[i] = "leveloutlinecleared.png"
         else
             levelImages[i] = "leveloutline.png"

@@ -85,7 +85,7 @@ settingsUi = {
         render = "slice",
         image = "uiOutline.png",
         x = ((screenWidth / 2) - (screenWidth / 7)) - (screenWidth / 16),
-        y = screenHeight / 4,
+        y = screenHeight / 7,
         w = (screenWidth / 16),
         h = screenHeight / 16,
         text = "X",
@@ -99,7 +99,7 @@ settingsUi = {
         render = "slice",
         image = "uiOutline.png",
         x = (screenWidth / 2) - (screenWidth / 7),
-        y = screenHeight / 4,
+        y = screenHeight / 7,
         w = (screenWidth / 3.5),
         h = screenHeight / 2,
         text = "Level ${currentLevelId}\n\n\n\n\n\n",
@@ -112,7 +112,7 @@ settingsUi = {
         barImage = "uiOutline.png",
         nubImage = "uiOutline.png",
         x = (screenWidth / 2) - (screenWidth / 10),
-        y = screenHeight / 2.7,
+        y = screenHeight / 3.7,
         w = (screenWidth / 5),
         h = screenHeight / 20,
         text = "Volume",
@@ -130,7 +130,7 @@ settingsUi = {
         barImage = "uiOutline.png",
         nubImage = "uiOutline.png",
         x = (screenWidth / 2) - (screenWidth / 10),
-        y = screenHeight / 2.2,
+        y = screenHeight / 3,
         w = (screenWidth / 5),
         h = screenHeight / 20,
         text = "Music Volume",
@@ -148,7 +148,7 @@ settingsUi = {
         barImage = "uiOutline.png",
         nubImage = "uiOutline.png",
         x = (screenWidth / 2) - (screenWidth / 10),
-        y = screenHeight / 1.84,
+        y = screenHeight / 2.5,
         w = (screenWidth / 5),
         h = screenHeight / 20,
         text = "SFX Volume",
@@ -166,16 +166,33 @@ settingsUi = {
         render = "slice",
         image = "uiOutline.png",
         x = (screenWidth / 2) - (screenWidth / 8),
-        y = screenHeight / 1.25,
+        y = screenHeight / 1.3,
         w = (screenWidth / 4),
         h = screenHeight / 8,
         text = "Level Select",
         callback = function()
             levelLoadCallback(levelselectionscreen)
         end,
+    },
+    restart = {
+        type = "button",
+        render = "slice",
+        image = "uiOutline.png",
+        x = (screenWidth / 2) - (screenWidth / 8),
+        y = screenHeight / 1.55,
+        w = (screenWidth / 4),
+        h = screenHeight / 8,
+        text = "Restart",
+        callback = function()
+            ui:clear()
+            local level = loadedLevel
+            levelLoader:unloadLevel()
+            levelLoader:loadLevel(level)
+        end,
     }
 
 }
+--1.12, 1.3
 
 level1 = {
     id = {
@@ -2001,7 +2018,7 @@ level22 = {
 level23 = {
     id = {
         type = "id",
-        value = 22
+        value = 23
     },
     playerinfo = {
         type = "player",
@@ -2073,8 +2090,77 @@ level23 = {
             end
         end
     },
-
 }
+level24 = {
+    id = {
+        type = "id",
+        value = 24
+    },
+    playerinfo = {
+        type = "player",
+        handle1x = 20,
+        handle1y = 140,
+        handle2x = 50,
+        handle2y = 140
+    },
+    par = {
+        type = "par",
+        value = 20
+    },
+    ground = {
+        render = "rectangle",
+        type = "spike",
+        x = 0,
+        y = 900,
+        width = 3200,
+        height = 25,
+        update = function(levelTime) 
+            level24.ground.y = 900
+            level24.ground.y = level24.ground.y - 100 * levelTime
+        end
+    },
+    wall = {
+        render = "rectangle",
+        type = "wall",
+        x = 0,
+        y = 550,
+        width = 300,
+        height = 750,
+    },
+    wall2 = {
+        render = "rectangle",
+        type = "wall",
+        x = 500,
+        y = 550,
+        width = 300,
+        height = 750,
+    },
+    wall3 = {
+        render = "rectangle",
+        type = "wall",
+        x = 1000,
+        y = 550,
+        width = 300,
+        height = 750,
+    },
+    switch1 = {
+        render = "rectangle",
+        type = "switch",
+        x = 300,
+        y = 750,
+        width = 300,
+        height = 200,
+    },
+    switch2 = {
+        render = "rectangle",
+        type = "switch",
+        x = 700,
+        y = 450,
+        width = 300,
+        height = 200,
+    },
+}
+
 
 local levelsscreens = 3 - 1 -- has to have -1 because jank
 levelselectionBar = {
@@ -2489,16 +2575,16 @@ levelselectionscreen3 = {
     },
     level6select = {
         render = "slice",
-        image = "${levelImages[15]}",
+        image = "${levelImages[24]}",
         sliceSize = 30,
         type = "button",
         x = ((screenWidth / 5) * 4) - (screenWidth / 7),
         y = screenHeight / 2,
         w = screenWidth / 7,
         h = 60,
-        text = "15 par:" .. level15.par.value .. "\n best: ${levelScores[15]}",
+        text = "24 par:" .. level24.par.value .. "\n best: ${levelScores[24]}",
         callback = function()
-            levelLoadCallback(level15)
+            levelLoadCallback(level24)
         end,
     },
     level7select = {

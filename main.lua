@@ -28,6 +28,12 @@ function love.load()
     if love.filesystem.getInfo("highscore.json") ~= nil then
         local fileData = love.filesystem.read("highscore.json")
         levelScores = lunajson.decode(fileData)
+    else
+        for i = 1, 100 do
+            if levelScores[i] == nil then
+                levelScores[i] = 0
+            end
+        end
     end
     if love.filesystem.getInfo("settings.json") ~= nil then
         local fileData = love.filesystem.read("settings.json")
