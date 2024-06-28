@@ -5,7 +5,7 @@ imageLib = {
     slices = {}
 }
 
-function imageLib:loadImage(imageName) 
+function imageLib:loadImage(imageName)
     self.images[imageName] = love.graphics.newImage(imageName)
     self.images[imageName]:setFilter("nearest", "nearest")
 end

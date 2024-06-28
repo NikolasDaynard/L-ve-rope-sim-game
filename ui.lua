@@ -7,6 +7,23 @@ ui = {
     sliderHeldId = nil
 }
 
+function ui:drawBlackBars()
+    love.graphics.setColor(0, 0, 0)
+    local x, y = cam:cameraCoords(0, 0)
+    local w, h = cam:cameraCoords(-2, 900)
+    love.graphics.rectangle("fill", x - w, y, w, h) -- left
+    x, y = cam:cameraCoords(1440, 0)
+    love.graphics.rectangle("fill", x, y, w, h) -- right
+
+    x, y = cam:cameraCoords(0, 0)
+    w, h = cam:cameraCoords(1440, -1)
+    love.graphics.rectangle("fill", x, y - h, w, h) -- up
+    x, y = cam:cameraCoords(0, 901)
+    love.graphics.rectangle("fill", x, y, w, h) -- up 
+
+    love.graphics.setColor(1, 1, 1) -- debug
+end
+
 function ui:doesButtonExist(text) 
     for i = 1, self.buttonNum - 1 do
         if self.buttons[i].text == text then
@@ -16,8 +33,8 @@ function ui:doesButtonExist(text)
     return false
 end
 
-function ui:addButton(x, y, w, h, callback, text, image, type, sliceSize)
-    if ui:doesButtonExist(interpolate(doesButtonExist)) then
+function ui:addButton(x, y, w, h, callback, text, image, type, sliceSize, interactive)
+    if ui:doesButtonExist(interpolate(text)) then
         return
     end
 
@@ -27,9 +44,9 @@ function ui:addButton(x, y, w, h, callback, text, image, type, sliceSize)
         else
             imageLib:loadImage(image)
         end
-        self.buttons[self.buttonNum] = {x = x, y = y, w = w, h = h, text = text, callback = callback, image = image}
+        self.buttons[self.buttonNum] = {x = x, y = y, w = w, h = h, text = text, callback = callback, image = image, interactive = interactive}
     else
-        self.buttons[self.buttonNum] = {x = x, y = y, w = w, h = h, text = text, callback = callback}
+        self.buttons[self.buttonNum] = {x = x, y = y, w = w, h = h, text = text, callback = callback, interactive = interactive}
     end
     self.buttonNum = self.buttonNum + 1
 end
@@ -79,10 +96,12 @@ function ui:update(mousePos)
         for i = 1, self.buttonNum - 1 do
             -- I don't want to but
             if self.buttons[i] ~= nil then
-                if mousePos.x >= self.buttons[i].x and mousePos.x <= self.buttons[i].x + self.buttons[i].w and mousePos.y >= self.buttons[i].y and mousePos.y <= self.buttons[i].y + self.buttons[i].h then
-                    if mouseDown and not self.clicking then
-                        self.buttons[i].callback()
-                        self.clicking = true
+                if self.buttons[i].interactive ~= false then
+                    if mousePos.x >= self.buttons[i].x and mousePos.x <= self.buttons[i].x + self.buttons[i].w and mousePos.y >= self.buttons[i].y and mousePos.y <= self.buttons[i].y + self.buttons[i].h then
+                        if mouseDown and not self.clicking then
+                            self.buttons[i].callback()
+                            self.clicking = true
+                        end
                     end
                 end
             end
@@ -94,32 +113,45 @@ function ui:update(mousePos)
     end
 end
 
-function ui:render()
-    for i = 1, self.buttonNum - 1 do
-        if self.buttons[i].image ~= nil then
-            imageLib:render(self.buttons[i].image, self.buttons[i].x, self.buttons[i].y, self.buttons[i].w, self.buttons[i].h)
-        else
-            love.graphics.setColor(1, 1, 1) 
-            love.graphics.rectangle("fill", self.buttons[i].x, self.buttons[i].y, self.buttons[i].w, self.buttons[i].h)
+function ui:renderButton(button)
+    if button.image ~= nil then
+        imageLib:render(button.image, button.x, button.y, button.w, button.h)
+    else
+        love.graphics.setColor(1, 1, 1) 
+        love.graphics.rectangle("fill", button.x, button.y, button.w, button.h)
+    end
+    
+    if button.text ~= nil then
+        -- add variables to the string
+        button.text = interpolate(button.text)
+        love.graphics.setColor(0, 0, 0)
+
+        local textLines = splitString(button.text, "\n")
+
+        for j, line in ipairs(textLines) do
+            local textWidth = love.graphics.getFont():getWidth(button.text)
+            local textHeight = love.graphics.getFont():getHeight(button.text)
+            local textX = button.x + (button.w / 2) - (textWidth / 2)
+            local textY = button.y + (button.h / (#textLines + 1)) - (textHeight / (#textLines + 1))
+            
+            love.graphics.print(button.text, textX, textY)
         end
         
-        if self.buttons[i].text ~= nil then
-            -- add variables to the string
-            self.buttons[i].text = interpolate(self.buttons[i].text)
-            love.graphics.setColor(0, 0, 0)
+        love.graphics.setColor(1, 1, 1)   
+    end
+end
 
-            local textLines = splitString(self.buttons[i].text, "\n")
-
-            for j, line in ipairs(textLines) do
-                local textWidth = love.graphics.getFont():getWidth(self.buttons[i].text)
-                local textHeight = love.graphics.getFont():getHeight(self.buttons[i].text)
-                local textX = self.buttons[i].x + (self.buttons[i].w / 2) - (textWidth / 2)
-                local textY = self.buttons[i].y + (self.buttons[i].h / (#textLines + 1)) - (textHeight / (#textLines + 1))
-                
-                love.graphics.print(self.buttons[i].text, textX, textY)
-            end
-            
-            love.graphics.setColor(1, 1, 1)
+function ui:render()
+    -- render non-interactive first so they are bg
+    for i = 1, self.buttonNum - 1 do
+        if self.buttons[i].interactive == false then
+            print(self.buttons[i].text)
+            ui:renderButton(self.buttons[i])
+        end
+    end
+    for i = 1, self.buttonNum - 1 do
+        if self.buttons[i].interactive ~= false then
+            ui:renderButton(self.buttons[i])
         end
     end
     for i = 1, self.sliderNum - 1 do

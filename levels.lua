@@ -158,6 +158,31 @@ settingsUi = {
             saveSettings()
         end,
     },
+    fullscreenButton = {
+        type = "slider",
+        barImage = "uiOutline.png",
+        nubImage = "uiOutline.png",
+        x = (screenWidth / 2) - (screenWidth / 10),
+        y = screenHeight / 2,
+        w = (screenWidth / 5),
+        h = screenHeight / 20,
+        text = "Toggle fullscreen",
+        maxValue = 1,
+        minValue = 0,
+        value = "${.5}",
+        callback = function(value)
+            print("fullscreen")
+            if value > .5 then
+                settings.fullscreen = true
+            else
+                settings.fullscreen = false
+            end
+            saveSettings()
+            love.window.setFullscreen(settings.fullscreen)
+            local w, h = love.graphics.getDimensions()
+            love.resize(w, h)
+        end,
+    },
     openLevels = {
         type = "button",
         render = "slice",

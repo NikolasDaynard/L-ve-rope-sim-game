@@ -192,7 +192,7 @@ function levelLoader:loader(level)
                 value.fixture:setUserData("finish")
                 value.fixture:setCategory(1) 
             elseif value.type == "button" then
-                ui:addButton(value.x, value.y, value.w, value.h, value.callback, value.text, interpolate(value.image), value.render, value.sliceSize)
+                ui:addButton(value.x, value.y, value.w, value.h, value.callback, value.text, interpolate(value.image), value.render, value.sliceSize, value.interactive)
             elseif value.type == "slider" then
                 ui:addSlider(value.x, value.y, value.w, value.h, value.callback, value.text, value.minValue, value.maxValue, value.value, value.barImage, value.nubImage, value.render, value.sliceSize)
             elseif value.type == "par" then

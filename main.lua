@@ -42,6 +42,7 @@ function love.load()
         settings.volume = 1
         settings.musicVolume = 1
         settings.SFX = 1
+        settings.fullscreen = false
         saveSettings()
     end
 
@@ -49,10 +50,12 @@ function love.load()
 
     cam = Camera()
     local screenWidth, screenHeight = love.window.getDesktopDimensions()
+    screenHeight = 1440 / 2
+    screenWidth = 900 / 2
 
     -- Set fullscreen with borders
     love.window.setMode(screenWidth, screenHeight, {
-        fullscreen = true,
+        fullscreen = settings.fullscreen or false,
         fullscreentype = "desktop",
         resizable = true,
         borderless = false
@@ -61,7 +64,6 @@ function love.load()
     world = love.physics.newWorld(0, 300, true)
     createBoundaries()
 
-    screenWidth, screenHeight = love.window.getDesktopDimensions()
     love.resize(screenWidth, screenHeight)
     -- Initialize player with physics has to be before level
     player:init()
@@ -72,7 +74,8 @@ end
 
 function love.resize(w, h)
     local aspectRatio = 16 / 9
-    local windowWidth, windowHeight
+    windowWidth = 0
+    windowHeight = 0
 
     -- Calculate window dimensions based on aspect ratio
     if w / h > aspectRatio then
@@ -154,7 +157,6 @@ function love.update(dt)
     soundLib:loop("sounds/soundtrack.mp3", settings.musicVolume)
     ui:update({x = cam:mousePosition().x, y = cam:mousePosition().y})
 end
-
 -- Draw function
 function love.draw()
     -- cam:move(0, 0)
@@ -166,5 +168,9 @@ function love.draw()
     player:draw()
     ui:render()
     cam:detach()
+    love.graphics.setColor(.3, .3, 1) -- debug
+    windowWidth, windowHeight = love.window.getDesktopDimensions()
+    ui:drawBlackBars()
+    
     love.graphics.print("shots: " .. score .. " . " .. par, 0, 0, 0, 1, 1)
 end
