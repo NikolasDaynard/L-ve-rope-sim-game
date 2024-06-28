@@ -169,16 +169,14 @@ settingsUi = {
         text = "Toggle fullscreen",
         maxValue = 1,
         minValue = 0,
-        value = "${.5}",
+        value = "${settings.fullscreen}",
         callback = function(value)
-            print("fullscreen")
-            if value > .5 then
-                settings.fullscreen = true
-            else
-                settings.fullscreen = false
-            end
+            settings.fullscreen = value
+
             saveSettings()
-            love.window.setFullscreen(settings.fullscreen)
+            local screenDimX, screemDimY = love.window.getDesktopDimensions()
+            love.window.setMode(screenDimX * value, screemDimY * value, {fullscreen = false, resizable = true})
+            love.window.setFullscreen(settings.fullscreen > .9)
             local w, h = love.graphics.getDimensions()
             love.resize(w, h)
         end,

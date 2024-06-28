@@ -42,7 +42,7 @@ function love.load()
         settings.volume = 1
         settings.musicVolume = 1
         settings.SFX = 1
-        settings.fullscreen = false
+        settings.fullscreen = .5
         saveSettings()
     end
 
@@ -55,7 +55,7 @@ function love.load()
 
     -- Set fullscreen with borders
     love.window.setMode(screenWidth, screenHeight, {
-        fullscreen = settings.fullscreen or false,
+        fullscreen = settings.fullscreen > .9,
         fullscreentype = "desktop",
         resizable = true,
         borderless = false
