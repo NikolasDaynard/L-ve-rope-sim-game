@@ -55,7 +55,7 @@ function love.load()
 
     -- Set fullscreen with borders
     love.window.setMode(screenWidth, screenHeight, {
-        fullscreen = settings.fullscreen > .9,
+        fullscreen = (settings.fullscreen or .5) > .9,
         fullscreentype = "desktop",
         resizable = true,
         borderless = false
